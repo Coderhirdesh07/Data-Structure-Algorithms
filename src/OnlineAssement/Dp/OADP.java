@@ -607,6 +607,26 @@ public class OADP {
         }
         return max;
     }
+    // return max possible xor sum
+    public static int uber_interview_question(int[] arr,int n,int x){
+        int[] dp0 = new int[n];
+        int[] dp1 = new int[n];
+
+        dp0[0] = 0;
+        dp1[0] = 0;
+
+        dp0[1] = Math.max(arr[0]^arr[1] , (arr[0]+x)^arr[1]);
+        dp1[1] = Math.max(arr[0] ^ (arr[1]+x) , (arr[0]+x) ^ (arr[1]+x));
+
+        for(int i=2;i<n;i++){
+            // x is not added to i th element
+            dp0[i] =  dp0[i-1] + Math.max(arr[i-1]^arr[i],(arr[i-1]+x)^arr[i]);
+            // x is added to i th element
+            dp1[i] = dp1[i-1] + Math.max(arr[i-1]^(arr[i]+x) , (arr[i-1]+x)^(arr[i]+x));
+        }
+
+        return Math.max(dp0[n-1],dp1[n-1]);
+    }
 
 
     static class Triplet{
