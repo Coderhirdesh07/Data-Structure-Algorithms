@@ -627,6 +627,46 @@ public class OADP {
 
         return Math.max(dp0[n-1],dp1[n-1]);
     }
+    // Google interview question part-1
+    public static int google_interview_question(int[] arr,int n){
+        int[] dp = new int[n];
+        dp[0] = Math.max(0,arr[0]); // 2
+        dp[1] = Math.max(0,Math.max(arr[0],arr[1])); // 2
+
+        for(int i=2;i<n;i++){
+            int pick = 0;
+            int notpick = 0;
+
+            pick = dp[i-2] + arr[i];
+
+            notpick = dp[i-1];
+
+            dp[i] = Math.max(pick,notpick);
+        }
+        return dp[n-1];
+    }
+
+    public static int google_interview_question_follow_up1(int[] arr,int n,int k){
+        int[][] dp  = new int[n][k+1];
+
+        for(int i=0;i<n;i++){
+            Arrays.fill(dp[i],Integer.MIN_VALUE);
+        }
+        dp[0][0] = 0;
+        dp[0][1] = arr[0];
+        dp[1][1] = Math.max(arr[1],arr[0]);
+
+        for(int i=2;i<n;i++){
+            for(int j=0;j<=k;j++){
+                int notpick = 0;
+                int pick = 0;
+                notpick = dp[i-1][j];
+                pick = Math.max(dp[i - 2][j - 1] + arr[i], dp[i - 1][j]);
+               dp[i][j] = Math.max(pick,notpick);
+            }
+        }
+        return dp[n-1][k];
+    }
 
 
     static class Triplet{
