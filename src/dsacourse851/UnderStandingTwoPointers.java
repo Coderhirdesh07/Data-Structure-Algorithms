@@ -311,10 +311,30 @@ public class UnderStandingTwoPointers {
     // rhs
 
     // Google oa
-    public static int question_13_brute(String a,String b,int n,int m){
-    }
-    // Salesforce oa
-    public static int question_14_brute(int[] arr,int n){
+    public static int question_13(String a,String b,int n,int m){
+        int i = 0;
+        int count = 0;
+        int start = -1;
+        while(i<m){
+            for(int j=i;j<n;j++){
+                char first = a.charAt(i);
+                char second = b.charAt(j);
+                if(first==second){
+                    count++;
+                    if(start==-1 && i==0) {
+                        start = i;
+                    }
+                }
+            }
+            i++;
+        }
+        if(count<=m-1) return -1;
+
+        return start;
 
     }
+    // Salesforce oa
+//    public static int question_14_brute(int[] arr,int n){
+//
+//    }
 }
