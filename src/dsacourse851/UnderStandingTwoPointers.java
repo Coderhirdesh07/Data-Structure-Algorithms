@@ -11,14 +11,16 @@ public class UnderStandingTwoPointers {
         int[] a = {1, 2, 3, 8, 13, 18};
         int[] b = {800, 1000, 1200, 1500, 1550, 1800};
 
-        int[] arr1 = {2, 5, 8, 10, 15};
+        int[] arr1 = {1 ,2 ,5 ,8 ,8 ,6 ,5 ,4 ,3};
+                   // i
         int[] arr2 = {3, 5, 8, 8, 10};
         int target2 = 11;
-        int[] nums = {2, 2};
+        int[] nums = {4,1};
+        //            j
         int[] B = {3, 2, 4, 5, 2, 6, 7, 8, 9, 10};
 
         int target = 1700;
-        int res = question_8(nums,nums.length);
+        boolean res = question_14_brute(arr1,nums,arr1.length,nums.length);
         System.out.println(res);
     }
 
@@ -334,7 +336,65 @@ public class UnderStandingTwoPointers {
 
     }
     // Salesforce oa
-//    public static int question_14_brute(int[] arr,int n){
-//
-//    }
+    // TODO there is a part of good index removal that i have not done
+    public static boolean question_14_brute(int[] A,int[] B,int n,int m){
+        int count = 0;
+        int start = 0;
+        int j = 0;
+        while(j<m){
+            int i = start;
+            while(i<n){
+                if(B[j] == A[i]){
+                    start = i+1;
+                    count++;
+                    break;
+                }
+                i++;
+            }
+            j++;
+        }
+        return (count==m) ?true:false;
+    }
+
+    // leetcode contest problem
+    public static int question_16_brute(int[] arr,int n ,int k){
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<n;i++){
+            int sum = 0;
+            for(int j=i;j<n;j++){
+                sum+=arr[j];
+                if(sum>=k){
+                    min = Math.min(min,j-i+1);
+                    break;
+                }
+            }
+        }
+        return min;
+    }
+
+
+    public static int question_16_optimise(int[] arr,int n ,int k){
+       int sum = 0;
+       int[] prefix = new int[n];
+       for(int i=1;i<n;i++){
+           prefix[i] = prefix[i-1] + arr[i];
+       }
+
+       int i=0;
+       int j=n-1;
+       int min = Integer.MAX_VALUE;
+
+       while(i<=j){
+           if(i==0){
+
+           }
+           else {
+
+           }
+       }
+       return min;
+
+
+
+    }
 }
