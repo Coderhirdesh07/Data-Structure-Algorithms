@@ -12,6 +12,7 @@ public class UnderStandingTwoPointers {
         int[] b = {800, 1000, 1200, 1500, 1550, 1800};
 
         int[] arr1 = {1 ,2 ,5 ,8 ,8 ,6 ,5 ,4 ,3};
+        int[] nums1 = {1 ,2 ,1 ,0 ,1 ,1 ,0};
                    // i
         int[] arr2 = {3, 5, 8, 8, 10};
         int target2 = 11;
@@ -20,7 +21,7 @@ public class UnderStandingTwoPointers {
         int[] B = {3, 2, 4, 5, 2, 6, 7, 8, 9, 10};
 
         int target = 1700;
-        boolean res = question_14_brute(arr1,nums,arr1.length,nums.length);
+        int res = question_18_optimise(nums1,4,nums1.length);
         System.out.println(res);
     }
 
@@ -393,8 +394,56 @@ public class UnderStandingTwoPointers {
            }
        }
        return min;
+    }
+    // find longest subarray with sum<=k
+    public static int question_18_brute(int[] arr,int k,int n){
+        int max = Integer.MIN_VALUE;
+        for (int i=0;i<n;i++){
+            int sum = 0;
+            for(int j=i;j<n;j++){
+                sum+=arr[j];
+                if(sum<=k){
+                    max = Math.max(max,j-i+1);
+                }
+            }
+        }
+        return max;
+    }
+    // TODO GOOGLE ACTUAL QUESTION
+    public static int question_18_optimise(int[] arr,int k,int n){
 
-
-
+        int j = 0;
+       int i = 0;
+       int max = Integer.MIN_VALUE;
+    int sum = 0;
+       while(i<n && j<n){
+           if(i==j){
+               if(arr[i]>k){
+                i++;
+                j++;
+                sum= arr[i];
+               }
+               else{
+                   sum+=arr[j];
+                   max = Math.max(max,j-i+1);
+                   j++;
+               }
+           }
+           else{
+               if(sum>k){
+                   sum-=arr[i];
+                   i++;
+                   if(i>j){
+                       j=i;
+                   }
+               }
+               else{
+                   sum+=arr[j];
+                   max = Math.max(max,j-i+1);
+                   j++;
+               }
+           }
+       }
+       return max;
     }
 }
