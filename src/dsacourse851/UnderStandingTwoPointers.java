@@ -357,6 +357,56 @@ public class UnderStandingTwoPointers {
         return (count==m) ?true:false;
     }
 
+    public static boolean question_14_optimise(int[] A,int[] B,int n,int m){
+       int i=0;
+       int j = 0;
+       int count = 0;
+       while(i<n && j<m){
+           if(A[i]==B[j]){
+               count++;
+               i++;
+           }
+           j++;
+       }
+       return count==m?true:false;
+    }
+    // we want to make b subsequence of a
+    public static int question_14_actual(int[] a,int[] b,int n,int m){
+    int[] prefixB = new int[m];
+        int i=0;
+        int j = 0;
+        while(i<n && j<m){
+            if(a[i]==b[j]){
+
+                prefixB[j]=i;
+                j++;
+            }
+            i++;
+        }
+
+     int[] suffixB = new int[m];
+         i=n-1;
+         j = m-1;
+
+        while(i>=0 && j>=0){
+            if(a[i]==b[j]){
+                suffixB[j]=i;
+                j--;
+            }
+            i--;
+        }
+    int good  = 0;
+    for(int k=0;k<m;k++){
+        if(prefixB[k]<suffixB[k]){
+            good++;
+        }
+    }
+    return good;
+
+
+
+    }
+
     // leetcode contest problem
     public static int question_16_brute(int[] arr,int n ,int k){
         int min = Integer.MAX_VALUE;
@@ -411,7 +461,6 @@ public class UnderStandingTwoPointers {
     }
     // TODO GOOGLE ACTUAL QUESTION
     public static int question_18_optimise(int[] arr,int k,int n){
-
         int j = 0;
        int i = 0;
        int max = Integer.MIN_VALUE;
@@ -446,4 +495,6 @@ public class UnderStandingTwoPointers {
        }
        return max;
     }
+
+
 }
