@@ -562,5 +562,22 @@ public class UnderStandingTwoPointers {
         }
         return count;
     }
+    // 4 2 3 1 5 6
+    // 3 1 4 6 5 2
+    public static int question_rubrik_oa(int[] A,int[] B,int n){
+        int count = 0;
+        for(int i=0;i<n;i++){ // A
+            for(int j=i;j<n;j++){ // B
+                if(A[i]!=B[j]){
+                    int temp = B[i];
+                    B[i] = B[j];
+                    B[j] = temp;
+                    count++;
+                }
+                else continue;
+            }
+        }
+        return count;
+    }
 
 }
