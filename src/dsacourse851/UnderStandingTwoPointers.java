@@ -14,12 +14,13 @@ public class UnderStandingTwoPointers {
                    // i
         int[] arr2 = {3, 5, 8, 8, 10};
         int target2 = 11;
-        int[] nums = {4,1};
+        int[] nums = {1,2,3};
+        int[] nums2 = {1,2,1};
         //            j
         int[] B = {3, 2, 4, 5, 2, 6, 7, 8, 9, 10};
 
         int target = 1700;
-        int res = question_15_brute(arr1,arr1.length,2,4);
+        int res = question_expedia(nums,nums2,3,3);
         System.out.println(res);
     }
 
@@ -538,5 +539,28 @@ public class UnderStandingTwoPointers {
 //    public static int question_18_actual_google_optimise(int[] arr,int n,int k){
 //
 //    }
+
+    // this question if from expedia oa
+    public static int question_expedia(int[] a,int[] b,int n,int m){
+        Arrays.sort(a);
+        Arrays.sort(b);
+        int i = n-1;
+        int j=0;
+        // a[i]>b[j]
+        // 1 2 3
+        // 1 1 2
+        int count = 0;
+        while(i>=0 && j<m){
+            if(a[i]>b[j]){
+                i--;
+                j++;
+                count++;
+            }
+            else{
+                break;
+            }
+        }
+        return count;
+    }
 
 }
