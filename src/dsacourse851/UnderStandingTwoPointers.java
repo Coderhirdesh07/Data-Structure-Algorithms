@@ -11,7 +11,7 @@ public class UnderStandingTwoPointers {
         int[] a = {1, 2, 3, 8, 13, 18};
         int[] b = {800, 1000, 1200, 1500, 1550, 1800};
 
-        int[] arr1 = {1 ,2 ,5 ,8 ,8 ,6 ,5 ,4 ,3};
+        int[] arr1 = {2,1,4,3,2,1,1,4};
         int[] nums1 = {1 ,2 ,1 ,0 ,1 ,1 ,0};
                    // i
         int[] arr2 = {3, 5, 8, 8, 10};
@@ -21,7 +21,7 @@ public class UnderStandingTwoPointers {
         int[] B = {3, 2, 4, 5, 2, 6, 7, 8, 9, 10};
 
         int target = 1700;
-        int res = question_18_optimise(nums1,4,nums1.length);
+        int res = question_15_brute(arr1,arr1.length,2,4);
         System.out.println(res);
     }
 
@@ -405,6 +405,27 @@ public class UnderStandingTwoPointers {
 
 
 
+    }
+
+    // microsoft oa problem
+    public static int question_15_brute(int[] arr,int n,int l,int r){
+        // 2,4 -> 2,3,4
+
+     int start = Integer.MAX_VALUE;
+     int count = Math.abs(r-l)+1;
+        for(int i=0;i<n;i++){
+            HashMap<Integer,Integer> m1 = new HashMap<>();
+            for(int j=i;j<n;j++){
+                if(arr[j]>=l && arr[j]<=r) {
+                    m1.put(arr[j], m1.getOrDefault(arr[j], 0) + 1);
+                }
+                 if(m1.size()==count){
+                     start = i;
+                     break;
+                }
+            }
+        }
+        return start;
     }
 
     // leetcode contest problem
