@@ -2,9 +2,7 @@ package dsacourse851;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Scanner;
 
-import static java.lang.Integer.parseInt;
 
 public class UnderStandingTwoPointers {
     public static void main(String[] args) {
@@ -485,7 +483,7 @@ public class UnderStandingTwoPointers {
         int j = 0;
        int i = 0;
        int max = Integer.MIN_VALUE;
-    int sum = 0;
+      int sum = 0;
        while(i<n && j<n){
            if(i==j){
                if(arr[i]>k){
@@ -517,5 +515,28 @@ public class UnderStandingTwoPointers {
        return max;
     }
 
+    // arr = [5, 9, 20, 22, 28, 35, 60, 350, 358, 359, 360]
+    //field of view = 30
+    // actual question -> was difference between max and min element in a subarray should be less than k
+    public static int question_18_actual_google(int[] arr,int n,int k){
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            int minElement = Integer.MAX_VALUE;
+            int maxElement = Integer.MIN_VALUE;
+            for(int j=i;j<n;j++){
+                minElement = Math.min(minElement,arr[j]);
+                maxElement = Math.max(maxElement,arr[j]);
+
+                if(maxElement - minElement <=k){
+                    max = Math.max(max,j-i+1);
+                }
+            }
+        }
+        return max;
+    }
+
+//    public static int question_18_actual_google_optimise(int[] arr,int n,int k){
+//
+//    }
 
 }
