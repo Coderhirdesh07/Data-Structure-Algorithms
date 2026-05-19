@@ -11,6 +11,7 @@ public class UnderStandingTwoPointers {
 
         int[] arr1 = {2,1,4,3,2,1,1,4};
         int[] nums1 = {1 ,2 ,1 ,0 ,1 ,1 ,0};
+        int[] nums3 = {5 ,5 ,6 ,7 ,8 ,8 ,6 ,5 ,5}; //  g = 5 k = 2
                    // i
         int[] arr2 = {3, 5, 8, 8, 10};
         int target2 = 11;
@@ -20,7 +21,7 @@ public class UnderStandingTwoPointers {
         int[] B = {3, 2, 4, 5, 2, 6, 7, 8, 9, 10};
 
         int target = 1700;
-        int res = question_expedia(nums,nums2,3,3);
+        int res = question_google_sde_brute(nums3,nums3.length,5,2);
         System.out.println(res);
     }
 
@@ -579,5 +580,29 @@ public class UnderStandingTwoPointers {
         }
         return count;
     }
+
+    // longest subarray in which target comes for <=k times
+    public static int question_google_sde_brute(int[] arr,int n,int target,int k){
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            HashMap<Integer,Integer> m1 = new HashMap<>();
+            for(int j=i;j<n;j++){
+                if(arr[j]==target){
+                    m1.put(arr[j],m1.getOrDefault(arr[j],0)+1);
+                }
+                else{
+                    if(m1.containsKey(target)){
+                        if(m1.get(target)<=k) {
+                            max = Math.max(max, j - i + 1);
+                        }
+                    }
+                }
+            }
+        }
+        return max;
+    }
+//    public static int question_google_sde_optimise(int[] arr,int n,int target,int k){
+//
+//    }
 
 }
