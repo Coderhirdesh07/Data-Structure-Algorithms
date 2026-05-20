@@ -1,7 +1,6 @@
 package dsacourse851;
 
-import java.util.Arrays;
-import java.util.HashMap;
+import java.util.*;
 
 
 public class UnderStandingTwoPointers {
@@ -604,5 +603,24 @@ public class UnderStandingTwoPointers {
 //    public static int question_google_sde_optimise(int[] arr,int n,int target,int k){
 //
 //    }
+
+    public static int question_amazon_oa_brute(int[] arr,int n){
+        ArrayList<Integer> list = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            HashSet<Integer> s1 = new HashSet<>();
+            for(int j=i;j<n;j++){
+                s1.add(arr[j]);
+                list.add(s1.size());
+            }
+        }
+        Collections.sort(list);
+        int mid = list.size()-1;
+        return list.get(mid/2);
+    }
+
+    // understood it with hint of binary search
+    public static int quetion_amazon_oa_optimise(int[] arr,int n){
+
+    }
 
 }
