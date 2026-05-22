@@ -619,8 +619,31 @@ public class UnderStandingTwoPointers {
     }
 
     // understood it with hint of binary search
-    public static int quetion_amazon_oa_optimise(int[] arr,int n){
+    public static int question_amazon_oa_optimise(int[] arr,int n){
+        TreeMap<Integer,Integer> m1 = new TreeMap<>();
+        for(int i=1;i<n;i++){
+            int j = 0;
+            int k = 0;
+            int count = 0;
+            HashMap<Integer,Integer> m2 = new HashMap<>();
+            while(j<n){
+                m2.put(arr[j],m2.getOrDefault(arr[j],0)+1);
+                while(m2.size()>i){
+                   int res  = m2.get(arr[k]);
+                   if(res>0) m2.put(arr[k],res-1);
+                   else m2.remove(arr[k]);
+                   k++;
+                }
+                count+=j-k+1;
+                m1.put(i,m1.getOrDefault(i,0)+count);
+                j++;
+            }
+        }
+        return m1.size();
 
     }
+
+    // count no of substing in a string where count of 1 >= square of count of zero
+//    public static int leetcode_contest_problem(int[] arr,int n)
 
 }
