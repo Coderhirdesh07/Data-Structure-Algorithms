@@ -21,6 +21,7 @@ public class UnderstandingGraph {
             for(int it:list.get(node)){
                 if(!vis[it]){
                     q1.add(it);
+                    vis[it] = true;
                 }
             }
         }
