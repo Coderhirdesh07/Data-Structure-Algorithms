@@ -5,14 +5,18 @@ import java.util.*;
 
 public class UnderstandingGraph {
     public static void main(String[] args) {
-        int[][] matrix = new int[4][4];
+        char[][] matrix = new char[6][6];
         Scanner sc = new Scanner(System.in);
-        for(int i=0;i<4;i++){
-            for(int j=0;j<4;j++){
-                matrix[i][j] = sc.nextInt();
+        int ind =0;
+        for(int i=0;i<6;i++){
+            String input = sc.next();
+            char[] ans = input.toCharArray();
+            for(int j=0;j<ans.length;j++){
+                matrix[ind][j] = ans[j];
             }
+            ind++;
         }
-        int result = question_8(matrix,4,4);
+        int result = question_11(matrix,6,6);
         System.out.println(result);
 
     }
@@ -200,7 +204,8 @@ public class UnderstandingGraph {
             list1.get(u).add(v);
             list1.get(v).add(u);
         }
-        ArrayList<Integer> component =
+        ArrayList<ArrayList<Integer>> component = helper_10(list1,n1,m1);
+        ArrayList<ArrayList<Integer>> component2 = helper_10(list2,n2,m2);
 
         for(int i=0;i<n2;i++){
             int u = g[i][0];
@@ -208,7 +213,121 @@ public class UnderstandingGraph {
             list2.get(u).add(v);
             list2.get(v).add(u);
         }
+
+        return component.size() + component2.size();
     }
+    public static ArrayList<ArrayList<Integer>> helper_10(ArrayList<ArrayList<Integer>> adj,int nodes,int edges){
+        ArrayList<ArrayList<Integer>> components = new ArrayList();
+        boolean[] vis = new boolean[nodes];
+        for(int i=0;i<nodes;i++){
+            components.add(new ArrayList<>());
+        }
+        int ind = 0;
+        for(int i=0;i<nodes;i++){
+            if(vis[i]==false){
+                helper_10_bfs(i,adj,nodes,vis,ind,components);
+                ind++;
+            }
+        }
+        return components;
+    }
+    public static void helper_10_bfs(int node,ArrayList<ArrayList<Integer>> list,int nodes,boolean[] vis,int ind,ArrayList<ArrayList<Integer>> compo){
+        Queue<Integer> q1 = new LinkedList();
+        q1.add(node);
+        compo.get(ind).add(node);
+        vis[node] = true;
+        while(!q1.isEmpty()){
+            int adj = q1.peek();
+            q1.remove();
+            for(int it:list.get(adj)){
+                if(vis[it]==false){
+                    q1.add(it);
+                    vis[it] = true;
+                    compo.get(ind).add(it);
+                }
+            }
+        }
+    }
+    // codeforces graph problem
+    // true is for row change and false if for column change
+    // got a little bit of hint for the question
+    // TODO this is question does not give correct answer and i have not optimised it.
+    public static int question_11(char[][] input,int n,int m){
+        int max = -1;
+        // try to change a row
+        for(int i=0;i<n;i++){
+            int res2 = question_11_helper(i,true,input,n,m);
+            max = Math.max(max,res2);
+        }
+        // try to change a column
+        for(int i=0;i<m;i++){
+            int res = question_11_helper(i,false,input,n,m);
+            max = Math.max(max,res);
+        }
+        return max;
+
+    }
+    public static int question_11_helper(int index,boolean flag,char[][] input,int n,int m){
+        if(flag==true){
+            for(int i=0;i<m;i++){
+                input[index][i]='#';
+            }
+        }
+        else{
+            for(int i=0;i<n;i++){
+                input[i][index] = '#';
+            }
+        }
+
+        ArrayList<ArrayList<Pair>> list = new ArrayList();
+
+        for(int i=0;i<=n+m;i++){
+            list.add(new ArrayList());
+        }
+        boolean[][] vis = new boolean[n][m];
+        int ind = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if( vis[i][j]==false &&  input[i][j]=='#'){
+                    question_11_bfs(i,j,input,n,m,list,ind,vis);
+                    ind++;
+                }
+            }
+        }
+        int max = 0;
+        for(int i=0;i<list.size();i++){
+            max = Math.max(max,list.get(i).size());
+        }
+        return max;
+    }
+    public static void question_11_bfs(int r,int c,char[][] input,int n,int m,ArrayList<ArrayList<Pair>> list,int index,boolean[][] vis){
+        int[] drow = {-1,0,1,0};
+        int[] dcol = {0,-1,0,1};
+        Queue<Pair> q1 = new LinkedList();
+        q1.add(new Pair(r,c));
+        vis[r][c]  = true;
+        while (!q1.isEmpty()){
+            Pair it = q1.peek();
+            int row = it.first;
+            int col = it.second;
+            q1.remove();
+            for(int i=0;i<4;i++){
+                int nrow = row+drow[i];
+                int ncol = col+dcol[i];
+                if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && vis[nrow][ncol]==false && input[nrow][ncol]=='#'){
+                    q1.add(new Pair(nrow,ncol));
+                    vis[nrow][ncol] = true;
+                    list.get(index).add(new Pair(nrow,ncol));
+                }
+            }
+        }
+    }
+//            #...#
+//            ....#
+//            #...#
+//            .....
+//            ...##
+
 
     static class Pair{
         int first;
