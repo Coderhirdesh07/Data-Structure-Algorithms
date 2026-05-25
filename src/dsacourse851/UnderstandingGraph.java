@@ -74,7 +74,7 @@ public class UnderstandingGraph {
         q1.add(node);
         boolean[] vis = new boolean[n];
         vis[node] = true;
-        int min = node;
+        int min = Integer.MAX_VALUE;
         while (!q1.isEmpty()){
             int edg = q1.peek();
             q1.remove();
@@ -86,7 +86,7 @@ public class UnderstandingGraph {
                 }
             }
         }
-        return (min==node)?-1:min;
+        return (min==Integer.MAX_VALUE)?-1:min;
     }
     // question media.net oa problem
     public static int question_8(int[][] matrix,int n,int m){
@@ -185,6 +185,30 @@ public class UnderstandingGraph {
     }
 
 
+    public static int question_10(int[][] f,int[][] g,int n1,int m1,int n2,int m2){
+        ArrayList<ArrayList<Integer>> list1 = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> list2 = new ArrayList<>();
+        for(int i=0;i<n1;i++){
+            list1.add(new ArrayList<>());
+        }
+        for(int i=0;i<n2;i++){
+            list2.add(new ArrayList<>());
+        }
+        for(int i=0;i<n1;i++){
+            int u = f[i][0];
+            int v = f[i][1];
+            list1.get(u).add(v);
+            list1.get(v).add(u);
+        }
+        ArrayList<Integer> component =
+
+        for(int i=0;i<n2;i++){
+            int u = g[i][0];
+            int v = g[i][1];
+            list2.get(u).add(v);
+            list2.get(v).add(u);
+        }
+    }
 
     static class Pair{
         int first;
