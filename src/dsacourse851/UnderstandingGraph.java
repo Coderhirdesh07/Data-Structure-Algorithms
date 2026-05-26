@@ -6,8 +6,9 @@ import java.util.*;
 public class UnderstandingGraph {
     public static void main(String[] args) {
         char[][] matrix = new char[6][6];
-//        Scanner sc = new Scanner(System.in);
-//        int ind =0;
+        int[][] mat = new int[5][4];
+        Scanner sc = new Scanner(System.in);
+        int ind =0;
 //        for(int i=0;i<6;i++){
 //            String input = sc.next();
 //            char[] ans = input.toCharArray();
@@ -16,13 +17,23 @@ public class UnderstandingGraph {
 //            }
 //            ind++;
 //        }
+        for(int i=0;i<5;i++){
+            for(int j=0;j<4;j++){
+                mat[i][j] =  sc.nextInt();
+            }
+        }
 //        int result = question_11(matrix,6,6);
         int[] a = {0,1,2,1,4,4};
         int[] b = {1,2,0,4,5,6};
-        System.out.println("Heelo world1");
-        int result = question_14(7,a,b,6);
-        System.out.println(result);
-        System.out.println("Hello world2");
+//        System.out.println("Heelo world1");
+//        int result = question_14(7,a,b,6);
+//        System.out.println(result);
+//        System.out.println("Hello world2");
+
+        int[] res = question_13(mat,5,4);
+        for(int it:res) {
+            System.out.print(it + " ");
+        }
 
     }
     public static void bfs(int start, ArrayList<ArrayList<Integer>> list,int n){
@@ -334,19 +345,87 @@ public class UnderstandingGraph {
 //            ...##
 
 
-//    public static int[] question_13(int[][] pref,int n,int m){
-//        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
-//        for(int i=0;i<n;i++){
-//            list.add(new ArrayList<>());
-//        }
-//        for(int i=0;i<n;i++){
-//            ArrayList<Integer> ans = topo_sort(pref[i],n,m);
-//            list.add(new ArrayList(ans));
-//        }
-//    }
-//    public static ArrayList<Integer> topo_sort(int[] arr,int n,int m){
-//
-//    }
+    // paypal oa problem topo sort
+    // TODO ONCE more as the understanding of problem was not up to the mark.
+    // took the hint understanding of problem was not correct brute force was not clear
+
+    // TODO THIS IS not working correctly it gives sorted order of songs
+    public static int[] question_13(int[][] pref,int n,int m){
+        int[][] freq = new int[m][m];
+        //  2 0 1
+        // 1 2 0
+        // 0 1 2
+
+       for(int x=0;x<n;x++){
+
+           for(int i=0;i<m;i++){
+               for(int j=i+1;j<m;j++){
+                   int xy = pref[x][i];
+                   int yx = pref[x][j];
+                   freq[xy][yx]++;
+               }
+           }
+       }
+
+
+     ArrayList<ArrayList<Integer>> adj  = new ArrayList<>();
+       for(int i=0;i<n;i++){
+           adj.add(new ArrayList());
+       }
+       for(int i=0;i<m;i++){
+           for(int j=0;j<m;j++){
+               if(freq[i][j]>freq[j][i]){
+                  if(freq[i][j]>=m/2){
+                      adj.get(i).add(j);
+                  }
+               }
+               else{
+                   if(freq[j][i]>=m/2){
+                       adj.get(j).add(i);
+                   }
+               }
+
+           }
+       }
+       int[] ans = toposort(adj,n,m);
+     return ans;
+    }
+    public static int[] toposort(ArrayList<ArrayList<Integer>> list ,int n , int m){
+        int[] indegree = new int[m];
+        for(int i=0;i<n;i++){
+            for(int it:list.get(i)){
+                indegree[it]++;
+            }
+        }
+        Queue<Integer> q1 = new LinkedList<>();
+        Stack<Integer> s1 = new Stack<>();
+        for(int i=0;i<m;i++){
+            if(indegree[i]==0){
+                q1.add(i);
+                s1.add(i);
+            }
+        }
+        while(!q1.isEmpty()){
+            int node = q1.peek();
+            q1.remove();
+            for(int it:list.get(node)){
+                indegree[it]--;
+                if(indegree[it]==0){
+                    q1.add(it);
+                    s1.push(it);
+                }
+            }
+        }
+        int[] ans = new int[m];
+        int ind = m-1;
+        while(!s1.isEmpty()){
+            ans[ind--]  = s1.peek();
+            s1.pop();
+        }
+        return ans;
+
+    }
+
 
     public static int question_14(int n ,int[] a,int[] b,int m){
         ArrayList<ArrayList<Integer>> list = new ArrayList<>();
@@ -360,7 +439,7 @@ public class UnderstandingGraph {
             list.get(v).add(u);
         }
 
-        Queue<Pair> q1 = new LinkedList();
+        PriorityQueue<Pair> q1 = new PriorityQueue<>((Pair x,Pair y)-> x.second - y.second);
         int[] vertices = new int[n];
         Arrays.fill(vertices,0);
 
@@ -384,13 +463,28 @@ public class UnderstandingGraph {
                 vertices[adj]--;
                 if(vertices[adj]<=1){
                     q1.add(new Pair(adj,ti+1));
+                }
+                else{
                     time = ti+1;
+                    break;
                 }
             }
         }
       return time;
-
     }
+
+    // google question based on dag
+//    public int question_15(int[][] matrix,int n,int m,int[] power){
+//        ArrayList<ArrayList<Pair>> list = new ArrayList<>();
+//        for(int i=0;i<n;i++){
+//            int  u = matrix[i][0];
+//            int v = matrix[i][1];
+//            int wt = matrix[i][2];
+//            list.get(u).add(new Pair(v,wt));
+//        }
+//        int[] distance = new int[n];
+//
+//    }
 
 
     static class Pair{
