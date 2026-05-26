@@ -6,18 +6,23 @@ import java.util.*;
 public class UnderstandingGraph {
     public static void main(String[] args) {
         char[][] matrix = new char[6][6];
-        Scanner sc = new Scanner(System.in);
-        int ind =0;
-        for(int i=0;i<6;i++){
-            String input = sc.next();
-            char[] ans = input.toCharArray();
-            for(int j=0;j<ans.length;j++){
-                matrix[ind][j] = ans[j];
-            }
-            ind++;
-        }
-        int result = question_11(matrix,6,6);
+//        Scanner sc = new Scanner(System.in);
+//        int ind =0;
+//        for(int i=0;i<6;i++){
+//            String input = sc.next();
+//            char[] ans = input.toCharArray();
+//            for(int j=0;j<ans.length;j++){
+//                matrix[ind][j] = ans[j];
+//            }
+//            ind++;
+//        }
+//        int result = question_11(matrix,6,6);
+        int[] a = {0,1,2,1,4,4};
+        int[] b = {1,2,0,4,5,6};
+        System.out.println("Heelo world1");
+        int result = question_14(7,a,b,6);
         System.out.println(result);
+        System.out.println("Hello world2");
 
     }
     public static void bfs(int start, ArrayList<ArrayList<Integer>> list,int n){
@@ -327,6 +332,65 @@ public class UnderstandingGraph {
 //            #...#
 //            .....
 //            ...##
+
+
+//    public static int[] question_13(int[][] pref,int n,int m){
+//        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+//        for(int i=0;i<n;i++){
+//            list.add(new ArrayList<>());
+//        }
+//        for(int i=0;i<n;i++){
+//            ArrayList<Integer> ans = topo_sort(pref[i],n,m);
+//            list.add(new ArrayList(ans));
+//        }
+//    }
+//    public static ArrayList<Integer> topo_sort(int[] arr,int n,int m){
+//
+//    }
+
+    public static int question_14(int n ,int[] a,int[] b,int m){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            list.add(new ArrayList<>());
+        }
+        for(int i=0;i<m;i++){
+            int u = a[i];
+            int v = b[i];
+            list.get(u).add(v);
+            list.get(v).add(u);
+        }
+
+        Queue<Pair> q1 = new LinkedList();
+        int[] vertices = new int[n];
+        Arrays.fill(vertices,0);
+
+        for(int i=0;i<n;i++){
+            int length = list.get(i).size();
+            vertices[i]+=length;
+        }
+        for(int i=0;i<n;i++){
+            if(vertices[i]<=1){
+                q1.add(new Pair(i,0));
+            }
+        }
+        // {0,3} , {1,5} , {1,6}
+        int time = 0;
+        while(!q1.isEmpty()){
+            Pair it = q1.peek();
+            int node = it.first;
+            int ti = it.second;
+            q1.remove();
+            for(int adj:list.get(node)){
+                vertices[adj]--;
+                if(vertices[adj]<=1){
+                    q1.add(new Pair(adj,ti+1));
+                    time = ti+1;
+                }
+            }
+        }
+      return time;
+
+    }
 
 
     static class Pair{
