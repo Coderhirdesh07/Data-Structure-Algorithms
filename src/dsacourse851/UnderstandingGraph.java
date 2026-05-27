@@ -7,33 +7,33 @@ public class UnderstandingGraph {
     public static void main(String[] args) {
         char[][] matrix = new char[6][6];
         int[][] mat = new int[5][4];
-        Scanner sc = new Scanner(System.in);
-        int ind =0;
-//        for(int i=0;i<6;i++){
-//            String input = sc.next();
-//            char[] ans = input.toCharArray();
-//            for(int j=0;j<ans.length;j++){
-//                matrix[ind][j] = ans[j];
+//        Scanner sc = new Scanner(System.in);
+//        int ind =0;
+////        for(int i=0;i<6;i++){
+////            String input = sc.next();
+////            char[] ans = input.toCharArray();
+////            for(int j=0;j<ans.length;j++){
+////                matrix[ind][j] = ans[j];
+////            }
+////            ind++;
+////        }
+//        for(int i=0;i<5;i++){
+//            for(int j=0;j<4;j++){
+//                mat[i][j] =  sc.nextInt();
 //            }
-//            ind++;
 //        }
-        for(int i=0;i<5;i++){
-            for(int j=0;j<4;j++){
-                mat[i][j] =  sc.nextInt();
-            }
-        }
 //        int result = question_11(matrix,6,6);
-        int[] a = {0,1,2,1,4,4};
-        int[] b = {1,2,0,4,5,6};
+        int[] a = {0,1,2,4,5};
+        int[] b = {1,2,3,5,6};
 //        System.out.println("Heelo world1");
-//        int result = question_14(7,a,b,6);
-//        System.out.println(result);
+          int result = question_14(7,a,b,a.length);
+          System.out.println(result);
 //        System.out.println("Hello world2");
 
-        int[] res = question_13(mat,5,4);
-        for(int it:res) {
-            System.out.print(it + " ");
-        }
+//        int[] res = question_13(mat,5,4);
+//        for(int it:res) {
+//            System.out.print(it + " ");
+//        }
 
     }
     public static void bfs(int start, ArrayList<ArrayList<Integer>> list,int n){
@@ -439,17 +439,19 @@ public class UnderstandingGraph {
             list.get(v).add(u);
         }
 
-        PriorityQueue<Pair> q1 = new PriorityQueue<>((Pair x,Pair y)-> x.second - y.second);
+        Queue<Pair> q1 = new LinkedList<>();
         int[] vertices = new int[n];
         Arrays.fill(vertices,0);
 
         for(int i=0;i<n;i++){
             int length = list.get(i).size();
-            vertices[i]+=length;
+            vertices[i]=length;
         }
+
         for(int i=0;i<n;i++){
             if(vertices[i]<=1){
                 q1.add(new Pair(i,0));
+
             }
         }
         // {0,3} , {1,5} , {1,6}
@@ -459,18 +461,19 @@ public class UnderstandingGraph {
             int node = it.first;
             int ti = it.second;
             q1.remove();
+
             for(int adj:list.get(node)){
                 vertices[adj]--;
-                if(vertices[adj]<=1){
+                if(vertices[adj]==0 || vertices[adj]==1 ){
                     q1.add(new Pair(adj,ti+1));
                 }
                 else{
-                    time = ti+1;
+                    time = ti;
                     break;
                 }
             }
         }
-      return time;
+        return time;
     }
 
     // google question based on dag
