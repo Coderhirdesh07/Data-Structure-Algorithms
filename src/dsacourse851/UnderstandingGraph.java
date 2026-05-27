@@ -23,11 +23,12 @@ public class UnderstandingGraph {
 //            }
 //        }
 //        int result = question_11(matrix,6,6);
-        int[] a = {0,1,2,4,5};
-        int[] b = {1,2,3,5,6};
+        int[] a = {1,2,4,6,7};
+        int[] b = {2,3,5,7,8};
+        int[] malware = {0,0,1,0,1,0,0,0,0};
 //        System.out.println("Heelo world1");
-          int result = question_14(7,a,b,a.length);
-          System.out.println(result);
+          int result = question_17(9,a.length,a,b,malware);
+          System.out.println(result+1);
 //        System.out.println("Hello world2");
 
 //        int[] res = question_13(mat,5,4);
@@ -488,6 +489,68 @@ public class UnderstandingGraph {
 //        int[] distance = new int[n];
 //
 //    }
+
+    public static int question_17(int n,int m,int[] g_from,int[] g_to,int[] malware){
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            adj.add(new ArrayList());
+        }
+        for(int i=0;i<m;i++){
+            int u = g_from[i];
+            int v = g_to[i];
+            adj.get(u).add(v);
+            adj.get(v).add(u);
+        }
+        int max = -1;
+        int ans = n;
+        ArrayList<ArrayList<Integer>> component = bfs_17(adj,n);
+        for(int i=0;i<malware.length;i++){
+            if(malware[i]==1){
+                int res = component.get(i).size();
+                if(res>max){
+                    max = res;
+                    ans = i;
+                }
+            }
+        }
+
+        return ans;
+
+    }
+
+    public static ArrayList<ArrayList<Integer>> bfs_17(ArrayList<ArrayList<Integer>> list,int n){
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            adj.add(new ArrayList<>());
+        }
+        boolean[] vis = new boolean[n];
+        int ind = 0;
+        for(int i=0;i<n;i++){
+            if(vis[i]==false){
+                bfs_17_helper(i,list,n,vis);
+                list.get(ind).add(i);
+                ind++;
+            }
+            else{
+                adj.get(ind).add(i);
+            }
+        }
+
+        return adj;
+    }
+    public static void bfs_17_helper(int node,ArrayList<ArrayList<Integer>> list,int n,boolean[] vis){
+        vis[node] = true;
+        Queue<Integer> q1 = new LinkedList<>();
+        while(!q1.isEmpty()){
+            int edg = q1.peek();
+            q1.remove();
+            for(int it:list.get(edg)){
+                if(vis[it]==false){
+                    q1.add(it);
+                }
+            }
+        }
+    }
 
 
     static class Pair{
