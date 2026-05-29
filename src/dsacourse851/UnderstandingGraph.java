@@ -553,12 +553,79 @@ public class UnderstandingGraph {
     }
 
 
+    // microsoft interview problem on multi-source graph
+    public static int question_19(int[][] matrix,int n,int m){
+        int[] drow = {-1,0,1,0};
+        int[] dcol = {0,-1,0,1};
+        int[][] ans = new int[n][m];
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(matrix[i][j]==2){
+                    question_19_bfs(i,j,matrix,ans,n,m);
+                }
+            }
+        }
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]==2){
+                    min = Math.min(min,ans[i][j]);
+                }
+            }
+        }
+        return min;
+
+    }
+    public static void question_19_bfs(int r,int c,int[][] matrix,int[][] ans,int n,int m){
+        PriorityQueue<Triplet> q1 = new PriorityQueue<>((Triplet x,Triplet y)-> x.third-y.third);
+        q1.add(new Triplet(r,c,0));
+        boolean[][] vis = new boolean[n][m];
+        vis[r][c] = true;
+        int[] drow = {-1,0,1,0};
+        int[] dcol = {0,-1,0,1};
+
+        while(!q1.isEmpty()){
+            Triplet triplet = q1.peek();
+            q1.remove();
+            int row = triplet.first;
+            int col = triplet.second;
+            int dis = triplet.third;
+
+            if(matrix[row][col]==3){
+                ans[row][col] = dis;
+                break;
+            }
+            for(int i=0;i<4;i++){
+                int nrow = row + drow[i];
+                int ncol = col + dcol[i];
+                if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && matrix[nrow][ncol]!=3 && vis[nrow][ncol]==false){
+                    q1.add(new Triplet(nrow,ncol,dis+1));
+                    vis[nrow][ncol] = true;
+                }
+            }
+        }
+
+
+    }
+
+
     static class Pair{
         int first;
         int second;
         Pair(int first,int second){
             this.first = first;
             this.second = second;
+        }
+    }
+    static class Triplet{
+        int first;
+        int second;
+        int third;
+        Triplet(int first,int second,int third){
+            this.first=first;
+            this.second=second;
+            this.third=third;
         }
     }
 //           1 3 -1 5
