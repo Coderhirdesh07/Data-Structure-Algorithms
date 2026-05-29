@@ -644,6 +644,44 @@ public class UnderstandingGraph {
         return -1;
     }
 
+    // google  intern interview problem
+    public static int question_22(ArrayList<ArrayList<Integer>> adj,int k,int infectedNode,int n,int sr,int sc){
+      Queue<Integer> q1 = new LinkedList();
+      int[] infected = new int[n];
+      Arrays.fill(infected,0);
+      infected[infectedNode] = 1;
+      q1.add(infectedNode);
+      int ind = 1;
+      while(!q1.isEmpty()){
+          int node = q1.peek();
+          q1.remove();
+          if(ind>k) break;
+          ind++;
+          for(int it:adj.get(node)){
+              if(infected[it]!=1) {
+                  infected[it] = 1;
+                  q1.add(it);
+              }
+          }
+      }
+      int[] distance = new int[n];
+      Arrays.fill(distance,Integer.MAX_VALUE);
+      q1.add(sr);
+      distance[sr] = 0;
+      while(!q1.isEmpty()){
+          int node = q1.peek();
+          q1.remove();
+          for(int it:adj.get(node)){
+              if(distance[node]+1<distance[it] && infected[it]==0){
+                  distance[it] = distance[node]+1;
+                  q1.add(it);
+              }
+          }
+      }
+      return distance[sc];
+
+    }
+
 
     static class Pair{
         int first;
