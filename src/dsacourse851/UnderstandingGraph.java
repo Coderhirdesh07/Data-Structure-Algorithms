@@ -605,8 +605,43 @@ public class UnderstandingGraph {
                 }
             }
         }
+    }
+    // 1 is for blue and 0 is for red
+    public static int question_21(ArrayList<ArrayList<Integer>> adj ,int[] colors,int sr,int sc,int n,int m){
 
+        PriorityQueue<Triplet> q1  = new PriorityQueue<>((Triplet x,Triplet y) -> x.third-y.third);
+        int[] distance = new int[n];
+        Arrays.fill(distance,Integer.MAX_VALUE);
+        if(colors[sr]==1) {
+            q1.add(new Triplet(sr,0, 1));
+        }
+        else q1.add(new Triplet(sr,0,0));
+         distance[sr] = 0;
+        while (!q1.isEmpty()){
+            Triplet triplet = q1.peek();
+            q1.remove();
+            int node = triplet.first;
+            int dist = triplet.second;
+            int blueNodes = triplet.third;
+            if(node==sc){
+                if(colors[sc]==1) return blueNodes+1;
+                else return blueNodes;
+            }
+            for(int it:adj.get(node)){
+                if(dist + 1 < distance[it]){
+                    if(colors[it]==1) {
+                        q1.add(new Triplet(it, dist+1,blueNodes+1));
+                        distance[it] = dist+1;
 
+                    }
+                    else {
+                        q1.add(new Triplet(it, dist+1, blueNodes));
+                        distance[it]=dist+1;
+                    }
+                }
+            }
+        }
+        return -1;
     }
 
 
@@ -628,6 +663,7 @@ public class UnderstandingGraph {
             this.third=third;
         }
     }
+
 //           1 3 -1 5
 //          -1 -1 -1 -1
 //           2 6 -1 10
