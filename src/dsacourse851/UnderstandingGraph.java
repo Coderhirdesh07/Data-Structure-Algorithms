@@ -682,6 +682,59 @@ public class UnderstandingGraph {
 
     }
 
+    // 0 for not infected and 1 is for infected
+    public static int question_22_followup(ArrayList<ArrayList<Integer>> list,int[] infected ,int n,int sr,int sc){
+        if(infected[sr] == 0 || infected[sc]==0) return -1;
+        Queue<Integer> q1  = new LinkedList<>();
+        int[] distance = new int[n];
+        Arrays.fill(distance,0);
+
+        boolean[] vis = new boolean[n];
+        vis[sr]  = true;
+        q1.add(sr);
+
+
+        while (!q1.isEmpty()){
+            int node = q1.peek();
+            q1.remove();
+                for(int it:list.get(node)){
+                    if(distance[node]+1<distance[it] && infected[it]==0 ){
+                        q1.add(it);
+                        distance[it] = distance[node]+1;
+                        vis[it] = true;
+                    }
+                }
+            }
+
+        return distance[sc]==0?-1:distance[sc];
+    }
+
+//    public static int question_25_codechef(int[][] arr,int n){
+//     int[] drow = {-1,0,1,0};
+//     int[] dcol = {0,1,0,1};
+//
+//
+//
+//    }
+
+//    public static int question_24(ArrayList<ArrayList<Integer>> list ,int n,int[] active){
+//
+//        boolean[] isactive = new boolean[n];
+//        Queue<Pair> q1  = new LinkedList<>();
+//        boolean[] vis  = new boolean[n];
+//        q1.add(new Pair(1,active[1]));
+//        vis[1] = true;
+//        while(!q1.isEmpty()){
+//            Pair it  = q1.peek();
+//            q1.remove();
+//            int node = it.first;
+//            int day = it.second;
+//            for(int adj:list.get(node)){
+//                if()
+//            }
+//
+//        }
+//    }
 
     static class Pair{
         int first;
