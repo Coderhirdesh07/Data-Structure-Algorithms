@@ -735,6 +735,66 @@ public class UnderstandingGraph {
 //
 //        }
 //    }
+    // Question tower research problem
+    // TODO was not able to get the hint with graph how to visualise it with graph and use lcm
+    public static int question_24(int n,int[] pattern){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            list.add(new ArrayList<>());
+        }
+
+        for(int i=0;i<n;i++){
+
+            list.get(i+1).add(pattern[i]);
+        }
+
+        ArrayList<ArrayList<Integer>> component  = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            component.add(new ArrayList<>());
+        }
+        boolean[] vis = new boolean[n];
+        int index = 1;
+        for(int i=1;i<=n;i++){
+            if(vis[i]==false){
+                question_24_bfs(i,component,list,vis,index);
+                index++;
+            }
+        }
+        int ans = 0;
+        for(int i=1;i<n;i++){
+            int size1 = component.get(i).size();
+            int size2 = component.get(i).size();
+             ans = lcm(size1,size2);
+        }
+        return ans;
+
+    }
+    public static int lcm(int x,int y){
+        return x*y/gcd(x,y);
+    }
+    public static int gcd(int x,int y){
+        if(y==0) return x;
+        return gcd(y,x%y);
+    }
+    public static void question_24_bfs(int node,ArrayList<ArrayList<Integer>> component,ArrayList<ArrayList<Integer>> adj,boolean[] vis,int index){
+        Queue<Integer> q1 = new LinkedList();
+
+        q1.add(node);
+        component.get(index).add(node);
+        vis[node]=true;
+
+        while(!q1.isEmpty()){
+            int item = q1.peek();
+            q1.remove();
+            for(int it:adj.get(item)){
+                if(vis[it]==false){
+                    component.get(index).add(it);
+                    q1.add(it);
+                }
+            }
+        }
+    }
+
 
     static class Pair{
         int first;
