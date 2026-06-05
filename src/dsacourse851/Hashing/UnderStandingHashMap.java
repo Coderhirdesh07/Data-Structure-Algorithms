@@ -1032,6 +1032,46 @@ public class UnderStandingHashMap {
         return sum;
     }
 
+    // amazon interview problem
+    public static int amazon_interview_question(int[] arr,int n,int k){
+        int[] prefix = new int[n];
+        prefix[0] = arr[0];
+        for(int i=1;i<n;i++){
+            prefix[i] = prefix[i-1] + arr[i];
+        }
+        HashMap<Integer,Integer> m1  = new HashMap<>();
+
+        int max = 0;
+        for(int i=0;i<n;i++){
+            int option1 = arr[i] + k;
+            int option2 = Math.abs(arr[i]-k);
+            if(m1.containsKey(option1) || m1.containsKey(option2)) {
+                if (m1.containsKey(option1)) {
+                    int ind = m1.get(option1);
+                    int sum = prefix[i];
+                    if (ind != 0) sum = prefix[i] - prefix[ind - 1];
+
+                    max = Math.max(sum, max);
+                }
+                if (m1.containsKey(option2)) {
+                    int ind = m1.get(option2);
+                    int sum = prefix[i];
+                    if (ind != 0) sum = prefix[i] - prefix[ind - 1];
+                    max = Math.max(max, sum);
+                }
+            }
+            else{
+                if(m1.containsKey(arr[i])){
+                    m1.put(arr[i],Math.min(i,m1.get(arr[i])));
+                }
+                else m1.put(arr[i],i);
+            }
+
+        }
+        return max;
+    }
+
+
     // question - 48
 //   public static int question_google_swe_oa(int[] arr,int n,int k){
 //

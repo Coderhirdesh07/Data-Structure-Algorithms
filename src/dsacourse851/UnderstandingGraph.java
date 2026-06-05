@@ -794,8 +794,6 @@ public class UnderstandingGraph {
             }
         }
     }
-
-
     static class Pair{
         int first;
         int second;
