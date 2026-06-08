@@ -794,6 +794,40 @@ public class UnderstandingGraph {
             }
         }
     }
+
+
+    public static int question_27(int n){
+
+        boolean[] primeArray = isPrime(n);
+        for(int i=n-1;i>=0;i--){
+            if(primeArray[i]==true){
+                int total = i*(n-1);
+                if((total&1)==0) return i;
+                else {
+                    return ((n-1)*i+2)/2;
+                }
+            }
+        }
+        return -1;
+
+
+    }
+    public static boolean[] isPrime(int n){
+        boolean[] prime = new boolean[n+1];
+
+        for(int i=2;i<=n;i++) {
+            int val = i;
+            boolean flag = false;
+            for (int j= 2; j*j < n; j++) {
+                if(val%j==0){
+                    flag = true;
+                    break;
+                }
+            }
+             prime[val] = flag;
+        }
+        return prime;
+    }
     static class Pair{
         int first;
         int second;
