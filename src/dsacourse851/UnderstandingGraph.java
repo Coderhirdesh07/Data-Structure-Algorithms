@@ -828,6 +828,61 @@ public class UnderstandingGraph {
         }
         return prime;
     }
+
+    // question was given nodes with value 0 and 1 find shortest path from node 1 to node n you can travel only nodes with value 1
+    public static int question_28(ArrayList<ArrayList<Integer>> list,int n,int m,int[] value){
+        int[] distance = new int[n+1];
+        if(value[1]==0) return -1;
+
+        question_28_bfs(1,list,distance,value);
+
+
+        if(distance[n] == Integer.MAX_VALUE){
+            return -1;
+        }
+        return distance[n];
+    }
+    public static void question_28_bfs(int node,ArrayList<ArrayList<Integer>> list,int[] distance,int[] value){
+        Queue<Pair> q1 = new LinkedList<>();
+        q1.add(new Pair(node,0));
+
+        while(!q1.isEmpty()){
+            Pair pair = q1.peek();
+            q1.remove();
+            int edg = pair.first;
+            int dis = pair.second;
+            for(int it:list.get(edg)){
+                if(value[it]==1 && 1 + dis<distance[it]  ){
+                    distance[it] = dis+1;
+                    q1.add(new Pair(it,dis+1));
+                }
+            }
+        }
+    }
+
+    public static int question_28_followUp(ArrayList<ArrayList<Integer>> list,int n,int m ,int[] value,int infected,int k){
+            Queue<Pair> q1 = new LinkedList<>();
+
+            boolean[] vis = new boolean[n+1];
+            q1.add(new Pair(infected,0));
+            vis[infected] = true;
+            while(!q1.isEmpty()){
+                Pair pair = q1.peek();
+                q1.remove();
+                int node = pair.first;
+                int dis = pair.second;
+                for(int it:list.get(node)){
+                    if(vis[it]==false && 1+dis<=k){
+                        value[it] = 0;
+                        vis[it] = true;
+                    }
+                }
+            }
+
+            int distance = question_28(list,n,m,value);
+            return distance;
+    }
+
     static class Pair{
         int first;
         int second;
