@@ -883,6 +883,18 @@ public class UnderstandingGraph {
             return distance;
     }
 
+    // problem multisource bfs
+    public static int question_28_followUp_2(ArrayList<ArrayList<Integer>> list,int n,int m,int[] value,int[] infected,int k){
+        int length = infected.length;
+        for(int i=0;i<n;i++){
+            list.get(0).add(infected[i]);
+        }
+
+        int ans  =  question_28_followUp(list,n,m,value,0,k+1);
+
+        return ans;
+    }
+
     static class Pair{
         int first;
         int second;
