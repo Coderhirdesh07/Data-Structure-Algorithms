@@ -668,6 +668,26 @@ public class OADP {
         return dp[n-1][k];
     }
 
+    public static int question_uber_oa(int[] arr,int n,int x,int y,int z){
+        int[][][][] dp = new int[n][x][y][z];
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<=x;j++){
+                for(int k=0;k<=y;k++){
+                    for(int l=0;l<=z;l++){
+                     if(i>=1) dp[i][j][k][l] = Math.max(dp[i-1][j][k][l],arr[i]+dp[i][j-1][k][l]);
+                     if(i>=2) dp[i][j][k][l] = Math.max(dp[i-1][j][k][l],Math.max(arr[i]+dp[i][j-1][k][l],arr[i]+arr[i-1]+dp[i][j][k-1][l]));
+                     if(i>=3) dp[i][j][k][l] = Math.max(dp[i-1][j][k][l],
+                                                        Math.max(arr[i] + dp[i][j-1][k][l],
+                                                        Math.max(arr[i-1]+arr[i]+dp[i-2][j][k-1][l],
+                                                                arr[i]+arr[i-1]+arr[i-2]+dp[i-3][j][k][l-1])));
+                    }
+                }
+            }
+        }
+        return dp[n-1][x][y][z];
+    }
+
 
     static class Triplet{
         int r;
