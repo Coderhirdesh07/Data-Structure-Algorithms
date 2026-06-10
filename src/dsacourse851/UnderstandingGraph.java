@@ -895,6 +895,43 @@ public class UnderstandingGraph {
         return ans;
     }
 
+    public static int question_33(ArrayList<ArrayList<Pair>> list,int n,int a,int b,int c){
+        int[] distance_a = question_33_helper(a,list,n);
+        int[] distance_b = question_33_helper(b,list,n);
+        int[] distance_c = question_33_helper(c,list,n);
+
+        int min = Integer.MAX_VALUE;
+        for(int i=1;i<=n;i++){
+            int sum = distance_a[i] + distance_b[i] + distance_c[i];
+            min = Math.min(min,sum);
+        }
+
+        return min;
+
+    }
+    public static int[] question_33_helper(int node,ArrayList<ArrayList<Pair>> list,int n){
+        int[] distance = new int[n];
+        Arrays.fill(distance,Integer.MAX_VALUE);
+        PriorityQueue<Pair> q1 = new PriorityQueue<>((Pair x,Pair y)-> Integer.compare(y.second,x.second));
+        q1.add(new Pair(node,0));
+
+        while(!q1.isEmpty()){
+            Pair it  = q1.peek();
+            q1.remove();
+            int adjNode = it.first;
+            int wt = it.second;
+            for(Pair pair : list.get(adjNode)){
+                int edg = pair.first;
+                int dis  = pair.second;
+                if(distance[adjNode]+dis<=distance[edg]){
+                    q1.add(new Pair(edg,dis+distance[adjNode]));
+                    distance[edg] = dis + distance[adjNode];
+                }
+            }
+        }
+        return distance;
+    }
+
     static class Pair{
         int first;
         int second;
