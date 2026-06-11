@@ -3,6 +3,7 @@ package dsacourse851;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Stack;
 
 public class UnderstandingTrees {
     public static void main(String[] args) {
@@ -75,5 +76,43 @@ public class UnderstandingTrees {
        }
         return count;
 
+   }
+
+
+   public static int question_7(ArrayList<ArrayList<Integer>> list,int n,boolean[] infected,int m){
+        int count = 0;
+
+        Stack<Pair> s1 = new Stack<>();
+        boolean[] vis = new boolean[n];
+
+        if(infected[1]==true) s1.push(new Pair(1,1));
+        else s1.push(new Pair(1,0));
+        vis[1] = true;
+
+        while(!s1.isEmpty()){
+            Pair pair = s1.peek();
+            s1.pop();
+            int node = pair.first;
+            int infected_count = pair.second;
+            if(list.get(node).size()==0 && infected_count<=m) count++;
+            for(int it:list.get(node)){
+                if(vis[it]==false){
+                    if(infected[it]==false){
+                        s1.push(new Pair(it,infected_count));
+                    }
+                    else s1.push(new Pair(it,infected_count++));
+                }
+            }
+        }
+        return count;
+   }
+
+  static class Pair{
+        int first;
+        int second;
+        Pair(int first,int second){
+            this.first = first;
+            this.second = second;
+        }
    }
 }
