@@ -10,6 +10,7 @@ public class YoutubeProblems {
         System.out.println(n);
     }
     // Google question on trees and dp
+    // TODO this problem has to be done once again.
     public static int question_1(ArrayList<ArrayList<Integer>> list,int n,int[] values){
         boolean[] vis = new boolean[n];
         int[] dp = new int[n];
@@ -32,4 +33,10 @@ public class YoutubeProblems {
             dp[node]+=dp[it];
         }
     }
+
+    // Zomato tree problem
+
+//    public static int question_2(){
+//
+//    }
 }

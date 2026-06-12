@@ -107,6 +107,39 @@ public class UnderstandingTrees {
         return count;
    }
 
+   // TODO need to do this question once again
+   public static int question_11(int[][] edges,int n,int[] passengers){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            list.add(new ArrayList<>());
+        }
+
+        for(int i=0;i<n;i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            list.get(u).add(v);
+            list.get(v).add(u);
+        }
+        boolean[] vis = new boolean[n];
+        int[] result = new int[n];
+        dfs(1,list,n,vis,passengers,result);
+
+        return result[1];
+   }
+   public static void dfs(int node,ArrayList<ArrayList<Integer>> list,int n,boolean[] vis,int[] passengers,int[] result){
+        vis[node] = true;
+        for(int it:list.get(node)){
+            if(vis[it]==false){
+                dfs(it,list,n,vis,passengers,result);
+            }
+        }
+        result[node] = (passengers[node]==1)?1:0;
+        for(int it:list.get(node)){
+            result[node]+=result[it];
+        }
+
+   }
+
   static class Pair{
         int first;
         int second;
