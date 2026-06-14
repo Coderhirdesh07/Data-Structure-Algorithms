@@ -137,7 +137,141 @@ public class UnderstandingTrees {
         for(int it:list.get(node)){
             result[node]+=result[it];
         }
+   }
+   // Codeforces problem
+   public static int question_7(int[][] matrix,int n,int[] danger){
+     ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+     for(int i=0;i<n;i++){
+         list.add(new ArrayList());
+     }
+     for(int i=0;i<n;i++){
+        int u = matrix[i][0];
+        int v  = matrix[i][1];
+        list.get(u).add(v);
+        list.get(v).add(u);
+     }
+     int[] result = new int[n];
+     boolean[] vis = new boolean[n];
+     boolean flag = true;
+     question_7_dfs(1,list,danger,result,vis,flag);
 
+     return result[1];
+
+   }
+   public static void question_7_dfs(int node,ArrayList<ArrayList<Integer>> list,int[] danger,int[] result,boolean[] vis,boolean flag){
+        vis[node] = true;
+        for(int it:list.get(node)){
+            if(!vis[it]){
+                question_7_dfs(it,list,danger,result,vis,!flag);
+            }
+        }
+        result[node] = danger[node];
+        for(int it:list.get(node)){
+            if(flag==false){
+                result[it]-=danger[it];
+            }
+            else result[it]+=danger[it];
+        }
+   }
+
+
+   // swiggy oa problem
+   public static int question_8(int n,int[] towns,int[][] roads){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            list.add(new ArrayList<>());
+        }
+        for(int i=0;i<n;i++){
+            int u = roads[i][0];
+            int v = roads[i][1];
+            list.get(u).add(v);
+            list.get(v).add(u);
+        }
+        int[] parent = new int[n+1];
+        int[] sum = new int[n+1];
+        boolean[] vis = new boolean[n+1];
+        question_8_dfs(1,list,sum,towns,vis,parent);
+
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<n;i++){
+            int u = roads[i][0];
+            int v = roads[i][1];
+            int value1 = sum[1] - sum[u-1];
+            int value2 = sum[v-1];
+            int diff = Math.abs(value1-value2);
+            min = Math.min(min,diff);
+        }
+        return min;
+
+   }
+   public static void question_8_dfs(int node,ArrayList<ArrayList<Integer>> list,int[] sum,int[] towns,boolean[] vis,int[] parent){
+        vis[node] = true;
+
+        for(int it:list.get(node)){
+            if(vis[it]==false){
+                parent[it] = node;
+                question_8_dfs(it,list,sum,towns,vis,parent);
+            }
+        }
+        int total = 0;
+
+        for(int child:list.get(node)){
+            if(parent[node]!=child){
+                total+=towns[child-1];
+            }
+        }
+
+        sum[node] = total + towns[node-1];
+   }
+   // rubrik oa problem
+   public static int question_12(int n,int m,int k,int[] values,int[] parent){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        for(int i=0;i<=n;i++){
+            list.add(new ArrayList<>());
+        }
+        // 1 2 3 4 5
+       // -1 1 1 2 3
+        for(int i=1;i<n;i++){
+            int u = parent[i];
+            int v = i+1;
+            list.get(u).add(v);
+            list.get(v).add(u);
+        }
+        boolean[] vis = new boolean[n+1];
+        int[] sum = new int[n+1];
+        question_12_dfs(1,values,list,parent,vis,sum);
+
+        int count = 0;
+
+        // 1->2
+       // 2 -> 1 ,4
+       // TODO this part needs to be done again
+        for(int i=1;i<=n;i++){
+            for(int child:list.get(i)){
+                if(parent[i]!=child){
+                    if(sum[i]>k) count++;
+                }
+            }
+        }
+
+
+        return count>m?-1:count;
+
+   }
+   public static void question_12_dfs(int node,int[] values,ArrayList<ArrayList<Integer>> list,int[] parent,boolean[] vis,int[] sum){
+        vis[node] = true;
+        for(int it:list.get(node)){
+            if(vis[it]==false){
+                question_12_dfs(it,values,list,parent,vis,sum);
+            }
+        }
+        int total = 0;
+        for(int child:list.get(node)){
+            if(parent[node]!=child){
+                total+=values[child];
+            }
+        }
+        sum[node] = total + values[node];
    }
 
   static class Pair{
