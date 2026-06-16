@@ -40,7 +40,7 @@ public class YoutubeProblems {
 //    }
 
     // Tower Research problem on graph
-    // TODO have not done of for component related test cases.
+    // TODO have not done  for component related test cases.
     public static int question_3(int[][] grid,int n,int m,int[] arr){
 
         if(n==1) return arr.length;

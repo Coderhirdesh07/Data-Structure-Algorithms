@@ -1,12 +1,25 @@
 package dsacourse851;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class UnderstandingTrees {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int m = sc.nextInt();
+        int n = sc.nextInt();
+        int[][] edges = new int[m][2];
+        for(int i=0;i<m;i++){
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            edges[i][0] = u;
+            edges[i][1] = v;
+        }
+        int[] passengers = new int[n];
+        for(int i=0;i<n;i++){
+            passengers[i]  = sc.nextInt();
+        }
+        int ans = question_11(edges,n,passengers);
+        System.out.println(ans);
 
     }
     public static int question_5(ArrayList<ArrayList<Integer>> list ,int[] values,int[] parent,int n,int m){
@@ -107,37 +120,8 @@ public class UnderstandingTrees {
         return count;
    }
 
-   // TODO need to do this question once again
-   public static int question_11(int[][] edges,int n,int[] passengers){
-        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
-        for(int i=0;i<=n;i++){
-            list.add(new ArrayList<>());
-        }
 
-        for(int i=0;i<n;i++){
-            int u = edges[i][0];
-            int v = edges[i][1];
-            list.get(u).add(v);
-            list.get(v).add(u);
-        }
-        boolean[] vis = new boolean[n];
-        int[] result = new int[n];
-        dfs(1,list,n,vis,passengers,result);
 
-        return result[1];
-   }
-   public static void dfs(int node,ArrayList<ArrayList<Integer>> list,int n,boolean[] vis,int[] passengers,int[] result){
-        vis[node] = true;
-        for(int it:list.get(node)){
-            if(vis[it]==false){
-                dfs(it,list,n,vis,passengers,result);
-            }
-        }
-        result[node] = (passengers[node]==1)?1:0;
-        for(int it:list.get(node)){
-            result[node]+=result[it];
-        }
-   }
    // Codeforces problem
    public static int question_7(int[][] matrix,int n,int[] danger){
      ArrayList<ArrayList<Integer>> list = new ArrayList<>();
@@ -223,7 +207,89 @@ public class UnderstandingTrees {
 
         sum[node] = total + towns[node-1];
    }
-   // rubrik oa problem
+
+
+
+   // serviceNow oa problem
+    // TODO we will consider 1 based indexing
+    // TODO please do it once again as i was not able to understand the problem and the also the solution did not come to me it uses dp on trees
+    public static int question_10(int[] arr,int n){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        for(int i=0;i<=n;i++) list.add(new ArrayList<>());
+        for(int i=0;i<n;i++){
+            int u  = i+1;
+            int v = arr[i];
+            list.get(u).add(v);
+            list.get(v).add(u);
+        }
+        boolean[] vis = new boolean[n+1];
+        int[] parent = new int[n+1];
+        int[] count = new int[n+1];
+        Arrays.fill(count,1);
+        question_10_dfs(0,list,vis,parent,count);
+        int total = 0;
+        for(int x:count) total+=x;
+        if(count[0]<=total/2) return count[0];
+       return -1;
+
+    }
+    public static void question_10_dfs(int node,ArrayList<ArrayList<Integer>> list,boolean[] vis,int[] parent,int[] count){
+        vis[node] = true;
+        for(int it:list.get(node)){
+            if(vis[it]==false){
+                parent[it] = node;
+                question_10_dfs(it,list,vis,parent,count);
+            }
+        }
+
+        for(int it:list.get(node)){
+            if(parent[node]!= it){
+                count[node]++;
+            }
+        }
+    }
+    // google oa problem
+    // TODO need to do this question once again
+    public static int question_11(int[][] edges,int n,int[] passengers){
+        ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            list.add(new ArrayList<>());
+        }
+
+        for(int i=0;i<edges.length;i++){
+            int u = edges[i][0]-1;
+            int v = edges[i][1]-1;
+            list.get(u).add(v);
+            list.get(v).add(u);
+        }
+
+        int[] sum = new int[n];
+        boolean[] vis = new boolean[n];
+        int[] parent = new int[n];
+        Arrays.fill(parent,-1);
+        Arrays.fill(sum,0);
+        question_11_bfs(1,list,passengers,sum,vis,parent);
+
+        return sum[1];
+    }
+    public static void question_11_bfs(int node,ArrayList<ArrayList<Integer>> list,int[] passenger,int[] sum,boolean[] vis,int[] parent){
+         vis[node] = true;
+         for(int it:list.get(node)){
+             if(!vis[it]){
+                 passenger[it] = node;
+                 question_11_bfs(it,list,passenger,sum,vis,parent);
+             }
+         }
+        if(passenger[node]==1) passenger[node]=1;
+         for(int it:list.get(node)){
+             if(parent[node]!=it){
+                 sum[node]+=sum[it];
+             }
+         }
+
+    }
+
+   // Rubrik oa problem
    public static int question_12(int n,int m,int k,int[] values,int[] parent){
         ArrayList<ArrayList<Integer>> list = new ArrayList<>();
         for(int i=0;i<=n;i++){
