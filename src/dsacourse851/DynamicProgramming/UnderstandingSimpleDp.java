@@ -1,10 +1,14 @@
 package dsacourse851.DynamicProgramming;
 
+import java.util.Arrays;
+
 public class UnderstandingSimpleDp {
     public static void main(String[] args) {
         int[] arr = {4 ,12 ,13 ,18 ,10 ,12 };
         int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
-        int res = question_8(nums,nums.length);
+        String input = "ababbacaabbbb";
+        int k = 1;
+        String res = question_6(input,input.length(),k);
         System.out.println(res);
 
     }
@@ -51,13 +55,37 @@ public class UnderstandingSimpleDp {
         }
         return dp[n-1];
     }
+    public static String question_6(String input,int n,int k){
+        int[] dp = new int[n];
+        dp[0] = 1;
+//        int val1 = input.charAt(1)-'a';
+//        int val2 = input.charAt(0)-'a';
+//        int res = Math.abs(val1-val2);
+//        if(res<=k) dp[1]=1+dp[0];
+//        else dp[1] = 0;
+        for(int i=1;i<n;i++){
+            int f = input.charAt(i) - 'a';
+            int s = input.charAt(i-1) - 'a';
+            if(Math.abs(f-s) <= k) dp[i] = dp[i-1]+1;
+            else dp[i] = 1;
+        }
+
+        int index = -1;
+        int max = -1;
+        for(int i=0;i<n;i++){
+            if(max<dp[i]){
+                max = dp[i];
+                index = i;
+            }
+        }
+        int start = index - dp[index]+1;
+        return input.substring(start,start+dp[index]);
+    }
     // google swe intern interview problem
     public static int question_8(int[] arr,int n){
         int[] dp = new int[n];
         dp[0] = arr[0];
         dp[1] = dp[0]+arr[1];
-
-
 
         for(int i=2;i<n;i++){
             int option3 = 0;
@@ -66,6 +94,19 @@ public class UnderstandingSimpleDp {
             if(i>=3) option2 = dp[i-3] + arr[i];
             if(i>=5) option3 = dp[i-5]  + arr[i];
             dp[i] = Math.max(option1,Math.max(option3,option2));
+        }
+        return dp[n-1];
+    }
+    // TODO this needs to be done once again by me
+    public static int question_9(int[] arr,int n,int k){
+        int[] dp  = new int[n];
+        Arrays.fill(dp,Integer.MAX_VALUE);
+        dp[0] = 0;
+        dp[1] = arr[0]*arr[1];
+        for(int i=2;i<n;i++){
+            for(int j=Math.max(0,i-k);j<i-1;j++){
+               dp[i] =  Math.min(dp[i],arr[i]*arr[j] + dp[j]);
+            }
         }
         return dp[n-1];
     }
