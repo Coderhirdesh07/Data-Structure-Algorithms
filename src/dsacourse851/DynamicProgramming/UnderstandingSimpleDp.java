@@ -4,11 +4,14 @@ import java.util.Arrays;
 
 public class UnderstandingSimpleDp {
     public static void main(String[] args) {
-        int[] arr = {4 ,12 ,13 ,18 ,10 ,12 };
+        int[] arr = {2,3,5,8,10};
+        // 2 3 5 8 10
+        // 2 3 5 10
+        //
         int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
         String input = "ababbacaabbbb";
         int k = 1;
-        String res = question_6(input,input.length(),k);
+        int res = question_14(15);
         System.out.println(res);
 
     }
@@ -58,11 +61,7 @@ public class UnderstandingSimpleDp {
     public static String question_6(String input,int n,int k){
         int[] dp = new int[n];
         dp[0] = 1;
-//        int val1 = input.charAt(1)-'a';
-//        int val2 = input.charAt(0)-'a';
-//        int res = Math.abs(val1-val2);
-//        if(res<=k) dp[1]=1+dp[0];
-//        else dp[1] = 0;
+
         for(int i=1;i<n;i++){
             int f = input.charAt(i) - 'a';
             int s = input.charAt(i-1) - 'a';
@@ -109,6 +108,81 @@ public class UnderstandingSimpleDp {
             }
         }
         return dp[n-1];
+    }
+
+    // TODO THIS PROBLEM HAVE TO BE DONE ONE MORE TIME
+    public static int question_11(int[] arr,int n){
+        int[][] dp = new int[n][2];
+        // 0 is for even and 1 is for odd
+        if(arr[0]%2 == 0 ) dp[0][0]=0;
+        if(arr[0]%2 == 1) dp[0][1] = 1;
+
+        for(int i=1;i<n;i++){
+            if(i>=1){
+                if(arr[i]%2==0) dp[i][1] = dp[i-1][1]+1;
+                else dp[i][0] = 1 + dp[i-1][0];
+            }
+            if(i>=2){
+                if(arr[i]%2==0) dp[i][1] = dp[i-2][1]+1;
+                else dp[i][0] = 1 + dp[i-2][0];
+            }
+        }
+        return dp[n-1][1];
+    }
+    public static int question_11_part2(int[] arr,int n){
+        int[][] dp = new int[n][2];
+        // 0 is for even and 1 is for odd
+        if(arr[0]%2 == 0 ) dp[0][0]=1;
+        if(arr[0]%2 == 1) dp[0][1] = 1;
+        if((arr[0]+arr[1])%2==0) dp[1][0] = 1+dp[0][0];
+        if((arr[0]+arr[1])%2!=0) dp[1][1] = 1+dp[0][1];
+
+        for(int i=2;i<n;i++){
+            if(arr[i]%2==0){
+                dp[i][0] = dp[i-1][0] + dp[i-2][0];
+                dp[i][1] = dp[i-1][1] + dp[i-2][1];
+            }
+            if(arr[i]%2!=0){
+                dp[i][1] = dp[i-2][1]+dp[i-2][1];
+                dp[i][0] = dp[i-2][0]+dp[i-2][0];
+            }
+        }
+        return dp[n-1][0];
+    }
+    // google interview problem
+    public static int question_12(int n,int y,int x,int z,int b){
+        int[] dp = new int[n+1];
+        dp[0] = Integer.MAX_VALUE;
+        dp[1] = 0;
+
+        for(int i=2;i<=n;i++){
+            int option1 = y + dp[i-1];
+            int option2 = Integer.MAX_VALUE;
+            if(i>=3 && i%3==0) option2 = z + dp[i/3];
+            int option3 = Integer.MAX_VALUE;
+            if(i>=5 && i%5==0) option3 = b + dp[i/5];
+            int option4 = Integer.MAX_VALUE;
+            if(i>=7 && i%7==0) option4 = x + dp[i/7];
+
+            dp[i] = Math.min(option1,Math.min(option2,Math.min(option3,option4)));
+        }
+        return dp[n];
+    }
+    public static int question_14(int n){
+        int[] dp = new int[n+1];
+        dp[0] = Integer.MAX_VALUE;
+        dp[1] = 0;
+
+        for(int i=2;i<=n;i++){
+            int option1 = 1 + dp[i-1];
+            int option2 = Integer.MAX_VALUE;
+            if(i>=2 && i%2==0) option2 = 1 + dp[i/2];
+            int option3 = Integer.MAX_VALUE;
+            if(i>=3 && i%3==0) option3 = 1 + dp[i/3];
+
+            dp[i] = Math.min(option1,Math.min(option2,option3));
+        }
+        return dp[n];
     }
 
 }
