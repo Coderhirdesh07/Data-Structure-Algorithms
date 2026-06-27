@@ -168,6 +168,46 @@ public class UnderstandingSimpleDp {
         }
         return dp[n];
     }
+
+    // 1 2 3 4 7
+    // 3 4 5 6 9
+    // uber oa problem
+    public static int[] question_13(int[] a,int[] b,int n){
+    int[] dp_a_even = new int[n];
+    int[] dp_a_odd = new int[n];
+    int[] dp_b_even = new int[n];
+    int[] dp_b_odd = new int[n];
+    if(a[0]%2==0){
+        dp_a_even[0] = 1;
+    }
+    else{
+        dp_a_odd[0] = 1;
+    }
+    if(b[0]%2==0){
+        dp_b_even[0]=1;
+    }
+    else dp_b_odd[0] = 1;
+
+
+     for(int i=1;i<n;i++){
+         if(a[i]%2==0){
+             dp_a_even[i] =  dp_a_even[i-1] + dp_b_even[i-1];
+         }
+         if(a[i]%2!=0){
+             dp_a_even[i] = dp_a_odd[i-1] + dp_b_odd[i-1];
+         }
+         if(b[i]%2==0) {
+             dp_b_even[i] = dp_a_even[i - 1] + dp_b_even[i - 1];
+         }
+         if(b[i]%2!=0){
+             dp_b_even[i] = dp_a_odd[i-1] + dp_b_odd[i-1];
+         }
+     }
+
+     return new int[]{dp_a_even[n-1]+dp_b_even[n-1]};
+    }
+
+
     public static int question_14(int n){
         int[] dp = new int[n+1];
         dp[0] = Integer.MAX_VALUE;
@@ -181,6 +221,21 @@ public class UnderstandingSimpleDp {
             if(i>=3 && i%3==0) option3 = 1 + dp[i/3];
 
             dp[i] = Math.min(option1,Math.min(option2,option3));
+        }
+        return dp[n];
+    }
+
+    // goldman sachs
+    public static int question_17(int[] arr,int n){
+        int[] dp = new int[n+1];
+        dp[0] = arr[0];
+        dp[2] = arr[2] + dp[0];
+        dp[1] = arr[1] + dp[2];
+
+        for(int i=3;i<n;i++){
+            int option1 = arr[i] + dp[i-2];
+            int option2 = arr[i] + dp[i+1];
+            dp[i] = Math.min(option1,option2);
         }
         return dp[n];
     }
