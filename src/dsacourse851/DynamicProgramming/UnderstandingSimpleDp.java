@@ -4,14 +4,16 @@ import java.util.Arrays;
 
 public class UnderstandingSimpleDp {
     public static void main(String[] args) {
-        int[] arr = {2,3,5,8,10};
+        int[] arr = { 2 ,10, 8 ,-5 ,-10 ,5};
+        int[] arr2  = {2 ,-100 ,8 ,5 ,0};
+        String[] input2 = {"N", "-2","N"};
         // 2 3 5 8 10
         // 2 3 5 10
         //
         int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
         String input = "ababbacaabbbb";
         int k = 1;
-        int res = question_14(15);
+        int res = question_18(input2,input2.length);
         System.out.println(res);
 
     }
@@ -227,17 +229,63 @@ public class UnderstandingSimpleDp {
 
     // goldman sachs
     public static int question_17(int[] arr,int n){
-        int[] dp = new int[n+1];
-        dp[0] = arr[0];
-        dp[2] = arr[2] + dp[0];
-        dp[1] = arr[1] + dp[2];
+        // 0 -- is for forward and 1 is for backward
+        int[][] dp = new int[n+1][2];
+        dp[0][0] = arr[0];
+        dp[0][1] = Integer.MAX_VALUE;
+        dp[1][0] = Integer.MAX_VALUE;
+        dp[1][1] = arr[2] + arr[1] + dp[0][0];
 
-        for(int i=3;i<n;i++){
-            int option1 = arr[i] + dp[i-2];
-            int option2 = arr[i] + dp[i+1];
-            dp[i] = Math.min(option1,option2);
+        for(int i=2;i<n-1;i++){
+            dp[i][0] = arr[i] + Math.max(dp[i-2][0],dp[i-2][1]);
+            dp[i][1] = arr[i]+arr[i+1] + dp[i-1][1];
         }
-        return dp[n];
+        dp[n-1][1] = Integer.MAX_VALUE;
+        dp[n-1][0] = arr[n-1] + Math.min(dp[n-2][1],dp[n-2][0]);
+        return Math.min(dp[n-1][1],Math.max(dp[n-2][0],dp[n-2][1]));
     }
 
+
+    // TODO this question has to be done once again
+    public static int question_18(String[] arr,int n){
+        // *x = multiplies  -x = subtracts  /x = divides  +x = adds  N = *-1
+        int[] dp = new int[n];
+        dp[0]=1;
+        if(arr[0].charAt(0)=='N'){
+            dp[1] = Math.max(dp[0],-1);
+        }
+       else if(arr[0].charAt(0)=='+'){
+            dp[1] = Math.max(dp[0],1+Integer.parseInt(arr[0].substring(1)));
+        }
+        else if(arr[0].charAt(0)=='*'){
+            dp[1] = Math.max(dp[0],1*Integer.parseInt(arr[0].substring(1)));
+        }
+        else if(arr[0].charAt(0)=='/'){
+            dp[1] = Math.max(dp[0],1/Integer.parseInt(arr[0].substring(1)));
+        }
+        else if(arr[0].charAt(0)=='-'){
+            dp[1] = Math.max(dp[0],1-Integer.parseInt(arr[0].substring(1)));
+        }
+
+        for(int i=2;i<n;i++){
+//            int option1 = dp[i-1];
+
+            if(arr[i].charAt(0)=='N'){
+              dp[i] = Math.max(dp[i-1],-1*dp[i-1]);
+            }
+            else if(arr[i].charAt(0)=='+'){
+                dp[i] = Math.max(dp[i-1],dp[i-1]+Integer.parseInt(arr[i].substring(1)));
+            }
+             else if(arr[i].charAt(0)=='*'){
+                dp[i]= Math.max(dp[i-1],dp[i-1]*Integer.parseInt(arr[i].substring(1)));
+            }
+             else if(arr[i].charAt(0)=='/'){
+                dp[i] = Math.max(dp[i-1],dp[i-1]/Integer.parseInt(arr[i].substring(1)));
+            }
+             else{
+                dp[i] = Math.max(dp[i-1],dp[i-1]-Integer.parseInt(arr[i].substring(1)));
+            }
+        }
+        return dp[n-1];
+    }
 }
