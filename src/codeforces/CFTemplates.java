@@ -54,5 +54,9 @@ public class CFTemplates {
         return index;
     }
 
+//    public static int gcd(int a,int b){}
+//
+//    public static int lcm(int a,int b){}
+
     // public static int difference_array(){}
 }

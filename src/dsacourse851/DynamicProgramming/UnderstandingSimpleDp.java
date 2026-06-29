@@ -6,6 +6,10 @@ public class UnderstandingSimpleDp {
     public static void main(String[] args) {
         int[] arr = { 2 ,10, 8 ,-5 ,-10 ,5};
         int[] arr2  = {2 ,-100 ,8 ,5 ,0};
+        int[] a = {23, 4,5 ,101};
+        int[] b = {21,1,10, 100};
+        // 23 + 10 + 100 =
+        //ATBTA = 25 + 50 + 70
         String[] input2 = {"N", "-2","N"};
         // 2 3 5 8 10
         // 2 3 5 10
@@ -13,7 +17,7 @@ public class UnderstandingSimpleDp {
         int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
         String input = "ababbacaabbbb";
         int k = 1;
-        int res = question_18(input2,input2.length);
+        int res = question_19(a,b,a.length);
         System.out.println(res);
 
     }
@@ -288,4 +292,25 @@ public class UnderstandingSimpleDp {
         }
         return dp[n-1];
     }
+
+    // google sde3 interview problem
+    // TODO took a little bit of hint
+    public static int question_19(int[] a,int[] b,int n){
+       int[][] dp = new int[n][2];
+       // 0->a and 1->b tells dp[i][0] -> tells that the i the element is from a array
+        dp[0][0] = a[0];
+        dp[0][1] = b[0];
+        dp[1][0] = Math.max(a[1],dp[0][0]+a[1]);
+        dp[1][1] = Math.max(b[1],dp[1][1]+b[1]);
+        for(int i=2;i<n;i++){
+            dp[i][0] = a[i] +  Math.max(dp[i-1][0],dp[i-2][1]);
+            dp[i][1] = b[i] + Math.max(dp[i-1][1],dp[i-2][0]);
+        }
+        return Math.max(dp[n-1][0],dp[n-1][1]);
+
+    }
+    // uber oa problem
+//    public static int question_20(int[] a,int[] b,int n){
+//
+//    }
 }
