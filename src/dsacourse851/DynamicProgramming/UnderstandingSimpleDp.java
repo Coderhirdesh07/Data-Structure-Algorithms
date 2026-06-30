@@ -8,6 +8,8 @@ public class UnderstandingSimpleDp {
         int[] arr2  = {2 ,-100 ,8 ,5 ,0};
         int[] a = {23, 4,5 ,101};
         int[] b = {21,1,10, 100};
+        int[] c = {2,1,3};
+        int[] d = {10,10,10};
         // 23 + 10 + 100 =
         //ATBTA = 25 + 50 + 70
         String[] input2 = {"N", "-2","N"};
@@ -17,7 +19,7 @@ public class UnderstandingSimpleDp {
         int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
         String input = "ababbacaabbbb";
         int k = 1;
-        int res = question_19(a,b,a.length);
+        int res = question_20(c,d,c.length);
         System.out.println(res);
 
     }
@@ -309,8 +311,59 @@ public class UnderstandingSimpleDp {
         return Math.max(dp[n-1][0],dp[n-1][1]);
 
     }
+    // follow up problem of 19 question
+    public static int question_19_follow_up(int[] a,int[] b,int[] c,int n){
+        // 0->a  1->b  2->c
+        int[][] dp = new int[n][3];
+        dp[0][0] = a[0];
+        dp[0][1] = b[0];
+        dp[0][2] = c[0];
+
+        dp[1][0] = Math.max(a[1],dp[0][0]+a[0]);
+        dp[1][1] = Math.max(b[1],dp[0][1]+b[0]);
+        dp[1][2] = Math.max(c[1],dp[0][2]+c[0]);
+
+        for(int i=2;i<n;i++){
+            dp[i][0] = Math.max(dp[i-1][0],Math.max(dp[i-2][1],dp[i-2][2]));
+            dp[i][1] = Math.max(dp[i-1][1],Math.max(dp[i-2][0],dp[i-2][2]));
+            dp[i][2] = Math.max(dp[i-1][2],Math.max(dp[i-2][0],dp[i-2][1]));
+
+        }
+
+
+        return Math.max(dp[n-1][0],Math.max(dp[n-1][1],dp[n-1][2]));
+    }
+
     // uber oa problem
-//    public static int question_20(int[] a,int[] b,int n){
-//
-//    }
+    public static int question_20(int[] a,int[] b,int n){
+        // 0->a and 1->b
+        // dp[i][a][0] = best ans till i the index if element was taken from array for 1st time
+        // dp[i][a][1] = best ans till i the index if element was taken from array for 2nd time
+       int[][][] dp = new int[n][2][2];
+       for(int i=0;i<n;i++){
+           for(int j=0;j<2;j++){
+               Arrays.fill(dp[i][j],Integer.MIN_VALUE);
+           }
+       }
+       dp[0][0][0] = a[0];
+       dp[0][1][0] = b[0];
+
+       dp[1][0][0]  = a[1] + Math.max(dp[0][1][0],dp[0][1][1]);
+       dp[1][0][1] = a[1] + dp[0][0][0];
+
+       dp[1][1][0] = b[1] + Math.max(dp[0][0][0],dp[0][0][1]);
+       dp[1][1][1] = b[1] + dp[0][1][0];
+
+        for(int i=2;i<n;i++){
+            // for a
+            dp[i][0][0]  = a[i] + Math.max(dp[i-1][1][0],dp[i-1][1][1]);
+            dp[i][0][1] = a[i] + dp[i-1][0][0];
+            // for b
+            dp[i][1][0] = b[i] + Math.max(dp[i-1][0][0],dp[i-1][0][1]);
+            dp[i][1][1] = b[i] + dp[i-1][1][0];
+        }
+
+       return Math.max(dp[n-1][0][1],Math.max(dp[n-1][0][0],Math.max(dp[n-1][1][0],dp[n-1][1][1])));
+
+    }
 }
