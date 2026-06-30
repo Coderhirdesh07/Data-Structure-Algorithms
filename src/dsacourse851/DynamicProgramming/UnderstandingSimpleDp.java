@@ -1,25 +1,35 @@
 package dsacourse851.DynamicProgramming;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class UnderstandingSimpleDp {
     public static void main(String[] args) {
-        int[] arr = { 2 ,10, 8 ,-5 ,-10 ,5};
-        int[] arr2  = {2 ,-100 ,8 ,5 ,0};
-        int[] a = {23, 4,5 ,101};
-        int[] b = {21,1,10, 100};
-        int[] c = {2,1,3};
-        int[] d = {10,10,10};
-        // 23 + 10 + 100 =
-        //ATBTA = 25 + 50 + 70
-        String[] input2 = {"N", "-2","N"};
-        // 2 3 5 8 10
-        // 2 3 5 10
-        //
-        int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
-        String input = "ababbacaabbbb";
-        int k = 1;
-        int res = question_20(c,d,c.length);
+//        int[] arr = { 2 ,10, 8 ,-5 ,-10 ,5};
+//        int[] arr2  = {2 ,-100 ,8 ,5 ,0};
+//        int[] a = {23, 4,5 ,101};
+//        int[] b = {21,1,10, 100};
+//        int[] c = {2,1,3};
+//        int[] d = {10,10,10};
+//        // 23 + 10 + 100 =
+//        //ATBTA = 25 + 50 + 70
+//        String[] input2 = {"N", "-2","N"};
+//        // 2 3 5 8 10
+//        // 2 3 5 10
+//        //
+//        int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
+//        String input = "ababbacaabbbb";
+//        int k = 1;
+        Scanner sc  = new Scanner(System.in);
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        int[][] matrix = new int[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                matrix[i][j] = sc.nextInt();
+            }
+        }
+        int res = question_21(matrix,matrix.length);
         System.out.println(res);
 
     }
@@ -366,4 +376,29 @@ public class UnderstandingSimpleDp {
        return Math.max(dp[n-1][0][1],Math.max(dp[n-1][0][0],Math.max(dp[n-1][1][0],dp[n-1][1][1])));
 
     }
+    // barclays oa problem
+    public static int question_21(int[][] arr,int n){
+        // arr[0][0] = easy task  arr[0][1] = difficult task
+        // 0-> easy task 1-> no task 2-> difficult task
+        int[][] dp = new int[n][3];
+        for(int i=0;i<n;i++){
+            Arrays.fill(dp[i],0);
+        }
+        dp[0][0] = arr[0][0];
+//        dp[0][2] = arr[0][1];
+
+
+        dp[1][0] = dp[0][0] + arr[0][0];
+        dp[1][1] = Math.max(dp[0][0],Math.max(dp[0][1],dp[0][2]));
+        dp[1][2] = dp[0][1] + arr[1][1];
+
+        for(int i=2;i<n;i++){
+            dp[i][0] = Math.max(dp[i-1][0],Math.max(dp[i-1][1],dp[i-1][2])) + arr[i][0];
+            dp[i][1] = 0 + Math.max(dp[i-1][0],Math.max(dp[i-1][1],dp[i-1][2]));
+            dp[i][2] = dp[i-1][1] + arr[i][1];
+        }
+
+        return Math.max(dp[n-1][0],Math.max(dp[n-1][1],dp[n-1][2]));
+    }
 }
+
