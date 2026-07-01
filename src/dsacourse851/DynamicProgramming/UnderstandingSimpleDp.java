@@ -1,35 +1,43 @@
 package dsacourse851.DynamicProgramming;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class UnderstandingSimpleDp {
     public static void main(String[] args) {
-//        int[] arr = { 2 ,10, 8 ,-5 ,-10 ,5};
-//        int[] arr2  = {2 ,-100 ,8 ,5 ,0};
-//        int[] a = {23, 4,5 ,101};
-//        int[] b = {21,1,10, 100};
-//        int[] c = {2,1,3};
-//        int[] d = {10,10,10};
-//        // 23 + 10 + 100 =
-//        //ATBTA = 25 + 50 + 70
-//        String[] input2 = {"N", "-2","N"};
-//        // 2 3 5 8 10
-//        // 2 3 5 10
-//        //
-//        int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
-//        String input = "ababbacaabbbb";
-//        int k = 1;
-        Scanner sc  = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        int[][] matrix = new int[n][m];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                matrix[i][j] = sc.nextInt();
-            }
-        }
-        int res = question_21(matrix,matrix.length);
+        int[] arr = { 2 ,10, 8 ,-5 ,-10 ,5};
+        int[] arr2  = {2 ,-100 ,8 ,5 ,0};
+        int[] a = {23, 4,5 ,101};
+        int[] b = {21,1,10, 100};
+        int[] c = {2,1,3};
+        int[] d = {10,10,10};
+        // 23 + 10 + 100 =
+        //ATBTA = 25 + 50 + 70
+        String[] input2 = {"N", "-2","N"};
+        // 2 3 5 8 10
+        // 2 3 5 10
+        //
+        int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
+        String input = "ababbacaabbbb";
+        int k = 1;
+//        Scanner sc  = new Scanner(System.in);
+//        int n = sc.nextInt();
+//        int m = sc.nextInt();
+//        int[][] matrix = new int[n][m];
+//        for(int i=0;i<n;i++){
+//            for(int j=0;j<m;j++){
+//                matrix[i][j] = sc.nextInt();
+//            }
+//        }
+
+        // 1 1 1 1 , 2 2 ,4,
+        HashMap<Integer,Integer> m1  = new HashMap<>();
+        m1.put(1,1);
+        m1.put(2,1);
+        m1.put(4,1);
+        m1.put(6,1);
+        int res = question_24(m1,4);
         System.out.println(res);
 
     }
@@ -400,5 +408,39 @@ public class UnderstandingSimpleDp {
 
         return Math.max(dp[n-1][0],Math.max(dp[n-1][1],dp[n-1][2]));
     }
+
+
+    // microsoft oa problem
+    // no are 1 2 4 6
+    // TODO this problem was done with hint.
+    public static int question_24(HashMap<Integer,Integer> m1, int y){
+        int[][] dp  = new int[y+1][3];
+        for(int i=0;i<=y;i++) {
+            Arrays.fill(dp[i], 0);
+        }
+        dp[0][0]  = 1;
+
+
+        for(int i=1;i<=y;i++){
+          if(i-1>=0) dp[i][0]+=dp[i-1][0];
+          if(i-2>=0) dp[i][0]+=dp[i-2][0];
+          if(i-6>=0) dp[i][0]+=dp[i-6][0];
+            // 1 four is used
+          if(i-1>=0) dp[i][1]+=dp[i-1][0];
+          if(i-2>=0) dp[i][1]+=dp[i-2][0];
+          if(i-4>=0) dp[i][0]+=dp[i-4][0];
+          if(i-6>=0) dp[i][1]+=dp[i-6][0];
+            // 2 four is used
+          if(i-1>=0) dp[i][0]+=dp[i-1][2];
+          if(i-2>=0) dp[i][0]+=dp[i-2][2];
+          if(i-4>=0) dp[i][0]+=dp[i-4][1];
+          if(i-6>=0) dp[i][0]+=dp[i-6][2];
+        }
+
+        return  dp[y][2]+dp[y][1] + dp[y][0];
+
+    }
+
+
 }
 
