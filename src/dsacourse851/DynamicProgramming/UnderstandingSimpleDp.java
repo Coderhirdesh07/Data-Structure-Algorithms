@@ -420,7 +420,6 @@ public class UnderstandingSimpleDp {
         }
         dp[0][0]  = 1;
 
-
         for(int i=1;i<=y;i++){
           if(i-1>=0) dp[i][0]+=dp[i-1][0];
           if(i-2>=0) dp[i][0]+=dp[i-2][0];
@@ -438,8 +437,23 @@ public class UnderstandingSimpleDp {
         }
 
         return  dp[y][2]+dp[y][1] + dp[y][0];
-
     }
+
+    // Airbnb oa
+    public static int question_25(int[] a,int[] b,int n){
+        int[] dp = new int[n];
+        // if i-1 and i+1 cost is b[i]
+        // if i-1 or i+1 cost is a[i]
+        // is i-1 and i+1 not present cost is 0;
+        Arrays.fill(dp,0);
+        dp[0] = a[0];
+        for(int i=1;i<n-1;i++){
+            dp[i] = dp[i-1]+a[i];
+        }
+        dp[n-1] = dp[n-2];
+        return dp[n-1];
+    }
+//    public static int question_26(int[] arr,int n){}
 
 
 }
