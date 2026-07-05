@@ -111,9 +111,9 @@ public class YoutubeProblems {
         return true;
     }
 
-    // rubrik oa problem
-    public static int question_5_brute(ArrayList<ArrayList<Integer>> list,int n){
-
-    }
+//    // rubrik oa problem
+//    public static int question_5_brute(ArrayList<ArrayList<Integer>> list,int n){
+//
+//    }
 
 }

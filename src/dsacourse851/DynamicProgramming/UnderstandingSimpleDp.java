@@ -18,7 +18,7 @@ public class UnderstandingSimpleDp {
         // 2 3 5 8 10
         // 2 3 5 10
         //
-        int[] nums = {5 ,8 ,3 ,100, -5 ,-5, 5, 10};
+        int[] nums = {1,4,5,7,8,10,12};
         String input = "ababbacaabbbb";
         int k = 1;
 //        Scanner sc  = new Scanner(System.in);
@@ -37,8 +37,8 @@ public class UnderstandingSimpleDp {
         m1.put(2,1);
         m1.put(4,1);
         m1.put(6,1);
-//        int res = question_21(m1,4);
-//        System.out.println(res);
+        int res = question_26(nums,nums.length);
+        System.out.println(res);
 
     }
     // find max sum of subset such no two elements are consecutive
@@ -459,7 +459,31 @@ public class UnderstandingSimpleDp {
         return Math.min(dp[n-1][0],dp[n-1][1]);
     }
 
+    // phone pe oa problem
+    public static int question_26(int[] arr,int n){
+        // can rob 2 consecutive house or can rob 3 consecutive house
+        // if option 1 is selected  he will leave atleast one house if option2 is selected he will leave atleast 2 houses
+        // 0 will represent type-1 and 1 will represent type-2
+        int[][] dp = new int[n][2];
+        for(int i=0;i<n;i++){
+            Arrays.fill(dp[i],Integer.MIN_VALUE);
+        }
 
+        dp[1][0] = arr[1] + arr[0];
+        dp[2][0] = arr[2]+arr[1];
+        dp[2][1] = arr[2]+arr[1]+arr[0];
+        for(int i=3;i<n;i++){
+
+            dp[i][0] = arr[i]+arr[i-1] + Math.max(dp[i-2][0],Math.max(dp[i-2][1],Math.max(dp[i-3][0],dp[i-3][1])));
+            if(i>=4){
+                dp[i][1] = arr[i]+arr[i-1]+arr[i-2] + Math.max(dp[i-3][0],Math.max(dp[i-3][1],Math.max(dp[i-4][0] ,dp[i-4][1])));
+            }
+        }
+
+        return Math.max(dp[n-1][0],dp[n-1][1]);
+
+
+    }
 
 }
 
