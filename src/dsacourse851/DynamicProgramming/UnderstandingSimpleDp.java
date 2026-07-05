@@ -37,8 +37,8 @@ public class UnderstandingSimpleDp {
         m1.put(2,1);
         m1.put(4,1);
         m1.put(6,1);
-        int res = question_24(m1,4);
-        System.out.println(res);
+//        int res = question_21(m1,4);
+//        System.out.println(res);
 
     }
     // find max sum of subset such no two elements are consecutive
@@ -413,7 +413,7 @@ public class UnderstandingSimpleDp {
     // microsoft oa problem
     // no are 1 2 4 6
     // TODO this problem was done with hint.
-    public static int question_24(HashMap<Integer,Integer> m1, int y){
+    public static int question_23(HashMap<Integer,Integer> m1, int y){
         int[][] dp  = new int[y+1][3];
         for(int i=0;i<=y;i++) {
             Arrays.fill(dp[i], 0);
@@ -440,20 +440,25 @@ public class UnderstandingSimpleDp {
     }
 
     // Airbnb oa
+    // TODO Solved with hint
     public static int question_25(int[] a,int[] b,int n){
-        int[] dp = new int[n];
-        // if i-1 and i+1 cost is b[i]
-        // if i-1 or i+1 cost is a[i]
-        // is i-1 and i+1 not present cost is 0;
-        Arrays.fill(dp,0);
-        dp[0] = a[0];
-        for(int i=1;i<n-1;i++){
-            dp[i] = dp[i-1]+a[i];
+        // here ordering will matter
+        // 0-> last ( first i then i-1)   and 1-> second last(i-1 then i)
+        // both adj are present b[i] if one is there a[i] , none is there cost is 0;
+        int[][] dp = new int[n][2];
+        dp[0][0] = a[0];
+        dp[0][1] = 0;
+        dp[1][0]  = a[1] + Math.min(dp[0][0],dp[0][1]);
+        // 0 is remove first
+        dp[1][1] = b[0] +  0;
+        for(int i=2;i<n;i++){
+            dp[i][0] = a[i] + Math.min(dp[i-1][0],dp[i-1][1]);
+
+            dp[i][1] = Math.min(b[i-1]+Math.min(dp[i-2][0],dp[i-2][1]),a[i-1]+dp[i-2][1]);
         }
-        dp[n-1] = dp[n-2];
-        return dp[n-1];
+        return Math.min(dp[n-1][0],dp[n-1][1]);
     }
-//    public static int question_26(int[] arr,int n){}
+
 
 
 }

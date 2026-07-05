@@ -34,7 +34,6 @@ public class YoutubeProblems {
     }
 
     // Zomato tree problem
-
 //    public static int question_2(){
 //
 //    }
@@ -110,6 +109,11 @@ public class YoutubeProblems {
             }
         }
         return true;
+    }
+
+    // rubrik oa problem
+    public static int question_5_brute(ArrayList<ArrayList<Integer>> list,int n){
+
     }
 
 }
