@@ -464,6 +464,10 @@ public class UnderstandingSimpleDp {
         // can rob 2 consecutive house or can rob 3 consecutive house
         // if option 1 is selected  he will leave atleast one house if option2 is selected he will leave atleast 2 houses
         // 0 will represent type-1 and 1 will represent type-2
+
+        // 0  1  2  3  4   5  6
+        // 1 ,4 ,5 ,7 ,8 ,10 ,12
+
         int[][] dp = new int[n][2];
         for(int i=0;i<n;i++){
             Arrays.fill(dp[i],Integer.MIN_VALUE);
@@ -479,11 +483,34 @@ public class UnderstandingSimpleDp {
                 dp[i][1] = arr[i]+arr[i-1]+arr[i-2] + Math.max(dp[i-3][0],Math.max(dp[i-3][1],Math.max(dp[i-4][0] ,dp[i-4][1])));
             }
         }
-
         return Math.max(dp[n-1][0],dp[n-1][1]);
 
-
     }
+    // google girl hackathon problem
+//    public static int question_27(int[] arr,int n){
+//
+//    }
+    // detuche bank oa
+    public static int question_28(int[][] arr,int n){
+        int[][] dp = new int[n][3];
+        // 0-> easy 1-> medium 2-> hard
+        for(int i=0;i<n;i++){
+            Arrays.fill(dp[i],0);
+        }
+        dp[0][0] = arr[0][0];
+        dp[1][0] = dp[1][0] + arr[1][1];
+
+        for(int i=2;i<n;i++){
+            // easy task
+            dp[i][0] = arr[i][0] + Math.max(dp[i-1][0],Math.max(dp[i-1][1],dp[i-1][2]));
+            // medium task
+            dp[i][1] = arr[i][1] + ;
+            // hard task
+            dp[i][2] = arr[i][2] + Math.max(dp[i-1][1],dp[i-1][0]) + arr[i-2][0];
+        }
+        return Math.max(dp[n-1][0],Math.max(dp[n-1][1],dp[n-1][2]));
+    }
+
 
 }
 

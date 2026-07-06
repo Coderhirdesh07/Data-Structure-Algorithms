@@ -1,5 +1,7 @@
 package dsacourse851.livesession;
 
+import java.util.ArrayList;
+
 public class LiveSessionCode {
     public static void main(String[] args) {
 
@@ -46,5 +48,69 @@ public class LiveSessionCode {
             j--;
         }
         return true;
+    }
+
+    public static void leetcode_contest_question_4_optimised(int[] arr,int n) {
+
+        int[] pSum = prefixSum(arr);
+        int[] palidromeArray = manacher(arr);
+
+        int max = -1;
+        int j = 1;
+        int m = palidromeArray.length;
+        for(int i=0;i<m;i++){
+            int left = j-palidromeArray[i]+1;
+            int right = j+palidromeArray[i]+1;
+            int sum = 0;
+            sum+=pSum[right];
+            if(left>0){
+                sum-=pSum[left-1];
+            }
+
+            max = Math.max(max,sum);
+            j++;
+        }
+        System.out.println(max);
+    }
+    public static int[] manacher_odd(ArrayList<Integer> list){
+        int n = list.size();
+        int l = 0;
+        int r = 1;
+        int[] p  = new int[n+2];
+
+        for(int i=1;i<=n;i++){
+            if(i<=r){
+                p[i] = Math.min(r-i,p[l+(r-i)]);
+            }
+            while(list.get(i-p[i]) == list.get(i+p[i])){
+                p[i]++;
+            }
+            if(i+p[i] > r){
+                l = i-p[i];
+                r = i+p[i];
+            }
+        }
+        return p;
+
+    }
+    public static int[] manacher(int[] arr){
+        ArrayList<Integer> list = new ArrayList<>();
+        int n = arr.length;
+        list.add(0);
+        for(int i=0;i<n;i++){
+            list.add(arr[i]);
+            list.add(0);
+        }
+        int[] result = manacher_odd(list);
+        return result;
+    }
+    public static int[] prefixSum(int[] arr){
+        int n = arr.length;
+        int[] prefix = new int[n];
+        prefix[0] = arr[0];
+        for(int i=1;i<n;i++){
+            prefix[i] = prefix[i-1] + arr[i];
+        }
+        return prefix;
     }
 }
