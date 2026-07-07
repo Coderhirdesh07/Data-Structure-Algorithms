@@ -500,13 +500,21 @@ public class UnderstandingSimpleDp {
         dp[0][0] = arr[0][0];
         dp[1][0] = dp[1][0] + arr[1][1];
 
+
         for(int i=2;i<n;i++){
             // easy task
             dp[i][0] = arr[i][0] + Math.max(dp[i-1][0],Math.max(dp[i-1][1],dp[i-1][2]));
             // medium task
-            dp[i][1] = arr[i][1] + ;
+            dp[i][1] = arr[i][1] + arr[i-1][0] + dp[i-2][1];
             // hard task
-            dp[i][2] = arr[i][2] + Math.max(dp[i-1][1],dp[i-1][0]) + arr[i-2][0];
+            int option1 = arr[i][2] + arr[i-1][0] + dp[i-2][0];
+            int option2= 0;
+            int option3=0;
+            if(i>=3) {
+                option2 = arr[i][2] + arr[i-1][1] + arr[i-2][0]+dp[i-3][0];
+                option3 = arr[i][2] + arr[i-1][2] + arr[i-2][1] + dp[i-3][1];
+            }
+                dp[i][2] = Math.max(option1,Math.max(option2,option3));
         }
         return Math.max(dp[n-1][0],Math.max(dp[n-1][1],dp[n-1][2]));
     }
