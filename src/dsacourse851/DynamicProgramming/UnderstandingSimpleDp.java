@@ -490,9 +490,21 @@ public class UnderstandingSimpleDp {
 
     }
     // google girl hackathon problem
-//    public static int question_27(int[] arr,int n){
-//
-//    }
+    public static int question_27(int[] arr,int n){
+        // 0 -> represent +ve 1 -> -ve
+        int[][] dp = new int[n][2];
+        dp[0][0] = Math.max(arr[0],0);
+        dp[0][1] = Math.max(arr[0]*-1,0);
+        dp[1][0] = arr[1] + Math.max(dp[0][0],dp[0][1]);
+        dp[1][1] = -1*arr[1] + dp[0][0];
+        for(int i=2;i<n;i++){
+            dp[i][0] = arr[i]+Math.max(dp[i-1][0],dp[i-1][1]);
+            dp[i][1] = -1*arr[i] + dp[i-1][0];
+        }
+
+        return Math.max(dp[n-1][0],dp[n-1][1]);
+
+    }
     // detuche bank oa
     public static int question_28(int[][] arr,int n){
         int[][] dp = new int[n][3];
