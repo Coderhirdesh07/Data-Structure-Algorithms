@@ -555,9 +555,31 @@ public class UnderstandingSimpleDp {
             dp[i][0] += dp[i-2][0];
             if(i>=3)  dp[i][1] = dp[i-1][0] + dp[i-2][0] + dp[i-3][1];
         }
-
-
         return dp[n-1][0] + dp[n-1][1];
+    }
+    public static int question_30_leetcode_contest(int[][] arr,int n){
+        int mid = n/2;
+        int[][][] dp = new int[mid][3][3];
+        dp[0][0][1] = arr[0][0]+arr[n-1][1];
+        dp[0][0][2] = arr[0][0]+arr[n-1][2];
+
+        dp[0][1][0]=arr[0][1]+arr[n-1][0];
+        dp[0][1][2]=arr[0][1]+arr[n-1][2];
+        dp[0][2][1]=arr[0][2]+arr[n-1][1];
+        dp[0][2][0]=arr[0][2]+arr[n-1][0];
+
+
+        for(int i=1;i<n;i++){
+            dp[i][0][1]=arr[i][0]+arr[n-1][1];
+            dp[i][0][2]=arr[i][0]+arr[n-1][2];
+            dp[i][1][0]=arr[i][1]+arr[n-1][0];
+            dp[i][1][2]=arr[i][1]+arr[n-1][2];
+            dp[i][2][1]=arr[i][2]+arr[n-1][1];
+            dp[i][2][0]=arr[i][2]+arr[n-1][0];
+        }
+
+        return Math.max(dp[mid-1][0][1],dp[mid-1][0][2]);
+
     }
 
 
