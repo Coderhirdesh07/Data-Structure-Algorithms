@@ -533,6 +533,33 @@ public class UnderstandingSimpleDp {
         return Math.max(dp[n-1][0],Math.max(dp[n-1][1],dp[n-1][2]));
     }
 
+    public static int question_29(int[] arr,int n){
+        int[] dp = new int[n];
+        dp[0] = 0;
+        dp[1]=1;
+        dp[2]=1+dp[1];
+        for(int i=3;i<n;i++){
+            dp[i] = 1 + dp[i-1]+dp[i-2];
+        }
+        return dp[n-1];
+    }
+    public static int question_29_tower_research(int[] arr,int n){
+        int[][] dp = new int[n][2];
+        dp[0][0] = 0;
+        dp[0][1] = 0;
+        dp[1][0]=1;
+        dp[1][1]=1;
+        // 0 1 2 3 4
+        for(int i=2;i<n;i++){
+            dp[i][0] += dp[i-1][0];
+            dp[i][0] += dp[i-2][0];
+            if(i>=3)  dp[i][1] = dp[i-1][0] + dp[i-2][0] + dp[i-3][1];
+        }
+
+
+        return dp[n-1][0] + dp[n-1][1];
+    }
+
 
 }
 
