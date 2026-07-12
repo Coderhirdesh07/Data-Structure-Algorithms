@@ -1,6 +1,7 @@
 package dsacourse851.livesession;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class LiveSessionCode {
     public static void main(String[] args) {
@@ -112,5 +113,63 @@ public class LiveSessionCode {
             prefix[i] = prefix[i-1] + arr[i];
         }
         return prefix;
+    }
+
+    public static int question_zomato_tree(ArrayList<ArrayList<Integer>> list,int n,int[] value){
+         int[] count_of_nodes = new int[n+1];
+         boolean[] vis = new boolean[n+1];
+         int[] parent = new int[n+1];
+         int[] result = new int[n+1];
+
+         question_zomato_tree_dfs(1,n,list,value,count_of_nodes,vis,parent,result);
+        int final_ans = 0;
+        for(int x:result){
+            final_ans+=x;
+        }
+
+         return final_ans;
+    }
+
+    public static void question_zomato_tree_dfs(int node,int n,ArrayList<ArrayList<Integer>> list,int[] value,int[] count_node,boolean[] vis,int[] parent,int[] result){
+        vis[node] = true;
+
+        for(int it:list.get(node)){
+            if(!vis[it]){
+                parent[it] = node;
+                question_zomato_tree_dfs(it,n,list,value,count_node,vis,parent,result);
+            }
+        }
+
+        for(int it:list.get(node)){
+            if(parent[node]!=it){
+                count_node[it]++;
+            }
+        }
+
+        ArrayList<Integer> temp = new ArrayList<>();
+        for(int it:list.get(node)){
+            if(parent[node]==it){
+                int val = n - count_node[node];
+                temp.add(val);
+            }
+            else temp.add(count_node[it]);
+        }
+        int res = helper(temp);
+        result[node] = res;
+
+    }
+    public static int helper(ArrayList<Integer> temp){
+        int sum = 0;
+        int sum_square = 0;
+        int sum_cube = 0;
+        for(int i=0;i<temp.size();i++){
+            int product = temp.get(i)*temp.get(i);
+            sum+=temp.get(i);
+            sum_square+=product;
+            sum_cube+=product*temp.get(i);
+        }
+        int numerator = sum_cube - 3 * sum * sum_square + 2*sum_cube;
+        int ans = numerator/6;
+        return ans;
     }
 }
