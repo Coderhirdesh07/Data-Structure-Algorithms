@@ -197,7 +197,7 @@ public class UnderstandingSubarrayDp {
         // find pairs of i,j which will form a palindrome
         int start = 1;
         int total = 0;
-       while(start<n-1){
+       while(start++<n-1){
            int count_left = 0;
            for(int j=start;j>=0;j--){
                if(dp[j][start] == true) count_left++;
@@ -207,6 +207,64 @@ public class UnderstandingSubarrayDp {
        }
        return total;
     }
+
+    // needed to find triplet in this
+    public static int question_34_google_oa(String s){
+        int  n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        int[][] dp1 = new int[n][n];
+        int[] dp2 = new int[n];
+
+        for(int i=0;i<n;i++){
+            dp[i][i] = true;
+            dp1[i][i] = 1;
+        }
+        for(int i=0;i<n-1;i++){
+            if(s.charAt(i) == s.charAt(i+1)){
+                dp[i][i+1] = true;
+            }
+            dp1[i][i+1] = (dp[i][i+1] == true)?1:0 + dp1[i+1][i+1] + dp1[i][i];
+
+        }
+
+        int length = 3;
+        while(length<=n){
+            for(int i=0;i<n-length+1;i++){
+                int j = i + length - 1;
+                if(s.charAt(i) == s.charAt(j) && dp[i+1][j-1] == true){
+                    dp[i][j] = true;
+                    dp1[i][j] = dp1[i+1][j] + dp1[i][j+1] - dp1[i+1][j-1] + 1 + dp1[i+1][j-1];
+                }
+                else dp1[i][j]  = dp1[i+1][j] + dp1[i][j-1] - dp1[i+1][j-1];
+            }
+            length++;
+        }
+        // find pairs of i,j which will form a palindrome
+        int start = 1;
+        while(start<n-1){
+            int count_left = 0;
+            for(int j=start;j>=0;j--){
+                if(dp[j][start] == true) count_left++;
+            }
+            int count_right = dp1[start+1][n-1];
+
+            dp2[start] =  count_right * count_left;
+        }
+        int total = 0;
+
+        for(int i = 1;i<n-2;i++){
+            int j = i;
+            int count_left = 0;
+            while(j-->=0){
+                if(dp[j][i] == true) count_left++;
+            }
+            int right = dp2[start+1];
+            total+=count_left*right;
+        }
+        return total;
+
+    }
+
 }
 
 
