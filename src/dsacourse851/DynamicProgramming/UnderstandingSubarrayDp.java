@@ -122,32 +122,48 @@ public class UnderstandingSubarrayDp {
         }
         return dp1[n-1][n-1];
     }
-//    public static int question_34(String s,int[][] matrix){
-//        int n = s.length();
-//        boolean[][] dp = new boolean[n][n];
-//
-//        for(int i=1;i<n;i++){
-//            dp[i][i]=true;
-//        }
-//
-//        for(int i=1;i<n-1;i++){
-//            if(s.charAt(i) == s.charAt(i+1)){
-//                dp[i][i+1] = true;
-//            }
-//        }
-//
-//        int length = 3;
-//        while(length<=n){
-//            for(int i=0;i<n-length+1;i++){
-//                int j = i + length - 1;
-//                if(s.charAt(i) == s.charAt(j) && dp[i+1][j-1] == true){
-//                    dp[i][j] = true;
-//                }
-//            }
-//            length++;
-//        }
-//
-//    }
+    // follow up problem given l and r  find the count of palidromic substring for [l ... r]
+    public static int[] question_34(String s,int[][] matrix){
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        int[][] dp1 = new int[n][n];
+
+        for(int i=0;i<n;i++){
+            dp[i][i]=true;
+            dp1[i][i] = 1;
+        }
+
+        for(int i=0;i<n-1;i++){
+            if(s.charAt(i) == s.charAt(i+1)){
+                dp[i][i+1] = true;
+                dp1[i][i+1] = dp1[i+1][i+1] + dp1[i][i] + 1;
+            }
+           else dp1[i][i+1] = dp1[i+1][i+1] + dp1[i][i];
+        }
+
+        int length = 3;
+        while(length<=n){
+            for(int i=0;i<n-length+1;i++){
+                int j = i + length - 1;
+                if(s.charAt(i) == s.charAt(j) && dp[i+1][j-1] == true){
+                    dp[i][j] = true;
+                    dp1[i][j] = dp1[i+1][j] + dp1[i][j-1] - dp1[i+1][j-1] + 1;
+                }
+                else dp1[i][j] = dp1[i+1][j] + dp1[i][j-1] - dp1[i+1][j-1] ;
+            }
+            length++;
+        }
+        int m = matrix.length;
+        int[] ans = new int[m];
+        for(int i=0;i<m;i++){
+            int l = matrix[i][0];
+            int r = matrix[i][1] ;
+            ans[i] = dp1[l][r];
+        }
+        return ans;
+
+
+    }
 }
 
 
