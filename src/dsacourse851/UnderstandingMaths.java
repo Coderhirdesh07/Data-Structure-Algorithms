@@ -49,4 +49,26 @@ public class UnderstandingMaths {
 
     }
 
+    public static int question_4_easy(int[] arr,int n){
+        int max = -1;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int res = gcd(arr[i],arr[j]);
+                max = Math.max(max,res);
+            }
+        }
+        return max;
+    }
+    public static int gcd(int x,int y){
+        if(y==0) return x;
+        return gcd(y,x%y);
+    }
+    public static int question_4_easy_optimised(int[] arr,int n){
+        int max = -1;
+        for(int x:arr){
+            max = Math.max(x,max);
+        }
+        return max;
+    }
+
 }
