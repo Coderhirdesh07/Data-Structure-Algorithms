@@ -117,4 +117,73 @@ public class YoutubeProblems {
 //    }
 //    public static int question_de_shaw(){}
 
+    // Cisco OA 14/06/26
+    // given matrix start cell and end cell (4 direction allowed) find shortest path between start and end cell
+    // if the matrix[i][j] = 0 you can travel for 1 you cannot
+    //  also given a energy if it become 0 no further travel given charging cells if k charging are allowed
+    public static int question_cisco(int sr,int sc,int dr,int dc,int[][] matrix,int battery,int[][] chargingCells,int k){
+        int[] drow = {-1,0,1,0};
+        int[] dcol = {0,-1,0,1};
+        int n = matrix.length;
+        int m = matrix[0].length;
+        if(matrix[sr][sc]==1 || matrix[dr][dc] == 1) return -1;
+        int[][][][] dp = new int[n][m][battery+1][k+2];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                for(int l=0;l<=battery;l++)
+                Arrays.fill(dp[i][j][l],Integer.MIN_VALUE);
+            }
+        }
+        dp[sr][sc][battery][0] = 0;
+
+        Queue<Triplet> q1 = new LinkedList();
+        q1.add(new Triplet(sr,sc,battery,0));
+        while(!q1.isEmpty()){
+            Triplet t1 = q1.peek();
+            q1.remove();
+            int r = t1.row;
+            int c = t1.col;
+            int left = t1.energyleft;
+            int charge_count = t1.chargingdone;
+            if(left==0 && r!=dr && c!=dc && charge_count>=k) return -1;
+            for(int i=0;i<4;i++){
+                int nrow = r + drow[i];
+                int ncol = c + dcol[i];
+                if(nrow>=0 && nrow<n && ncol>=0 && ncol<=m && dp[nrow][ncol][left][charge_count]==Integer.MIN_VALUE && matrix[nrow][ncol]==0 && charge_count<k && left>=1){
+                    if(chargingCells[nrow][ncol]==1){
+                        dp[nrow][ncol][battery][charge_count+1] = 1 + dp[r][c][left-1][charge_count];
+                        q1.add(new Triplet(nrow, ncol, battery, charge_count+1));
+                    }
+                    else {
+                        dp[nrow][ncol][left-1][charge_count] = 1 + dp[r][c][left][charge_count];
+                        q1.add(new Triplet(nrow,ncol,left-1,charge_count));
+                    }
+                }
+            }
+        }
+
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<=battery;i++){
+            for(int j=0;j<=k+1;j++){
+                if(dp[dr][dc][i][j]!=Integer.MIN_VALUE){
+                    min = Math.min(min,dp[dr][dc][i][j]);
+                }
+            }
+        }
+        return min;
+
+    }
+    static class Triplet{
+        int row;
+        int col;
+        int energyleft;
+        int chargingdone;
+        Triplet(int row,int col,int energyleft,int chargingdone){
+            this.row = row;
+            this.col=col;
+            this.energyleft=energyleft;
+            this.chargingdone = chargingdone;
+        }
+    }
+
 }
