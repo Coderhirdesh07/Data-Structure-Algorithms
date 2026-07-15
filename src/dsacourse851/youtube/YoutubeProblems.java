@@ -171,7 +171,6 @@ public class YoutubeProblems {
             }
         }
         return min;
-
     }
     static class Triplet{
         int row;
