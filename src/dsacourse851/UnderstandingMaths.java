@@ -1,5 +1,7 @@
 package dsacourse851;
 
+import java.util.HashMap;
+
 public class UnderstandingMaths {
     public static void main(String[] args) {
         int ans = question_3(25,50);
@@ -66,9 +68,72 @@ public class UnderstandingMaths {
     public static int question_4_easy_optimised(int[] arr,int n){
         int max = -1;
         for(int x:arr){
-            max = Math.max(x,max);
+            max = Math.max(max,x);
         }
-        return max;
+        int limit = max;
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        for(int i=0;i<n;i++){
+            int x = arr[i];
+            for(int j=1;j<x;i++){
+                if(x%i==0){
+                    m1.put(i,m1.getOrDefault(i,0)+1);
+                }
+            }
+        }
+        int ans = -1;
+        for(int it:m1.keySet()){
+            if(m1.containsKey(it)){
+                if(m1.get(it)>=2){
+                    ans = Math.max(ans,m1.get(it));
+                }
+            }
+        }
+        return ans;
+
     }
+
+    public static int question_4_actual_problem(int[] arr,int n){
+        int max = -1;
+        for(int x:arr){
+            max = Math.max(max,x);
+        }
+        int limit = max;
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        for(int i=0;i<n;i++){
+            int x = arr[i];
+            for(int j=1;j<limit;i++){
+                if( i<limit && x%i==0){
+                    m1.put(i,m1.getOrDefault(i,0)+1);
+                }
+            }
+        }
+        int ans = -1;
+        for(int it:m1.keySet()){
+            if(m1.containsKey(it)){
+                if(m1.get(it)>=3){
+                    ans = Math.max(ans,m1.get(it));
+                }
+            }
+        }
+        return ans;
+
+    }
+    public static int question_6(int[] energy,int[] count,int[] cost,int s){
+        int min = Integer.MAX_VALUE;
+       for(int i=0;i<=count[0];i++){
+           for(int j=0;j<=count[1];j++){
+               for(int k=0;k<=count[2];k++){
+                   int total_energy = i*energy[0] + j*energy[1] + k*energy[2];
+                   int total_cost = i*cost[0] + j*cost[1] + k * cost[2];
+                   if(total_energy==s){
+                       min = Math.min(min,total_cost);
+                   }
+               }
+           }
+       }
+       return min;
+
+    }
+
 
 }

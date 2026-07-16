@@ -172,4 +172,55 @@ public class LiveSessionCode {
         int ans = numerator/6;
         return ans;
     }
+
+    public static int[] agoda_oa(int[][] queries,int k,int[][] mat){
+        int q = queries.length;
+        int[] result = range_update_queries_optimized(queries);
+
+        int count = 0;
+        int m = mat.length;
+        int[] newArray = new int[q];
+        for(int i =0;i<q;i++){
+            if(result[i]>=k) {
+                newArray[i] = 1;
+            }
+            else newArray[i]=0;
+        }
+
+        for(int i=1;i<q;i++){
+            newArray[i] += newArray[i-1];
+        }
+
+        int[] ans = new int[q];
+        // traversing mat
+        for(int i=0;i<m;i++){
+            int left = mat[i][0];
+            int right = mat[i][1];
+            if(left!=0){
+                ans[i] = newArray[right] - newArray[left-1];
+            }
+            else ans[i] = newArray[right];
+        }
+        return ans;
+    }
+    public static int[] range_update_queries_optimized(int[][] queries){
+        int q = queries.length;
+
+        int[] arr = new int[q];
+        Arrays.fill(arr,0);
+
+        for(int i=0;i<q;i++){
+            int left = queries[i][0];
+            int right = queries[i][1];
+            arr[left]+=1;
+            arr[right+1]-=1;
+        }
+        int[] prefix = new int[n];
+        prefix[0] = arr[0];
+
+        for(int i=1;i<q;i++){
+            prefix[i] = prefix[i-1] + arr[i];
+        }
+        return prefix;
+    }
 }

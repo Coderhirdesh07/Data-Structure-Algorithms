@@ -1,5 +1,6 @@
 package codeforces;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class CFTemplates {
@@ -59,4 +60,42 @@ public class CFTemplates {
 //    public static int lcm(int a,int b){}
 
     // public static int difference_array(){}
+
+    // TC:- O(Q*n)
+    public static int[] range_update_query_bruteforce(int[][] queries,int n){
+        int q = queries.length;
+        int[] arr = new int[n];
+
+        Arrays.fill(arr,0);
+
+        for(int i=0;i<q;i++){
+            int left = queries[i][0];
+            int right = queries[i][1];
+            for(int j=left;j<=right;j++){
+                arr[j]+=1;
+            }
+        }
+        return arr;
+    }
+    // TC:- O(n)
+    public static int[] range_update_queries_optimized(int[][] queries,int n){
+        int q = queries.length;
+
+        int[] arr = new int[n];
+        Arrays.fill(arr,0);
+
+        for(int i=0;i<q;i++){
+            int left = queries[i][0];
+            int right = queries[i][1];
+            arr[left]+=1;
+            arr[right+1]-=1;
+        }
+        int[] prefix = new int[n];
+        prefix[0] = arr[0];
+
+        for(int i=1;i<n;i++){
+            prefix[i] = prefix[i-1] + arr[i];
+        }
+        return prefix;
+    }
 }
