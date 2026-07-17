@@ -1,11 +1,14 @@
 package dsacourse851;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UnderstandingMaths {
     public static void main(String[] args) {
         int ans = question_3(25,50);
-        System.out.println(ans);
+        int[] res = {3,4,3};
+        int val = question_8(res,res.length);
+        System.out.println(val);
     }
     public static int factors(int n){
         int value = (int) Math.sqrt(n);
@@ -133,6 +136,35 @@ public class UnderstandingMaths {
        }
        return min;
 
+    }
+    public static int question_6_optimised(int[] energy,int[] count,int[] cost,int s){
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<=count[0];i++){
+            for(int j=0;j<=count[1];j++){
+                int k = (s - (energy[0]*i + energy[1]*j))/energy[2];
+                if(k>=0 && k<=count[2]){
+                    if(i*cost[0] + j*cost[1] + k*cost[2] == s){
+                        int total_cost = i*cost[0] + j*cost[1] + k*cost[2];
+                        min = Math.min(total_cost,min);
+                    }
+                }
+            }
+        }
+        return min;
+
+    }
+
+    public static int question_8(int[] arr,int n){
+        int count = 0;
+
+        int max = arr[n-1];
+        int ind = n-2;
+        while(ind>=0){
+            ind--;
+        }
+
+
+        return count;
     }
 
 

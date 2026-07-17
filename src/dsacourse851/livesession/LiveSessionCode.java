@@ -215,7 +215,7 @@ public class LiveSessionCode {
             arr[left]+=1;
             arr[right+1]-=1;
         }
-        int[] prefix = new int[n];
+        int[] prefix = new int[q];
         prefix[0] = arr[0];
 
         for(int i=1;i<q;i++){
