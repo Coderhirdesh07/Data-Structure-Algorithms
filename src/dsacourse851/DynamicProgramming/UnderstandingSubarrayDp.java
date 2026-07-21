@@ -1,5 +1,6 @@
 package dsacourse851.DynamicProgramming;
 
+import java.util.Arrays;
 import java.util.Scanner;
 public class UnderstandingSubarrayDp {
     public static void main(String[] args) {
@@ -208,7 +209,7 @@ public class UnderstandingSubarrayDp {
        return total;
     }
 
-    public static int longest_palidromic_subsequence(String s){
+    public static int longest_palindromic_subsequence(String s){
         int n = s.length();
         int[][] dp = new int[n][n];
         for(int i=0;i<n;i++){
@@ -225,11 +226,11 @@ public class UnderstandingSubarrayDp {
         }
         int length = 3;
 
-        while(length<n){
+        while(length<=n){
             for(int i=0;i<n-length;i++){
                 int j = i+length-1;
                 if(s.charAt(i) == s.charAt(j)){
-                    dp[i][j] = Math.max(2+dp[i][j-1],Math.max(dp[i][j-1],dp[i+1][j]));
+                    dp[i][j] = Math.max(2+dp[i+1][j-1],Math.max(dp[i][j-1],dp[i+1][j]));
                 }
                 else{
                     dp[i][j] = Math.max(dp[i+1][j],dp[i][j-1]);
@@ -297,11 +298,58 @@ public class UnderstandingSubarrayDp {
 
     }
 
-//    public static int question_35_leetcode(String input,int k){
-//
-//
-//
-//    }
+    public static int question_35_Leetcode(String input,int k){
+        int n = input.length();
+
+        int[][][] dp = new int[n][n][k+1];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                Arrays.fill(dp[i][j],Integer.MIN_VALUE);
+            }
+        }
+
+
+        for(int i=0;i<n;i++){
+            dp[i][i][k] = 1;
+        }
+
+        for(int i=0;i<n-1;i++){
+            if(input.charAt(i) == input.charAt(i+1)){
+                dp[i][i+1][k] = 2;
+            }
+            else{
+                dp[i][i+1][k] = 1;
+                dp[i][i+1][k-1] = 2;
+            }
+        }
+
+        int length = 3;
+
+        while(length<=n){
+            for(int i=0;i<n-length;i++){
+                int j = i+length-1;
+                if(input.charAt(i) == input.charAt(j)){
+                    dp[i][j][k] = Math.max(2+dp[i+1][j-1][k],Math.max(dp[i][j-1][k],dp[i+1][j][k]));
+                }
+                else{
+                    int option1 = Math.max(dp[i+1][j][k],dp[i][j-1][k]);
+                    int option2 =  Math.max(2+dp[i][j][k-1],Math.max(dp[i+1][j][k],dp[i][j-1][k]));
+                    int u  = minoperations(input.charAt(i),input.charAt(j));
+                    int option3 = 2 + dp[i+1][j-1][k-u];
+                    dp[i][j][k] = Math.max(option1,Math.max(option2,option3));
+                }
+            }
+            length++;
+        }
+
+        int ans = Integer.MIN_VALUE;
+        for(int i=0;i<=k;i++) ans = Math.max(dp[0][n-1][i],ans);
+
+        return ans;
+    }
+    public static int minoperations(char x,char y){
+     return 2;
+    }
 
 }
 
