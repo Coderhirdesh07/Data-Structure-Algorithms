@@ -208,6 +208,38 @@ public class UnderstandingSubarrayDp {
        return total;
     }
 
+    public static int longest_palidromic_subsequence(String s){
+        int n = s.length();
+        int[][] dp = new int[n][n];
+        for(int i=0;i<n;i++){
+            dp[i][i] = 1;
+        }
+        // aa
+        for(int i=0;i<n-1;i++){
+            if(s.charAt(i) == s.charAt(i+1)){
+                dp[i][i+1] = 2;
+            }
+            else{
+                dp[i][i+1] = 1;
+            }
+        }
+        int length = 3;
+
+        while(length<n){
+            for(int i=0;i<n-length;i++){
+                int j = i+length-1;
+                if(s.charAt(i) == s.charAt(j)){
+                    dp[i][j] = Math.max(2+dp[i][j-1],Math.max(dp[i][j-1],dp[i+1][j]));
+                }
+                else{
+                    dp[i][j] = Math.max(dp[i+1][j],dp[i][j-1]);
+                }
+            }
+            length++;
+        }
+            return dp[0][n-1];
+    }
+
     // needed to find triplet in this
     public static int question_34_google_oa(String s){
         int  n = s.length();
@@ -266,6 +298,8 @@ public class UnderstandingSubarrayDp {
     }
 
 //    public static int question_35_leetcode(String input,int k){
+//
+//
 //
 //    }
 
