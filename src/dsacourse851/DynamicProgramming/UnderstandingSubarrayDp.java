@@ -310,45 +310,31 @@ public class UnderstandingSubarrayDp {
 
 
         for(int i=0;i<n;i++){
-            dp[i][i][k] = 1;
-        }
-
-        for(int i=0;i<n-1;i++){
-            if(input.charAt(i) == input.charAt(i+1)){
-                dp[i][i+1][k] = 2;
-            }
-            else{
-                dp[i][i+1][k] = 1;
-                dp[i][i+1][k-1] = 2;
+            for(int j=0;j<=k;j++){
+                dp[i][i][j] = 1;
             }
         }
 
-        int length = 3;
+        for(int len=2;len<=n;len++){
+            for(int i=0;i<n-len+1;i++){
+                int j = i+len-1;
+                for(int x = 0;x<=k;x++){
+                    if(input.charAt(i)==input.charAt(j)){
+                        dp[i][j][x] = Math.max(2+dp[i+1][j-1][x],Math.max(dp[i][j-1][x],dp[i+1][j][x]));
+                    }
+                    else{
 
-        while(length<=n){
-            for(int i=0;i<n-length;i++){
-                int j = i+length-1;
-                if(input.charAt(i) == input.charAt(j)){
-                    dp[i][j][k] = Math.max(2+dp[i+1][j-1][k],Math.max(dp[i][j-1][k],dp[i+1][j][k]));
-                }
-                else{
-                    int option1 = Math.max(dp[i+1][j][k],dp[i][j-1][k]);
-                    int option2 =  Math.max(2+dp[i][j][k-1],Math.max(dp[i+1][j][k],dp[i][j-1][k]));
-                    int u  = minoperations(input.charAt(i),input.charAt(j));
-                    int option3 = 2 + dp[i+1][j-1][k-u];
-                    dp[i][j][k] = Math.max(option1,Math.max(option2,option3));
+                        int cost = Math.min(Math.abs((int)input.charAt(i)- (int) input.charAt(j)),26-Math.abs((int)input.charAt(i)-(int)input.charAt(j)));
+                        dp[i][j][x] = Math.max(dp[i][j-1][x],dp[i+1][j][x]);
+                        if(cost<=x){
+                            dp[i][j][x-cost] = Math.max(dp[i][j][x],2+ dp[i+1][j-1][x-cost]);
+                        }
+                    }
                 }
             }
-            length++;
         }
 
-        int ans = Integer.MIN_VALUE;
-        for(int i=0;i<=k;i++) ans = Math.max(dp[0][n-1][i],ans);
-
-        return ans;
-    }
-    public static int minoperations(char x,char y){
-     return 2;
+        return dp[0][n-1][k];
     }
 
 }

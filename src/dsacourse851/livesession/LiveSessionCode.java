@@ -1,7 +1,6 @@
 package dsacourse851.livesession;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class LiveSessionCode {
     public static void main(String[] args) {
@@ -222,5 +221,84 @@ public class LiveSessionCode {
             prefix[i] = prefix[i-1] + arr[i];
         }
         return prefix;
+    }
+    static class Triplet{
+        int row;
+        int col;
+        int wt;
+        Triplet(int row,int col,int wt){
+            this.row=row;
+            this.col=col;
+            this.wt=wt;
+        }
+    }
+    static class Pair{
+        int row;
+        int col;
+
+        Pair(int row,int col){
+            this.row=row;
+            this.col=col;
+        }
+
+    }
+    public static int question(int[][] matrix,int sr,int sc,int dr,int dc){
+        int n = matrix.length;
+        int m = matrix[0].length;
+        HashMap<Pair,Integer> m1 = new HashMap<>();
+        int[][] distance = new int[n][m];
+        if(matrix[sr][sc] == -1 || matrix[dr][dc]==-1) return -1;
+
+        // stored all elements greater than 0 with their distance in a hashmap
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(matrix[i][j]>4){
+                    Pair p1 = new Pair(i,j);
+                    m1.put(p1,matrix[i][j]);
+                }
+                distance[i][j] = Integer.MAX_VALUE;
+            }
+        }
+        int[] drow = {-1,0,1,0};
+        int[] dcol = {0,1,0,-1};
+        Queue<Triplet> q1 = new LinkedList<>();
+        q1.add(new Triplet(sr,sc,0));
+
+        // bfs
+        while(!q1.isEmpty()){
+            Triplet triplet = q1.peek();
+            q1.remove();
+            int r = triplet.row; // get the row
+            int c = triplet.col; //  get the col
+            int weight = triplet.wt; // get the dist to reach it
+            if(r == dr && c == dc) break;
+            if(matrix[r][c]>0){
+                Pair check = new Pair(r,c);
+                // check for special edges
+                for(Pair it:m1.keySet()){
+                    if(it != check) {
+                        int dist = distance[r][c] + matrix[r][c] + m1.get(it);
+                        if (distance[it.row][it.col] < dist) {
+                            q1.add(new Triplet(it.row,it.col,dist));
+                            distance[it.row][it.col] = dist;
+                        }
+                    }
+                }
+            }
+
+            for(int i=0;i<4;i++){
+                int nrow = r + drow[i];
+                int ncol = c + dcol[i];
+                // validation
+                if(nrow>=0 && nrow<n && ncol>=0 && ncol<m && matrix[nrow][ncol]!=-1){
+                    if(distance[nrow][ncol]< weight + 1){
+                        q1.add(new Triplet(nrow,ncol,weight+1));
+                        distance[nrow][ncol] = weight + 1;
+                    }
+                }
+            }
+        }
+
+        return distance[dr][dc];
     }
 }
