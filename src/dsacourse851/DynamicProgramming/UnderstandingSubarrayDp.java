@@ -4,6 +4,10 @@ import java.util.Arrays;
 import java.util.Scanner;
 public class UnderstandingSubarrayDp {
     public static void main(String[] args) {
+        int[] arr = {5,5,8};
+        int[] arr2 = {5,8,2,10};
+        int res = question_google_interview(arr2,arr2.length);
+        System.out.println(res);
 
     }
     // find the count of palidrome in string
@@ -242,7 +246,7 @@ public class UnderstandingSubarrayDp {
     }
 
     // needed to find triplet in this
-    public static int question_34_google_oa(String s){
+    public static int question_35_google_oa(String s){
         int  n = s.length();
         boolean[][] dp = new boolean[n][n];
         int[][] dp1 = new int[n][n];
@@ -298,7 +302,7 @@ public class UnderstandingSubarrayDp {
 
     }
 
-    public static int question_35_Leetcode(String input,int k){
+    public static int question_36_Leetcode(String input,int k){
         int n = input.length();
 
         int[][][] dp = new int[n][n][k+1];
@@ -336,6 +340,35 @@ public class UnderstandingSubarrayDp {
 
         return dp[0][n-1][k];
     }
+    public static int question_google_interview(int[] arr,int n){
+        int[][] dp = new int[n][n];
+//        for(int i=0;i<n;i++) Arrays.fill(dp[i],Integer.MAX_VALUE);
+        int[] prefix = new int[n];
+        prefix[0] = arr[0];
+        for(int i=1;i<n;i++){
+            prefix[i] = prefix[i-1] + arr[i];
+        }
+
+        for(int i=0;i<n;i++){
+            dp[i][i] = 0;
+        }
+        for(int i=0;i<n-1;i++){
+            dp[i][i+1] = arr[i] + arr[i+1];
+        }
+        int length  = 3;
+        while(length<=n){
+            for(int i=0;i<n-length+1;i++){
+                int j = i+length-1;
+                int option1 = dp[i][i] + dp[i+1][j];
+                int option2 = dp[j][j] + dp[i][j-1];
+                int option3 = dp[i][i+1] + dp[i+2][j];
+                dp[i][j] = Math.min(option1,Math.min(option2,option3)) + (i>=1 ? prefix[j]-prefix[i-1]:prefix[j]);
+            }
+            length++;
+        }
+        return dp[0][n-1];
+    }
+
 
 }
 
