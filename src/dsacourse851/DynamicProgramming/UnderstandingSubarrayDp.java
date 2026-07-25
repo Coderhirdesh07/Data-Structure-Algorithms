@@ -369,6 +369,10 @@ public class UnderstandingSubarrayDp {
         return dp[0][n-1];
     }
 
+//    public static int question_38_rubrik(int[][] query,String input){
+//
+//    }
+
 
 }
 
