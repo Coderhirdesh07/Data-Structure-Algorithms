@@ -172,6 +172,11 @@ public class YoutubeProblems {
         }
         return min;
     }
+    // 28 july tower research oa problem yt
+    public static int tower_research_oa(int[] a,int[] b){
+
+        return a[0] - b[b.length-1];
+    }
     static class Triplet{
         int row;
         int col;
