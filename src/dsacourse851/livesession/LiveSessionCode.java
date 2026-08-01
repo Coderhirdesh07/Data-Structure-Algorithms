@@ -4,6 +4,9 @@ import java.util.*;
 
 public class LiveSessionCode {
     public static void main(String[] args) {
+        int[] arr = {1,2,2,3,2,2,2,4,4,4,5};
+        int res = rippling(arr,2);
+        System.out.println(res);
 
     }
     // find no of pairs such that product is perfect square
@@ -301,47 +304,46 @@ public class LiveSessionCode {
 
         return distance[dr][dc];
     }
-//    public static int rippling(int[] arr,int k){
-//        int n = arr.length;
-//            int max = -1;
-//            for(int i=0;i<n;i++){
-//                max = Math.max(arr[i],max);
-//            }
-//
-//            ArrayList<ArrayList<Integer>> list = new ArrayList<>();
-//            for(int i=0;i<=max;i++) list.add(new ArrayList<>());
-//
-//            for(int i=0;i<n;i++){
-//                int val = arr[i];
-//                int ind = i;
-//                list.get(val).add(ind);
-//            }
-//
-//
-//            int ans = Integer.MIN_VALUE;
-//            int absenceValue = 0;
-//
-//
-//            for(int i=0;i<=max;i++){
-//                if(list.get(i).size()>0){
-//                    int l = list.get(i).get(0);
-//                    int r = list.get(i).get(0);
-//                    while(r<n){
-//                        int diff = r -l-1;
-//                        while(diff>k){
-//                            l++;
-//                        }
-//
-//
-//                    }
-//                }
-//            }
-//
-//
-//
-//        }
-//    }
+    public static int rippling(int[] arr,int k){
+        int n = arr.length;
+            int maxi = -1;
+            for(int i=0;i<n;i++){
+                maxi = Math.max(arr[i],maxi);
+            }
 
-// k==2
-// 2-> 1 3 4 6
-}
+            ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+            for(int i=0;i<=maxi;i++) list.add(new ArrayList<>());
+
+            for(int i=0;i<n;i++){
+                int val = arr[i];
+                int ind = i;
+                list.get(val).add(ind);
+            }
+
+            int ans = Integer.MIN_VALUE;
+
+            // loop for traversing adj list
+            for(int i=0;i<=maxi;i++){
+                int i1 = 0;
+                int sum = 0;
+                int max = -1;
+                for(int j=0;j<n;i++){
+                    if(j-1>=0){
+                        sum+=Math.abs(list.get(i).get(j) - list.get(i).get(j-1) -1);
+                    }
+                    while(sum>k){
+                        if(i1-1>0){
+                            sum-=Math.abs(list.get(i).get(i1) - list.get(i).get(i1-1) -1);
+                        }
+                        i1++;
+                    }
+                    max = Math.max(max,j-i1+1);
+                }
+                ans = Math.max(ans,max);
+
+            }
+            return ans;
+        }
+    }
+
+
