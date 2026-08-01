@@ -301,4 +301,47 @@ public class LiveSessionCode {
 
         return distance[dr][dc];
     }
+//    public static int rippling(int[] arr,int k){
+//        int n = arr.length;
+//            int max = -1;
+//            for(int i=0;i<n;i++){
+//                max = Math.max(arr[i],max);
+//            }
+//
+//            ArrayList<ArrayList<Integer>> list = new ArrayList<>();
+//            for(int i=0;i<=max;i++) list.add(new ArrayList<>());
+//
+//            for(int i=0;i<n;i++){
+//                int val = arr[i];
+//                int ind = i;
+//                list.get(val).add(ind);
+//            }
+//
+//
+//            int ans = Integer.MIN_VALUE;
+//            int absenceValue = 0;
+//
+//
+//            for(int i=0;i<=max;i++){
+//                if(list.get(i).size()>0){
+//                    int l = list.get(i).get(0);
+//                    int r = list.get(i).get(0);
+//                    while(r<n){
+//                        int diff = r -l-1;
+//                        while(diff>k){
+//                            l++;
+//                        }
+//
+//
+//                    }
+//                }
+//            }
+//
+//
+//
+//        }
+//    }
+
+// k==2
+// 2-> 1 3 4 6
 }

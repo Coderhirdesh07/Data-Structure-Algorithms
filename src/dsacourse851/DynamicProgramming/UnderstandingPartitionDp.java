@@ -1,6 +1,7 @@
 package dsacourse851.DynamicProgramming;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class UnderstandingPartitionDp {
@@ -104,40 +105,81 @@ public class UnderstandingPartitionDp {
         }
         return original;
     }
-    public static boolean powerOfFive(int number){
-        if(number==1) return true;
-        while(number>1){
-            if(number%5!=0){
-                return false;
+
+    public static int question_43(String s) {
+        int n = s.length();
+        int[] dp  = new int[n+1];
+        Arrays.fill(dp,100);
+        dp[0] = 0;
+
+        int i = 0;
+        while(i<n){
+            int ans = 100;
+            int j = i;
+            while(j>=0){
+                String check = s.substring(j,i+1);
+                int res = convertToNumber(check);
+                if(s.charAt(j)!='0'  && res!=0 && (15625%res) == 0){
+                    ans = Math.min(ans,1 + dp[j]);
+                }
+                j--;
             }
-            else{
-                number=number/5;
+            dp[i+1] = ans;
+            i++;
+        }
+
+        return (dp[n] == 100)?-1:dp[n];
+    }
+    public static int cisco_oa_question_47(int[] arr,int m,int k){
+     int n = arr.length;
+     int[] dp = new int[n+1];
+
+     dp[0] = 0;
+     for(int i=1;i<=n;i++){
+         int max = arr[i];
+         int min = arr[i];
+         for(int j=i-1;j>=0;j--){
+             int size = j-i;
+             if(size>=k && max - min <=m){
+                 dp[i] = 1 + dp[i-j+1];
             }
+             max = Math.max(max,arr[j]);
+             min = Math.min(min,arr[j]);
+         }
+     }
+     return dp[n];
+    }
+
+    public static boolean isStringValid(HashMap<Character,Integer> m1,char ref){
+        int check = m1.get(ref);
+        for(char it:m1.keySet()){
+            if(m1.get(it)!=check) return false;
         }
         return true;
     }
-    public static int question_43(String s) {
+    // leetcode contest problem
+    public static int question_46(String s) {
         int n = s.length();
-        int[] dp  = new int[n];
+        int[] dp = new int[n+1];
         Arrays.fill(dp,Integer.MAX_VALUE);
 
-        dp[0] = (s.charAt(0)=='1' ? 1:0);
-        dp[1] = (s.charAt(0)=='1'?2:0);
 
-        for(int i=2;i<n;i++){
-            for(int j=i-1;j>0;j--){
-                String check = s.substring(j,i+1);
-                int res = convertToNumber(check);
-                if(s.charAt(i)!='0'){
-                    boolean ans = powerOfFive(res);
-                    if(ans){
-                        dp[i] = Math.min(dp[i],1 + dp[j-1]);
-                    }
+        dp[0] = 0;
+        for(int i=0;i<n;i++){
+            HashMap<Character,Integer> m1 = new HashMap<>();
+            for(int j=i;j>=0;j--){
+                m1.put(s.charAt(j),m1.getOrDefault(s.charAt(j),0)+1);
+                String refer = s.substring(j,i+1);
+                boolean isGood = isStringValid(m1,s.charAt(i));
+                if(isGood == true){
+                    dp[i+1] = Math.min(dp[i+1],1 + dp[j]);
                 }
             }
         }
-
-        // return (dp[n] == Integer.MAX_VALUE)?-1:dp[n];
-        return dp[n-1];
+        return dp[n];
     }
+
+
+
+
 }
