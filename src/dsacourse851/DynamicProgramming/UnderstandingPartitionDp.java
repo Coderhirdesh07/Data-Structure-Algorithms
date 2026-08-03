@@ -6,17 +6,26 @@ import java.util.Scanner;
 
 public class UnderstandingPartitionDp {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+//        Scanner sc = new Scanner(System.in);
 //        int n = sc.nextInt();
-//        int[] arr = new int[n+1];
+//        int[] a = new int[n+1];
+//        int[] b = new int[n+1];
 ////        [5 10 5 10 1 1 8 2]
 //        // 1 2 3 4 4
 //        // 1 2 3 4 6
 //        for(int i=1;i<=n;i++){
-//            arr[i] = sc.nextInt();
+//            a[i] = sc.nextInt();
 //        }
-        int ans = question_43("1011");
+//        for(int i=1;i<=n;i++){
+//            b[i] = sc.nextInt();
+//        }
+        int[] a = {0,16 ,20 ,12 ,12, 8, 2, 3, 8, 17, 3, 14, 8};
+        int[] b = {0,16, 17, 1, 2, 20, 17, 1, 3 ,9 ,8 ,10, 16};
+
+        int ans = question_48(a,b,12);
         System.out.println(ans);
+        // 5 3
+        //1 2 1 3 5
 
     }
     public static int partition_dp(int[] arr,int m,int n){
@@ -130,25 +139,58 @@ public class UnderstandingPartitionDp {
 
         return (dp[n] == 100)?-1:dp[n];
     }
-    public static int cisco_oa_question_47(int[] arr,int m,int k){
-     int n = arr.length;
-     int[] dp = new int[n+1];
 
-     dp[0] = 0;
-     for(int i=1;i<=n;i++){
-         int max = arr[i];
-         int min = arr[i];
-         for(int j=i-1;j>=0;j--){
-             int size = j-i;
-             if(size>=k && max - min <=m){
-                 dp[i] = 1 + dp[i-j+1];
+    // leetcode contest problem
+    public static int question_44(String s) {
+        int n = s.length();
+        int[] dp  = new int[n+1];
+        Arrays.fill(dp,100);
+        dp[0] = 0;
+
+        int i = 0;
+        while(i<n){
+            int ans = 100;
+            int j = i;
+            while(j>=0){
+                String check = s.substring(j,i+1);
+                int res = convertToNumber(check);
+                if(s.charAt(j)!='0'  && res!=0 && (15625%res) == 0){
+                    ans = Math.min(ans,1 + dp[j]);
+                }
+                j--;
             }
-             max = Math.max(max,arr[j]);
-             min = Math.min(min,arr[j]);
-         }
-     }
-     return dp[n];
+            dp[i+1] = ans;
+            i++;
+        }
+
+        return (dp[n] == 100)?-1:dp[n];
     }
+
+    // linkedin oa problem
+    public static int question_45(int[] arr,int k){
+        int n = arr.length;
+        int[][] dp = new int[n+1][k+1];
+        for(int i=0;i<=n;i++){
+            Arrays.fill(dp[i],Integer.MAX_VALUE);
+        }
+
+       for(int i=0;i<=k;i++) dp[0][i] = 0;
+
+        for(int i=1;i<=n;i++){
+            for(int prt = 1;prt<=k;prt++) {
+                int max = 0;
+                for (int j = i; j >= 1; j--) {
+                    max = Math.max(max,arr[j-1]);
+                    if(dp[j-1][prt-1]!=Integer.MAX_VALUE){
+                        dp[i][prt] = Math.min(max + dp[j-1][prt-1],dp[i][prt]);
+                    }
+                }
+            }
+        }
+        return dp[n][k];
+    }
+
+
 
     public static boolean isStringValid(HashMap<Character,Integer> m1,char ref){
         int check = m1.get(ref);
@@ -157,6 +199,7 @@ public class UnderstandingPartitionDp {
         }
         return true;
     }
+
     // leetcode contest problem
     public static int question_46(String s) {
         int n = s.length();
@@ -179,7 +222,49 @@ public class UnderstandingPartitionDp {
         return dp[n];
     }
 
+    public static int cisco_oa_question_47(int[] arr,int m,int k){
+        int n = arr.length;
+        int[] dp = new int[n+1];
+
+        dp[0] = 0;
+        for(int i=1;i<=n;i++){
+            int max = arr[i];
+            int min = arr[i];
+            for(int j=i-1;j>=0;j--){
+                int size = j-i;
+                if(size>=k && max - min <=m){
+                    dp[i] = 1 + dp[i-j+1];
+                }
+                max = Math.max(max,arr[j]);
+                min = Math.min(min,arr[j]);
+            }
+        }
+        return dp[n];
+    }
+
+    // google oa problem
+    public static int question_48(int[] a,int[] b,int n){
+        int[] dp = new int[n+1];
+
+        dp[1] = a[1];
 
 
+        for(int i = 2 ; i <= n ; i++){
+            int sum = b[i] + b[i-1];
+            int sum2 = a[i] + dp[i-1];
+            int j = i-1;
+           while(j>=1){
+                int newSum = sum + dp[j-1];
+                sum2 = Math.min(newSum,sum2);
+                j--;
+                sum+=b[j];
+           }
+           dp[i] = sum2;
+        }
+
+
+        return dp[n];
+
+    }
 
 }
