@@ -262,9 +262,28 @@ public class UnderstandingPartitionDp {
            dp[i] = sum2;
         }
 
-
         return dp[n];
 
+    }
+    public static boolean isPrime(String check){
+        int prime = Integer.parseInt(check);
+        return prime>0;
+    }
+    public static int question_50(String s){
+        int n = s.length();
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        for(int i=1;i<n;i++){
+            for(int j=i-1;j>=0;j--){
+                String check = s.substring(j,i+1);
+                boolean prime = isPrime(check);
+                if(prime){
+                    dp[i] = 1 + dp[j-1];
+                }
+            }
+
+        }
+        return dp[n];
     }
 
 }
