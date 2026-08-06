@@ -22,8 +22,8 @@ public class UnderstandingPartitionDp {
         int[] a = {0,16 ,20 ,12 ,12, 8, 2, 3, 8, 17, 3, 14, 8};
         int[] b = {0,16, 17, 1, 2, 20, 17, 1, 3 ,9 ,8 ,10, 16};
 
-        int ans = question_52("1234",100);
-        System.out.println(ans);
+        int ans = question_52("1234",50);  // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+        System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
 
@@ -316,24 +316,26 @@ public class UnderstandingPartitionDp {
     public static int question_52(String s,int k){
 
         int n = s.length();
-        char[] arr = new char[n+1];
-        for(int i=1;i<=n;i++){
-            arr[i] = s.charAt(i-1);
-        }
+
+        // 0 1 2
+        // 1 2 3
+
 
         int[] dp = new int[n+1];
         dp[0] = 1;
-        for(int i=1;i<n;i++) {
+        for(int i=1;i<=n;i++) {
             for (int j = i-1;j>=0;j--){
-                int len = Math.abs(j-i);
-                String check = s.substring(j,j+len);
-                if(s.charAt(j) !='0' &&  Integer.parseInt(check)<=k && j-1>=0){
-                    dp[i] +=  dp[j];
+                String check = s.substring(j,i);
+                if(s.charAt(j)!='0'){
+                    if(Integer.parseInt(check)<=k){
+                        dp[i]+=dp[j];
+                    }
                 }
             }
         }
-        return dp[n-1];
+        return dp[n];
       }
+//      public static int question_53(){}
 
     }
 
