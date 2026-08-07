@@ -21,10 +21,13 @@ public class UnderstandingPartitionDp {
 //        }
         int[] a = {0,16 ,20 ,12 ,12, 8, 2, 3, 8, 17, 3, 14, 8};
         int[] b = {0,16, 17, 1, 2, 20, 17, 1, 3 ,9 ,8 ,10, 16};
-//        int[] arr= {3,1,4,6,5,2};
-        int[] arr= {2,1,4,3};
+        int[] freq = {1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 
-        int ans = question_54(arr,arr.length);  // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+//        int[] arr= {3,1,4,6,5,2};
+        int[] arr= {0,-2,1,-3,4};
+//         int[] arr= {2,1,4,3};
+
+        int ans = question_56("ababc",freq,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
         System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
@@ -360,6 +363,60 @@ public class UnderstandingPartitionDp {
             }
         }
         return (ind<end)?true:false;
+    }
+
+    public static int question_55(int[] arr,int n){
+        int[] dp = new int[n+1];
+        dp[0] = 1;
+        for(int i=1;i<=n;i++){
+            for(int j=i;j>=0;j--){
+                boolean check = isValid(arr,j,i);
+                if(check && j-1>=0){
+                    dp[i] +=dp[j-1];
+                }
+                else  dp[i] +=0;
+            }
+        }
+        return dp[n];
+    }
+    public static boolean isValid(int[] arr,int j,int i){
+        int count = 0;
+        for(int start = j;start<=i;start++){
+            if(arr[start]<0){
+                count++;
+            }
+        }
+        return (count>0)?true:false;
+    }
+    // freq.length = 26
+    public static int question_56(String input,int[] freq,int k){
+        int n  = input.length();
+        int[][] dp = new int[n+1][k+1];
+        dp[0][0] = 0;
+
+        for (int i = 1; i<n ; i++) {
+            HashMap<Integer,Integer> m1 = new HashMap<>();
+            for (int prt=1;prt<=k;prt++) {
+                for (int j = i; j >= 0; j--) {
+                    char f = input.charAt(j);
+                    m1.put(f - 'a', m1.getOrDefault(f - 'a', 0) + 1);
+                    boolean isvalid = question_56_check(m1, freq);
+                    if (isvalid && j - 1 >= 0) {
+                        dp[i][prt] += dp[j - 1][prt - 1];
+                    }
+                }
+            }
+        }
+        return dp[n-1][k];
+    }
+    public static boolean question_56_check(HashMap<Integer,Integer> m1,int[] freq){
+
+        for(int it:m1.keySet()){
+            if(m1.get(it)>freq[it]){
+                return false;
+            }
+        }
+        return true;
     }
 
 }
