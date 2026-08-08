@@ -24,10 +24,11 @@ public class UnderstandingPartitionDp {
         int[] freq = {1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 
 //        int[] arr= {3,1,4,6,5,2};
-        int[] arr= {0,-2,1,-3,4};
-//         int[] arr= {2,1,4,3};
+//        int[] arr= {0,-2,1,-3,4};
+//        int[] arr= {0,5,8,-15,3,4,5};
+         int[] arr= {0,1,2,3,3};
 
-        int ans = question_56("ababc",freq,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+        int ans = question_57(arr,4,4); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
         System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
@@ -417,6 +418,48 @@ public class UnderstandingPartitionDp {
             }
         }
         return true;
+    }
+    public static int question_57(int[] arr,int k,int n){
+        int[][] dp = new int[n+1][k+1];
+        for(int i=0;i<=n;i++){
+            Arrays.fill(dp[i],-1);
+        }
+        dp[0][0] = 0;
+
+        for(int prt=1;prt<=k;prt++){
+            for(int i = 1;i<=n;i++){
+                int v = dp[i-1][prt];
+                int sum = 0;
+                for(int j=i;j>=1;j--){
+                    sum+=arr[j];
+                    if(j-1>=0) {
+                        v = Math.max(v,sum+dp[j-1][prt-1]);
+                    }
+                }
+                dp[i][prt] = v;
+            }
+        }
+        return dp[n][k];
+    }
+    public static int question_57_optimise(int[] arr,int k,int n){
+        int[][][] dp = new int[n+1][k+1][2];
+
+        for(int i=0;i<=n;i++){
+            for(int j=0;j<=k;j++) {
+                Arrays.fill(dp[i], (int)-1e18);
+            }
+        }
+        dp[0][0][0] = 0;
+        // 0 indicates element not taken
+        // 1 indicates element taken
+
+        for(int prt=1;prt<=k;prt++) {
+            for (int i = 1; i <= n; i++) {
+                dp[i][prt][0] = Math.max(dp[i-1][prt][0],dp[i-1][prt][1]);
+                dp[i][prt][1] = Math.max(arr[i]+Math.max(dp[i-1][prt-1][0],dp[i-1][prt-1][1]),arr[i]+dp[i-1][prt][1]);
+            }
+        }
+        return Math.max(dp[n][k][0],dp[n][k][1]);
     }
 
 }

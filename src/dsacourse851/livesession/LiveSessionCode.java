@@ -344,6 +344,19 @@ public class LiveSessionCode {
             }
             return ans;
         }
+
+        class TreeNode{
+            TreeNode left;
+            TreeNode right;
+            int leftEdgeWeight;
+            int rightEdgeWeight;
+            int data;
+            public TreeNode(int leftEdgeWeight,int rightEdgeWeight,int data){
+                this.data=data;
+                this.leftEdgeWeight=leftEdgeWeight;
+                this.rightEdgeWeight=rightEdgeWeight;
+            }
+        }
+
+
     }
-
-
