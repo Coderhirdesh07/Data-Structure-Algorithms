@@ -29,7 +29,7 @@ public class UnderstandingPartitionDp {
 //        int[] arr= {0,5,8,-15,3,4,5};
 //         int[] arr= {0,1,2,3,3};
 
-        int ans = question_58_actual(a,n,3,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+        int ans = question_58_optimised(a,n,2); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
         System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
@@ -466,7 +466,6 @@ public class UnderstandingPartitionDp {
     public static int question_58(int[] arr,int n,int m){
         int[] dp = new int[n+1];
         dp[0] = 0;
-
         for(int i=1;i<=n;i++){
             int sum = 0;
             int v = dp[i-1];
@@ -479,6 +478,21 @@ public class UnderstandingPartitionDp {
             }
             dp[i] = Math.max(v,dp[i]);
         }
+        return dp[n];
+    }
+    public static int question_58_optimised(int[] arr,int n,int m){
+        int[] dp = new int[n+1];
+        int[] prefix = new int[n+1];
+
+
+        for(int i=1;i<=n;i++){
+            prefix[i] = prefix[i-1] + arr[i];
+        }
+        dp[0] = 0;
+        for(int i=m;i<=n;i++){
+            dp[i] = Math.max(dp[i-1],prefix[i] - prefix[i-m] + dp[i-m]);
+        }
+
         return dp[n];
     }
 
@@ -501,6 +515,22 @@ public class UnderstandingPartitionDp {
               }
               dp[i][prt] = Math.max(v,dp[i][prt]);
           }
+        }
+        return dp[n][k];
+    }
+    public static int question_58_actual_optimised(int[] arr,int n,int m,int k){
+        int[][] dp = new int[n+1][k+1];
+        int[] prefix = new int[n+1];
+        for(int i=1;i<=n;i++){
+            prefix[i] = prefix[i-1] + arr[i];
+        }
+        for(int prt = 1;prt<=k;prt++){
+            for(int i=1;i<=n;i++){
+                if(i>=m) {
+                    dp[i][prt] = Math.max(dp[i - 1][prt], prefix[i] - prefix[i - m] + dp[i - m][prt - 1]);
+                }
+                else dp[i][prt] = dp[i-1][prt];
+            }
         }
         return dp[n][k];
     }
