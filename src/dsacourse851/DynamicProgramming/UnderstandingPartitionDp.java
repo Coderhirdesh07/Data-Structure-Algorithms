@@ -6,29 +6,30 @@ import java.util.Scanner;
 
 public class UnderstandingPartitionDp {
     public static void main(String[] args) {
-//        Scanner sc = new Scanner(System.in);
-//        int n = sc.nextInt();
-//        int[] a = new int[n+1];
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] a = new int[n+1];
+//        [8 10 -5 -8 1 10 10 11]
 //        int[] b = new int[n+1];
-////        [5 10 5 10 1 1 8 2]
-//        // 1 2 3 4 4
-//        // 1 2 3 4 6
-//        for(int i=1;i<=n;i++){
-//            a[i] = sc.nextInt();
-//        }
+//        [5 10 5 10 1 1 8 2]
+        // 1 2 3 4 4
+        // 1 2 3 4 6
+        for(int i=1;i<=n;i++){
+            a[i] = sc.nextInt();
+        }
 //        for(int i=1;i<=n;i++){
 //            b[i] = sc.nextInt();
 //        }
-        int[] a = {0,16 ,20 ,12 ,12, 8, 2, 3, 8, 17, 3, 14, 8};
-        int[] b = {0,16, 17, 1, 2, 20, 17, 1, 3 ,9 ,8 ,10, 16};
-        int[] freq = {1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
+//        int[] a = {0,16 ,20 ,12 ,12, 8, 2, 3, 8, 17, 3, 14, 8};
+//        int[] b = {0,16, 17, 1, 2, 20, 17, 1, 3 ,9 ,8 ,10, 16};
+//        int[] freq = {1,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1};
 
 //        int[] arr= {3,1,4,6,5,2};
 //        int[] arr= {0,-2,1,-3,4};
 //        int[] arr= {0,5,8,-15,3,4,5};
-         int[] arr= {0,1,2,3,3};
+//         int[] arr= {0,1,2,3,3};
 
-        int ans = question_57(arr,4,4); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+        int ans = question_58(a,n,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
         System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
@@ -461,6 +462,24 @@ public class UnderstandingPartitionDp {
         }
         return Math.max(dp[n][k][0],dp[n][k][1]);
     }
+    // atlassian oa
+    public static int question_58(int[] arr,int n,int m){
+        int[] dp = new int[n+1];
+        dp[0] = 0;
 
+        for(int i=1;i<=n;i++){
+            int sum = 0;
+            int v = dp[i-1];
+            for(int j=i;j>=0;j--){
+                    sum += arr[j];
+                    int size = Math.abs(j - i) + 1;
+                    if (size <= m && j - 1 >= 0) {
+                        v = Math.max(v, sum + dp[j - 1]);
+                    }
+            }
+            dp[i] = Math.max(v,dp[i]);
+        }
+        return dp[n];
+    }
 }
 
