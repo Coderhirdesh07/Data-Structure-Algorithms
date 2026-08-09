@@ -481,5 +481,28 @@ public class UnderstandingPartitionDp {
         }
         return dp[n];
     }
+
+    // codeforces problem
+    public static int question_58_actual(int[] arr,int n,int m,int k){
+        int[][] dp = new int[n+1][k];
+
+        dp[0][0] = 0;
+
+        for(int prt = 1;prt<=k ;prt++ ){
+          for(int i=1;i<=n;i++){
+              int v = dp[i-1][prt];
+              int sum = 0;
+              for(int j=i;j>=0;j--){
+                  sum+=arr[j];
+                  int size = Math.abs(j-i)+1;
+                  if(size<=m && j-1>=0){
+                      v = Math.max(v,sum+dp[j-1][prt-1]);
+                  }
+              }
+              dp[i][prt] = Math.max(v,dp[i][prt]);
+          }
+        }
+        return dp[n][k];
+    }
 }
 
