@@ -29,7 +29,7 @@ public class UnderstandingPartitionDp {
 //        int[] arr= {0,5,8,-15,3,4,5};
 //         int[] arr= {0,1,2,3,3};
 
-        int ans = question_58(a,n,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+        int ans = question_58_actual(a,n,3,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
         System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
@@ -484,13 +484,13 @@ public class UnderstandingPartitionDp {
 
     // codeforces problem
     public static int question_58_actual(int[] arr,int n,int m,int k){
-        int[][] dp = new int[n+1][k];
+        int[][] dp = new int[n+1][k+1];
 
         dp[0][0] = 0;
 
         for(int prt = 1;prt<=k ;prt++ ){
           for(int i=1;i<=n;i++){
-              int v = dp[i-1][prt];
+              int v = Math.max(dp[i-1][prt],arr[i] + dp[i-1][prt-1]);
               int sum = 0;
               for(int j=i;j>=0;j--){
                   sum+=arr[j];
