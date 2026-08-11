@@ -6,17 +6,17 @@ import java.util.Scanner;
 
 public class UnderstandingPartitionDp {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int[] a = new int[n+1];
+//        Scanner sc = new Scanner(System.in);
+//        int n = sc.nextInt();
+//        int[] a = new int[n+1];
 //        [8 10 -5 -8 1 10 10 11]
 //        int[] b = new int[n+1];
 //        [5 10 5 10 1 1 8 2]
         // 1 2 3 4 4
         // 1 2 3 4 6
-        for(int i=1;i<=n;i++){
-            a[i] = sc.nextInt();
-        }
+//        for(int i=1;i<=n;i++){
+//            a[i] = sc.nextInt();
+//        }
 //        for(int i=1;i<=n;i++){
 //            b[i] = sc.nextInt();
 //        }
@@ -29,7 +29,7 @@ public class UnderstandingPartitionDp {
 //        int[] arr= {0,5,8,-15,3,4,5};
 //         int[] arr= {0,1,2,3,3};
 
-        int ans = question_58_optimised(a,n,2); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+        int ans = question_68(new int[]{0,2,4,3},new int[]{0,2,1,3},new int[]{0,4,3,1},new int[]{0,2,1,1},30,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
         System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
@@ -533,6 +533,62 @@ public class UnderstandingPartitionDp {
             }
         }
         return dp[n][k];
+    }
+    public static int question_59(int[] arr,int n){
+        int[] dp = new int[n+1];
+        dp[0] = 0;
+        for(int i=1;i<=n;i++){
+            for(int j=i;j>=0;j--){
+                if(arr[j] == j+1-i+1){
+                    dp[i] += dp[j-1];
+                }
+            }
+        }
+        return dp[n];
+    }
+
+    public static int question_67(int W, int val[], int wt[]) {
+        int n = val.length;
+        int[][] dp = new int[n+1][W+1];
+
+
+        for(int i= 1;i<=n;i++){
+            for(int j=0;j<=W;j++){
+                // notpick
+                // pick
+                if(j>=wt[i-1]){
+                    dp[i][j] = Math.max(dp[i-1][j],val[i-1] + dp[i-1][j-wt[i-1]]);
+                }
+                else dp[i][j] = dp[i-1][j];
+            }
+        }
+        return dp[n][W];
+    }
+    public static int question_68(int[] cost,int[] happy,int[] min,int[] max,int m,int n){
+
+        int[][] dp = new int[n+1][m+1];
+
+        for(int i=1;i<=n;i++){
+            Arrays.fill(dp[i], -1);
+        }
+
+        for(int i=1;i<=n;i++){
+          for(int j=1;j<=m;j++){
+              int count = min[i];
+              int finalAnswer = -1;
+              while(count<=max[i]){
+                  int g = count*cost[i];
+                  if(j>=g){
+                      int answer = count*happy[i] + dp[i-1][j-g];
+                      finalAnswer = Math.max(answer,finalAnswer);
+                  }
+                  count++;
+              }
+              dp[i][j] = finalAnswer;
+              System.out.println("value for dp[i][j] = " + dp[i][j]);
+          }
+        }
+        return dp[n][m];
     }
 }
 
