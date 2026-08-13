@@ -6,9 +6,15 @@ import java.util.Scanner;
 
 public class UnderstandingPartitionDp {
     public static void main(String[] args) {
-//        Scanner sc = new Scanner(System.in);
-//        int n = sc.nextInt();
-//        int[] a = new int[n+1];
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int m = sc.nextInt();
+        int[][] matrix = new int[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                matrix[i][j] = sc.nextInt();
+            }
+        }
 //        [8 10 -5 -8 1 10 10 11]
 //        int[] b = new int[n+1];
 //        [5 10 5 10 1 1 8 2]
@@ -29,7 +35,8 @@ public class UnderstandingPartitionDp {
 //        int[] arr= {0,5,8,-15,3,4,5};
 //         int[] arr= {0,1,2,3,3};
 
-        int ans = question_68(new int[]{0,2,4,3},new int[]{0,2,1,3},new int[]{0,4,3,1},new int[]{0,2,1,1},30,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+//        int ans = question_68(new int[]{0,2,4,3},new int[]{0,2,1,3},new int[]{0,4,3,1},new int[]{0,2,1,1},30,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
+       int ans = question_72(matrix,40);
         System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
@@ -589,6 +596,67 @@ public class UnderstandingPartitionDp {
           }
         }
         return dp[n][m];
+    }
+        public static int question_71(int[][] items, int budget) {
+            int n = items.length;
+            int[][][] dp = new int[n][budget+1][2];
+            int maxi = -1;
+            for(int i=0;i<n;i++){
+                maxi = Math.max(maxi,items[i][0]);
+            }
+            int[] freq = new int[maxi+1];
+            for(int i=0;i<n;i++){
+                freq[items[i][0]]++;
+            }
+            int[] factors = new int[maxi+1];
+            for (int d = 1; d <= maxi; d++) {
+                for (int multiple = d; multiple <= maxi; multiple += d) {
+                    factors[d] += freq[multiple];
+                }
+            }
+
+            // 0 will tell not taken
+            // 1 will tell taken 1 time
+            for(int i=0;i<n;i++){
+                dp[i][0][0] = 0;
+                dp[i][0][1] = -(int)1e9;
+                for(int j=1;j<=budget;j++){
+                    if(i-1>=0){
+                        dp[i][j][0] = Math.max(dp[i-1][j][0],dp[i][j][0]);
+                        dp[i][j][0] = Math.max(dp[i-1][j][1],dp[i][j][0]);
+                    }
+                    int f = items[i][0];
+                    int wi = items[i][1];
+                    if(j-wi>=0){
+                        int v;
+                        v = 1 + dp[i][j-wi][0];
+                        dp[i][j][1] = Math.max(dp[i][j][1],v + factors[f]-1);
+                        v = 1 + dp[i][j-wi][1];
+                        dp[i][j][1] = Math.max(dp[i][j][1],v);
+                    }
+
+                }
+            }
+
+            return Math.max(dp[n-1][budget][0],dp[n-1][budget][1]);
+        }
+
+    public static int question_72(int[][] matrix,int k){
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int[][] dp = new int[n+1][k+1];
+        dp[0][0] = 0;
+
+       for(int i=1;i<=k;i++){
+           for(int j=1;j<=n;j++){
+               for(int l=1;l<m;l++){
+                   if(i>=matrix[j-1][l-1]){
+                       dp[j][i] = matrix[j-1][l-1] + dp[j-1][i-matrix[j-1][l-1]];
+                   }
+               }
+           }
+       }
+       return dp[n][k];
     }
 }
 
