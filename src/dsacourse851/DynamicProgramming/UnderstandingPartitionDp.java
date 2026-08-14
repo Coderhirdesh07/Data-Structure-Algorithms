@@ -6,15 +6,15 @@ import java.util.Scanner;
 
 public class UnderstandingPartitionDp {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        int[][] matrix = new int[n][m];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                matrix[i][j] = sc.nextInt();
-            }
-        }
+//        Scanner sc = new Scanner(System.in);
+//        int n = sc.nextInt();
+//        int m = sc.nextInt();
+//        int[][] matrix = new int[n][m];
+//        for(int i=0;i<n;i++){
+//            for(int j=0;j<m;j++){
+//                matrix[i][j] = sc.nextInt();
+//            }
+//        }
 //        [8 10 -5 -8 1 10 10 11]
 //        int[] b = new int[n+1];
 //        [5 10 5 10 1 1 8 2]
@@ -36,7 +36,7 @@ public class UnderstandingPartitionDp {
 //         int[] arr= {0,1,2,3,3};
 
 //        int ans = question_68(new int[]{0,2,4,3},new int[]{0,2,1,3},new int[]{0,4,3,1},new int[]{0,2,1,1},30,3); // 1 2 3 4 , 12 3 4, 12 34,123 4 , 1 234
-       int ans = question_72(matrix,40);
+       int ans = question_73(new int[]{6, 3 ,6 ,5 ,1},new int[]{1 ,4 ,5 ,9 ,2},5,3);
         System.out.println("This is the "+ans);
         // 5 3
         //1 2 1 3 5
@@ -658,5 +658,15 @@ public class UnderstandingPartitionDp {
        }
        return dp[n][k];
     }
+//    public static int question_73(int[] a,int[] b,int n,int k){
+//        int[][] dp = new int[n+1][k+1];
+//        dp[0][0] = 0;
+//        for(int i=1;i<=n;i++){
+//            for(int j=0;j<=k;j++){
+//
+//            }
+//        }
+//        return dp[n][k];
+//    }
 }
 
