@@ -644,29 +644,43 @@ public class UnderstandingPartitionDp {
     public static int question_72(int[][] matrix,int k){
         int n = matrix.length;
         int m = matrix[0].length;
+        boolean[][] dp = new boolean[n+1][5001];
+
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=5001;j++){
+                for(int l=1;l<=m;l++){
+                    int p0 = matrix[i-1][l-1];
+                    int p1 = j - p0;
+                    if(p1>=0 && dp[i-1][p1]){
+                        dp[i][j] = true;
+                    }
+                }
+            }
+        }
+
+       int mini = Integer.MAX_VALUE;
+       for(int i=1;i<=5001;i++){
+         if(dp[n][i] == true) {
+            int po = Math.abs(i-k);
+            mini = Math.min(mini,po);
+         }
+       }
+       return mini;
+    }
+    public static int question_73(int[] a,int[] b,int n,int k){
         int[][] dp = new int[n+1][k+1];
         dp[0][0] = 0;
-
-       for(int i=1;i<=k;i++){
-           for(int j=1;j<=n;j++){
-               for(int l=1;l<m;l++){
-                   if(i>=matrix[j-1][l-1]){
-                       dp[j][i] = matrix[j-1][l-1] + dp[j-1][i-matrix[j-1][l-1]];
-                   }
-               }
-           }
-       }
-       return dp[n][k];
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=k;j++){
+              if(a[i]>b[i]) dp[i][j] = a[i] + dp[i-1][j-1];
+              else dp[i][j] = b[i] + dp[i-1][j-1];
+            }
+        }
+        return dp[n][k];
     }
-//    public static int question_73(int[] a,int[] b,int n,int k){
-//        int[][] dp = new int[n+1][k+1];
-//        dp[0][0] = 0;
-//        for(int i=1;i<=n;i++){
-//            for(int j=0;j<=k;j++){
-//
-//            }
-//        }
-//        return dp[n][k];
-//    }
+    public static int question_74(int[] a,int n){
+        int[][] dp = new int[n+1][n+1];
+       return dp[0][0];
+    }
 }
 
