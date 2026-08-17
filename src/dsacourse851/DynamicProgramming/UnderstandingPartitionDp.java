@@ -714,9 +714,65 @@ public class UnderstandingPartitionDp {
         return min;
     }
     // consider q and r = 0;
-    public static int question_74_easy(int[] a,int n,int q,int p,int r){
-        int[][] dp = new int[n+1][n+1];
-       return dp[0][0];
+    public static int question_74_easy(int[] arr,int n,int q,int p,int r){
+        // ignore p elements
+        int[][] dp = new int[n+1][p+1];
+        dp[0][0]  = 0;
+        for(int i=1;i<=n;i++){
+            int option1 = 0;
+            int option2 = 0;
+            for(int j=0;j<=p;j++){
+                dp[i][j] = Math.max(dp[i-1][j] + arr[i-1],dp[i-1][j-1]);
+            }
+        }
+       return dp[n][p];
+    }
+    // here we take only r =0;
+    public static int question_74_easy_2(int[] arr,int n,int q,int p,int r){
+        // ignore p elements and q pairs
+        int[][][] dp = new int[n+1][p+1][q+1];
+        dp[0][0][0]  = 0;
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=p;j++){
+                for(int k=1;k<=q;k++){
+                    // arr[i] is a part of a single element ignore
+                    // arr[i] is a part of a single element dont ignore
+                    // arr[i] is a part of a pair ignore
+                    // arr[i] is a part of a pair dont ignore it
+                    int option1 = dp[i-1][p-1][q];
+                    int option2 = arr[i-1] + dp[i-1][p][q];
+                    int option3 = dp[i-2][p][q-1];
+                    // option4 should be there but in doc it not there
+                    int option4 = arr[i] + arr[i-1] + dp[i-2][p][q];
+                    dp[i][j][k] = Math.max(option1,Math.max(option2,Math.max(option3,option4)));
+                }
+            }
+        }
+
+        return dp[n][p][q];
+    }
+
+    public static int question_74_actual(int[] arr,int n,int q,int p,int r){
+        // ignore p elements and q pairs
+        int[][][][] dp = new int[n+1][p+1][q+1][r+1];
+        dp[0][0][0][0]  = 0;
+        for(int i=1;i<=n;i++){
+            for(int j=1;j<=p;j++){
+                for(int k=1;k<=q;k++){
+                    for(int m=1;m<=r;m++) {
+                        int option1 = dp[i-1][j-1][k][m];
+                        int option2 = arr[i] + dp[i-1][j][k][m];
+                        int option3 = arr[i] + arr[i-1] + dp[i-2][j][k][m];
+                        int option4 = dp[i-2][j][k-1][m];
+                        int option5 = dp[i-3][j][k][m-1];
+                        int option6 = arr[i] + arr[i-1] + arr[i-3] + dp[i-4][j][k][m-1];
+                        dp[i][j][k][m] = Math.max(option1,Math.max(option2,Math.max(option3,Math.max(option4,Math.max(option5,option6)))));
+                    }
+                }
+            }
+        }
+
+        return dp[n][p][q][r];
     }
     public static int question_75(int[] arr,int[][] price,int k){
         int n = arr.length;
