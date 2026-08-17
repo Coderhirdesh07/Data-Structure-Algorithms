@@ -667,20 +667,76 @@ public class UnderstandingPartitionDp {
        }
        return mini;
     }
+    // this problem will require 4d dp
     public static int question_73(int[] a,int[] b,int n,int k){
-        int[][] dp = new int[n+1][k+1];
-        dp[0][0] = 0;
+        int sum1  = 0;
+        int sum2 = 0;
+        for(int x:a) sum1+=x;
+        for(int x:b) sum2+=x;
+
+        boolean[][][][] dp = new boolean[n+1][k+1][sum1+1][sum2+1];
+//        dp[0][0][0] = 0;
+//        dp[0][0][1] = 0;
+//        for(int i=1;i<=n;i++){
+//            for(int j=1;j<=k;j++){
+//              dp[i][j][0] =   Math.max(a[i] + dp[i-1][j-1][0],dp[i-1][j][0]);
+//              dp[i][j][1] =  Math.max(b[i] + dp[i-1][j-1][1],dp[i-1][j][1]);
+//            }
+//        }
+//        return Math.min(dp[n][k][0],dp[n][k][1]);
+
         for(int i=1;i<=n;i++){
             for(int j=1;j<=k;j++){
-              if(a[i]>b[i]) dp[i][j] = a[i] + dp[i-1][j-1];
-              else dp[i][j] = b[i] + dp[i-1][j-1];
+                for(int l=0;l<=sum1;l++){
+                    for(int m=0;m<=sum2;m++){
+                        if(dp[i-1][j][l][m] == true){
+                            dp[i][j][l][m] = true;
+                        }
+                        else{
+                            if(a[i]>=l && b[i]>=m && j-1>=1) {
+                                if(dp[i-1][j-1][l-a[i]][m-b[i]] == true) dp[i][j][l][m] = true;
+                            }
+                        }
+                    }
+                }
             }
         }
-        return dp[n][k];
+
+
+        int min = Integer.MAX_VALUE;
+        for(int i=0;i<=sum1;i++){
+            for(int j=0;j<=sum2;j++){
+                if(dp[n][k][i][j] == true){
+                    min = Math.min(min,Math.min(sum1,sum2));
+                }
+            }
+        }
+        return min;
     }
-    public static int question_74(int[] a,int n){
+    // consider q and r = 0;
+    public static int question_74_easy(int[] a,int n,int q,int p,int r){
         int[][] dp = new int[n+1][n+1];
        return dp[0][0];
+    }
+    public static int question_75(int[] arr,int[][] price,int k){
+        int n = arr.length;
+
+        int[][] dp = new int[n+1][k+1];
+
+        for(int i=1;i<=n;i++){
+            for(int j=0;j<=k;j++){
+                int val1 = dp[i-1][j];
+                int val2 = Integer.MIN_VALUE;
+                // not selecting
+                for(int l=1;l<=j;l++){
+
+                    val2 = Math.max(val2, price[i][l] + dp[i - 1][j - l]);
+
+                }
+            }
+        }
+
+        return dp[n-1][k];
     }
 }
 
