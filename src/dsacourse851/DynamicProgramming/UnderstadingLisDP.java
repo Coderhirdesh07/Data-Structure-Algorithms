@@ -11,7 +11,8 @@ public class UnderstadingLisDP {
         int[] arr4 = {18,26,18,24,24,20,22};
         int[] arr5 = {3, 1, 2, 1, 8, 10};
         int[] arr6 = {1,2,1,1,3};
-        int res = question_85(arr6,arr6.length,2);
+        int[] arr7 = {1,2,3,2,1};
+        int res = question_86(arr7,arr7.length);
         System.out.println(res);
 
     }
@@ -250,6 +251,33 @@ public class UnderstadingLisDP {
         }
 
         return max;
+    }
+    public static int question_86(int[] arr,int n){
+        int[] dp = new int[n];
+        Arrays.fill(dp,1);
+        for(int i=1;i<n;i++){
+            int curr = arr[i];
+            for(int j=i-1;j>=0;j--){
+                 if(arr[j]<curr){
+                     dp[i] +=dp[j];
+                 }
+            }
+        }
+        int[] dp2 = new int[n];
+        Arrays.fill(dp2,1);
+        for(int i=n-2;i>0;i--){
+            int curr = arr[i];
+            for(int j=i+1;j<n;j++){
+                if(arr[j]<curr){
+                    dp2[i] += dp2[j];
+                }
+            }
+        }
+        int answer = 0;
+        for(int i=0;i<n;i++){
+            answer+=(dp[i]-1) * (dp2[i]-1);
+        }
+        return answer;
     }
 
 }
