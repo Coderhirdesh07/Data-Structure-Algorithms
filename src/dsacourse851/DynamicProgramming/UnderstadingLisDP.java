@@ -9,7 +9,9 @@ public class UnderstadingLisDP {
         int[] arr2 = {3, 9 ,4 ,2 ,16};
         int[] arr3 = {1 ,5 ,15 ,3 ,9};
         int[] arr4 = {18,26,18,24,24,20,22};
-        int res = question_83(arr4,arr4.length);
+        int[] arr5 = {3, 1, 2, 1, 8, 10};
+        int[] arr6 = {1,2,1,1,3};
+        int res = question_85(arr6,arr6.length,2);
         System.out.println(res);
 
     }
@@ -191,9 +193,63 @@ public class UnderstadingLisDP {
         return max;
     }
 
-    public static int question_84(int[] arr,int n){
+    public static int question_84(int[] arr,int n,int k){
+      int[][] dp = new int[n][k+1];
+      for(int i=0;i<n;i++) Arrays.fill(dp[i],0);
+      int max = -1;
+      for(int i=1;i<n;i++){
+          for(int j=0;j<=k;j++){
+              for(int l=i-1;l>=0;l--){
+                  int sum = arr[i] + arr[l];
+                  if(sum%k == j){
+                      dp[i][j] = Math.max(dp[i][j],1+dp[l][j]);
+                  }
+              }
+              max  = Math.max(dp[i][j],max);
+          }
+      }
+      return max;
+    }
+    public static int question_84_optimise(int[] arr,int n,int k){
+        int[][] dp = new int[n][k+1];
+        for(int i=0;i<n;i++) Arrays.fill(dp[i],0);
+        int max = -1;
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=k;j++){
+                for(int l=i-1;l>=0;l--){
+                    int sum = arr[i] + arr[l];
+                    if(sum%k == j){
+                        dp[i][j] = Math.max(dp[i][j],1+dp[l][j]);
+                    }
+                }
+                max  = Math.max(dp[i][j],max);
+            }
+        }
+        return max;
+    }
+    public static int question_85(int[] arr,int n,int k){
+        int[][] dp = new int[n][k+1];
+        int max = -1;
+        for(int i=0;i<n;i++) Arrays.fill(dp[i],1);
 
-        return 0;
+        for(int i=1;i<n;i++){
+            for(int l=0;l<=k;l++){
+                for(int j=i-1;j>=0;j--){
+                    if(arr[i]!=arr[j]){
+                        if(l-1>=0) {
+                            dp[i][l] = Math.max(dp[i][l], 1 + dp[j][l - 1]);
+                        }
+                    }
+                    else dp[i][l] = Math.max(dp[i][l], 1 + dp[j][l]);
+                }
+            }
+        }
+        for(int i=0;i<n;i++){
+            int u = dp[i][k];
+            max = Math.max(max,u);
+        }
+
+        return max;
     }
 
 }
