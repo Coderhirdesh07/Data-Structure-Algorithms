@@ -7,11 +7,13 @@ public class UnderstadingLisDP {
     public static void main(String[] args) {
         int[] arr = {2,100,4,50,8,10,12,14,15};
         int[] arr2 = {3, 9 ,4 ,2 ,16};
-        int res = question_3_optimise_2(arr2,arr2.length);
+        int[] arr3 = {1 ,5 ,15 ,3 ,9};
+        int[] arr4 = {18,26,18,24,24,20,22};
+        int res = question_83(arr4,arr4.length);
         System.out.println(res);
 
     }
-    public static int question_1(int[] arr,int n){
+    public static int question_79(int[] arr,int n){
         int[] dp = new int[n];
         Arrays.fill(dp,0);
         dp[0] = 1;
@@ -30,7 +32,7 @@ public class UnderstadingLisDP {
         }
         return max;
     }
-    public static int question_1_part2(int[] arr,int n){
+    public static int question_79_part2(int[] arr,int n){
         int[] dp = new int[n];
         Arrays.fill(dp,0);
         dp[0] = 1;
@@ -49,7 +51,7 @@ public class UnderstadingLisDP {
         }
         return max;
     }
-    public static int question_1_part3(int[] arr,int n,int k){
+    public static int question_79_part3(int[] arr,int n,int k){
         int[] dp = new int[n];
         Arrays.fill(dp,0);
         dp[0] = 1;
@@ -68,7 +70,7 @@ public class UnderstadingLisDP {
         }
         return max;
     }
-    public static int question_3(int[] arr,int n){
+    public static int question_81(int[] arr,int n){
         Arrays.sort(arr);
         int[] dp = new int[n];
         Arrays.fill(dp,1);
@@ -88,7 +90,7 @@ public class UnderstadingLisDP {
         return max;
 
     }
-    public static int question_3_optimise(int[] arr,int n){
+    public static int question_81_optimise(int[] arr,int n){
         Arrays.sort(arr);
         int[] dp = new int[n];
         HashMap<Integer,Integer> m1 = new HashMap<>();
@@ -110,7 +112,7 @@ public class UnderstadingLisDP {
         }
         return finalAnswer;
     }
-    public static int question_3_optimise_2(int[] arr,int n){
+    public static int question_81_optimise_2(int[] arr,int n){
         Arrays.sort(arr);
         HashMap<Integer,Integer> m1 = new HashMap<>();
         for(int i=0;i<n;i++){
@@ -126,6 +128,72 @@ public class UnderstadingLisDP {
         }
 
       return finalanswer;
+    }
+  // needs optimisation
+    public static int question_82(int[] arr,int n){
+        int[] dp  = new int[n];
+        Arrays.fill(dp,1);
+
+        for(int i=1;i<n;i++){
+            int current = arr[i];
+            for(int j=i-1;j>=0;j--){
+                if(arr[j]*3 == current){
+                    dp[i] = 1+dp[j];
+                }
+            }
+        }
+
+        int max = -1;
+        for(int x:dp){
+            max = Math.max(x,max);
+        }
+        return max;
+    }
+    public static int question_83(int[] arr,int n){
+        Arrays.sort(arr);
+        int[][] dp = new int[n][101];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], 1);
+        }
+
+        int max = -1;
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=100;j++){
+            for(int k=i-1;k>=0;k--){
+                    if(j + arr[k] == arr[i]){
+                        dp[i][j] = Math.max(dp[i][j],1 + dp[k][j]);
+                    }
+                }
+                max = Math.max(max,dp[i][j]);
+            }
+        }
+        return max;
+    }
+
+    public static int question_83_optimise(int[] arr,int n){
+        Arrays.sort(arr);
+        int[][] dp = new int[n][101];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], 1);
+        }
+
+        int max = -1;
+        for(int i=1;i<n;i++){
+            for(int j=0;j<=100;j++){
+                for(int k=i-1;k>=0;k--){
+                    if(j + arr[k] == arr[i]){
+                        dp[i][j] = Math.max(dp[i][j],1 + dp[k][j]);
+                    }
+                }
+                max = Math.max(max,dp[i][j]);
+            }
+        }
+        return max;
+    }
+
+    public static int question_84(int[] arr,int n){
+
+        return 0;
     }
 
 }
