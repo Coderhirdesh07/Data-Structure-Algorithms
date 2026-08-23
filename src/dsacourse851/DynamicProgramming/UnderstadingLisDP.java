@@ -280,4 +280,24 @@ public class UnderstadingLisDP {
         return answer;
     }
 
+    public static int question_87(String[] arr,int n){
+        int[] dp = new int[n];
+
+        Arrays.fill(dp,1);
+        int max = -1;
+        for(int i=1;i<n;i++){
+            char first = arr[i].charAt(0);
+            char second = arr[i].charAt(1);
+            for(int j=i-1;j>=0;j--){
+                if(first == 'R'){
+
+                }
+                else{
+
+                }
+            }
+        }
+        return max;
+    }
+
 }
