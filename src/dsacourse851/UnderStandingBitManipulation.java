@@ -93,4 +93,23 @@ public class UnderStandingBitManipulation {
         }
 
     }
+
+//    public static void question_8_optimise(int[][] mat,int[] arr){
+//        int n = mat.length;
+//
+//    }
+
+    public static int question_9_brute(int[] arr,int n){
+        int count = 0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                int val1 = arr[i]^arr[j];
+                int val2 = arr[i]&arr[j];
+                if(val1 > val2){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
 }
