@@ -1,5 +1,6 @@
 package dsacourse851;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class UnderStandingBitManipulation {
@@ -93,6 +94,32 @@ public class UnderStandingBitManipulation {
         }
 
     }
+    public static void question_8_optimise(int[][] mat,int[] arr){
+      int n  = mat.length;
+      int m = arr.length;
+      int[][] binary = new int[m][10];
+      for(int i=0;i<m;i++){
+          int val = arr[i];
+          binaryConversion(binary[i],val);
+      }
+
+      // 1 0 1
+      // 1 0 0
+      // 1 1 0
+
+
+    }
+    public static void binaryConversion(int[] a,int x){
+        int m = a.length;
+        Arrays.fill(a,0);
+        int ind = m-1;
+        while(ind>=0 && x>=1){
+            int rem = x%2;
+            a[ind] = rem;
+            ind--;
+            x=x/2;
+        }
+    }
 
 //    public static void question_8_optimise(int[][] mat,int[] arr){
 //        int n = mat.length;
@@ -112,4 +139,13 @@ public class UnderStandingBitManipulation {
         }
         return count;
     }
+    public static int question_9_optimise(int[] arr,int n){
+        //       011 -> 3
+        //       110 -> 6
+        //a1^a2= 101 -> 5
+        //a1&a2= 010 -> 2
+        return 0;
+    }
+
+
 }
