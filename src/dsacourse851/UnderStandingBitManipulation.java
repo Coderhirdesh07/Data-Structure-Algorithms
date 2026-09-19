@@ -144,7 +144,24 @@ public class UnderStandingBitManipulation {
         //       110 -> 6
         //a1^a2= 101 -> 5
         //a1&a2= 010 -> 2
-        return 0;
+        int[] count_set_bits = new int[32];
+        int count = 0;
+        for(int i=1;i<=n;i++){
+            int val = LeftSetBit(arr[i]);
+
+            count+=count_set_bits[val];
+            count_set_bits[val]++;
+        }
+        int total = ((n-1)*n)/2;
+
+        return total-count;
+    }
+    public static int LeftSetBit(int x){
+        int ind = 31;
+        while(((x >> ind)&1) == 0 && ind>0){
+           ind--;
+        }
+        return ind;
     }
 
 
