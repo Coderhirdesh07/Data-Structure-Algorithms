@@ -7,24 +7,26 @@ public class UnderStandingBitManipulation {
     public static void main(String[] args) {
         Scanner  sc = new Scanner(System.in);
         int n = sc.nextInt();
-        int[] arr = new int[n+1];
-        for(int i=1;i<=n;i++){
-            arr[i] = sc.nextInt();
-        }
-        // 3 1 7
-        // 1 1 3 3
-
-        // 8 6 5 9 7 7 9 3 8
-        // 3 5 5 5
-        int m = sc.nextInt();
-        int[][] mat = new int[m][4];
-        for(int i=0;i<m;i++){
-            mat[i][0] = sc.nextInt();
-            mat[i][1] = sc.nextInt();
-            mat[i][2] = sc.nextInt();
-            mat[i][3] = sc.nextInt();
-        }
-        question_8_brute(mat,arr);
+//        int[] arr = new int[n+1];
+//        for(int i=1;i<=n;i++){
+//            arr[i] = sc.nextInt();
+//        }
+//        // 3 1 7
+//        // 1 1 3 3
+//
+//        // 8 6 5 9 7 7 9 3 8
+//        // 3 5 5 5
+//        int m = sc.nextInt();
+//        int[][] mat = new int[m][4];
+//        for(int i=0;i<m;i++){
+//            mat[i][0] = sc.nextInt();
+//            mat[i][1] = sc.nextInt();
+//            mat[i][2] = sc.nextInt();
+//            mat[i][3] = sc.nextInt();
+//        }
+//        question_8_brute(mat,arr);
+        int res  = question_10_optimise(n);
+        System.out.println(res);
     }
     public static boolean question_2(int[] num){
         int count = 0;
@@ -103,9 +105,6 @@ public class UnderStandingBitManipulation {
           binaryConversion(binary[i],val);
       }
 
-      // 1 0 1
-      // 1 0 0
-      // 1 1 0
 
 
     }
@@ -121,10 +120,6 @@ public class UnderStandingBitManipulation {
         }
     }
 
-//    public static void question_8_optimise(int[][] mat,int[] arr){
-//        int n = mat.length;
-//
-//    }
 
     public static int question_9_brute(int[] arr,int n){
         int count = 0;
@@ -162,6 +157,38 @@ public class UnderStandingBitManipulation {
            ind--;
         }
         return ind;
+    }
+
+    // salesforce oa problem
+    public static int question_10(int a){
+        // 7 -> 111
+        // 6 -> 110
+        // 5 -> 101
+        // 4 -> 100
+        // 3 -> 011
+
+        int res = a;
+        int ans = -1;
+        for(int i=a-1;i>=1;i--){
+            res&=i;
+            if(res==0){
+                ans = i;
+                break;
+            }
+        }
+
+        return  ans;
+    }
+    public static int question_10_optimise(int n){
+        int y = 0;
+        for(int i=30;i>=0;i--){
+            int res = (n>>i)&1;
+            if(res==1){
+                y=i;
+                break;
+            }
+        }
+        return (1<<y) -1;
     }
 
 
