@@ -222,5 +222,24 @@ public class UnderStandingBitManipulation {
         return res;
     }
 
+    // find xor of all sub array
+    public static int question_14_brute(int[] arr,int n){
+        int val = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                val+=arr[i]^arr[j];
+            }
+        }
+        return val;
+    }
 
+    public static int question_15_brute(int[] arr,int n){
+        int val = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                val+=arr[i]&arr[j];
+            }
+        }
+        return val;
+    }
 }
