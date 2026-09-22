@@ -191,7 +191,7 @@ public class UnderStandingBitManipulation {
         return (1<<y) -1;
     }
 
-    public static int question_11_brute(int[] arr,int n){
+    public static int question_11(int[] arr,int n){
         // 3   1    6   2   2
         // 011 001  110 010 010
 
@@ -202,13 +202,24 @@ public class UnderStandingBitManipulation {
         int max = -1;
         for(int i=0;i<n;i++){
             for(int j=0;j<=30;j++){
-                if( ((arr[i] >> j) &1) ==0){
+                if( ((arr[i] >> j) &1) ==1){
                     res[j]++;
                     max = Math.max(max,res[j]);
                 }
             }
         }
         return max;
+    }
+    public static int question_12_brute(int[] a,int[] b){
+        int n = a.length;
+        int m = b.length;
+        int res = 0;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                res += a[i]^b[j];
+            }
+        }
+        return res;
     }
 
 
