@@ -263,4 +263,15 @@ public class UnderStandingBitManipulation {
         }
         return val;
     }
+    public static int question_13_brute(int a,int b,int c){
+        int ans = -1;
+        for(int i=1;i<=1000;i++){
+            int val = ((a|i) & (b|i));
+            if(val == c){
+                ans = i;
+                break;
+            }
+        }
+        return ans;
+    }
 }
