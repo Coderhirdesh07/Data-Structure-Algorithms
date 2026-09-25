@@ -222,6 +222,39 @@ public class UnderStandingBitManipulation {
         return res;
     }
 
+    public static int question_12(int[] a,int[] b){
+        int n = a.length;
+        int m = b.length;
+
+        int[] power = new int[31];
+        power[0] = 1;
+        for(int i=1;i<=30;i++){
+            power[i] = 2*power[i-1];
+        }
+
+        int[] bit = new int[31];
+        for(int i=0;i<m;i++){
+            for(int j=30;j>=0;j--){
+                int v = b[i]>>j;
+                if((v&1)==1){
+                    bit[j]+=1;
+                }
+            }
+        }
+        int sum = 0;
+        for(int i=0;i<n;i++){
+            for(int j=30;j>=0;j--){
+                int v = a[i]>>j;
+                if((v&1)==1){
+                    sum+=(n-bit[j])*power[j];
+                }
+                else sum+=bit[j]*power[j];
+            }
+        }
+
+        return sum;
+    }
+
     // find xor of all sub array
     public static int question_14_brute(int[] arr,int n){
         int val = 0;
