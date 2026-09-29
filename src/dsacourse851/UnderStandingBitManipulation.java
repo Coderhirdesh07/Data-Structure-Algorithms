@@ -222,7 +222,7 @@ public class UnderStandingBitManipulation {
         return res;
     }
 
-    public static int question_12(int[] a,int[] b){
+    public static int question_12_optimise(int[] a,int[] b){
         int n = a.length;
         int m = b.length;
 

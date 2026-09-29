@@ -785,9 +785,7 @@ public class UnderstandingPartitionDp {
                 int val2 = Integer.MIN_VALUE;
                 // not selecting
                 for(int l=1;l<=j;l++){
-
                     val2 = Math.max(val2, price[i][l] + dp[i - 1][j - l]);
-
                 }
             }
         }
