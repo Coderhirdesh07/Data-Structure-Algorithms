@@ -254,6 +254,48 @@ public class UnderStandingBitManipulation {
 
         return sum;
     }
+    public static int question_13_brute(int a,int b,int c){
+        int ans = -1;
+        for(int i=1;i<=1000;i++){
+            int val = ((a|i) & (b|i));
+            if(val == c){
+                ans = i;
+                break;
+            }
+        }
+        return ans;
+    }
+    public static int question_13_optimised(int a,int b,int c){
+        boolean flag = false;
+     // a| x & b|x =  c
+        // 0 0     = 1
+        // 0 1     = 1
+        // 1 0     = 1
+        // 1 1     = 1
+     int x = 0;
+        for(int i=30;i>=0;i--){
+            int row_a = (a>>i) & 1;
+            int row_b = (b>>i) & 1;
+            int row_c = (c>>i) & 1;
+            if(row_c == 0){
+                if(row_a == 0 && row_b == 0){
+                    x+=0;
+                }
+                else flag = true;
+            }
+            else{
+                if(row_a == 1 && row_b == 1){
+                    x+=0;
+                }
+                else {
+                    x+=1<<i;
+                }
+            }
+        }
+        if(flag == true) return -1;
+        return x;
+
+    }
 
     // find xor of all sub array
     public static int question_14_brute(int[] arr,int n){
@@ -296,15 +338,5 @@ public class UnderStandingBitManipulation {
         }
         return val;
     }
-    public static int question_13_brute(int a,int b,int c){
-        int ans = -1;
-        for(int i=1;i<=1000;i++){
-            int val = ((a|i) & (b|i));
-            if(val == c){
-                ans = i;
-                break;
-            }
-        }
-        return ans;
-    }
+
 }
