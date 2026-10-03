@@ -1,5 +1,6 @@
 package dsacourse851;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -7,10 +8,10 @@ public class UnderStandingBitManipulation {
     public static void main(String[] args) {
         Scanner  sc = new Scanner(System.in);
         int n = sc.nextInt();
-//        int[] arr = new int[n+1];
-//        for(int i=1;i<=n;i++){
-//            arr[i] = sc.nextInt();
-//        }
+        int[] arr = new int[n];
+        for(int i=0;i<n;i++){
+            arr[i] = sc.nextInt();
+        }
 //        // 3 1 7
 //        // 1 1 3 3
 //
@@ -25,7 +26,7 @@ public class UnderStandingBitManipulation {
 //            mat[i][3] = sc.nextInt();
 //        }
 //        question_8_brute(mat,arr);
-        int res  = question_10_optimise(n);
+        int res  = question_15_brute(arr,n);
         System.out.println(res);
     }
     public static boolean question_2(int[] num){
@@ -301,18 +302,63 @@ public class UnderStandingBitManipulation {
     public static int question_14_brute(int[] arr,int n){
         int val = 0;
         for(int i=0;i<n;i++){
-            for(int j=0;j<i;j++){
-                val+=arr[i]^arr[j];
+            int res = 0;
+            for(int j=i;j<n;j++){
+                res^=arr[j];
+                val+=res;
             }
         }
         return val;
     }
+    public static int question_14_optimise(int[] arr,int n){
+        // 0 1 0 1 0 1 1
+        int[][] matrix = new int[31][n];
+        for(int i=0;i<31;i++){
+            Arrays.fill(matrix,0);
+        }
+        for(int i=0;i<n;i++){
+            int ind = 0;
+            int val = arr[i];
+            while(val>0){
+                int temp = val%2;
+                matrix[ind][i] = temp;
+                val/=2;
+                ind++;
+            }
+        }
+        int ans = 0;
+        int cur_0 = 0;
+        int cur_1 = 0;
+        int result = 0;
+
+        for(int i=0;i<31;i++){
+            for(int j=0;j<n;j++){
+                if(matrix[i][j] == 0){
+                    cur_0++;
+                }
+                else{
+                    int temp = cur_0;
+                    cur_0 = cur_1;
+                    cur_1 = temp+1;
+                }
+                ans+=cur_1;
+            }
+            result+= ans* (1<<i);
+        }
+
+
+        return result;
+    }
 
     public static int question_15_brute(int[] arr,int n){
+
+        // 0 1 0 1 0 1 1 1
         int val = 0;
         for(int i=0;i<n;i++){
-            for(int j=0;j<i;j++){
-                val+=arr[i]&arr[j];
+            int res = arr[i];
+            for(int j=i;j<n;j++){
+                res&=arr[j];
+                val+=res;
             }
         }
         return val;
@@ -320,8 +366,10 @@ public class UnderStandingBitManipulation {
     public static int question_16_brute(int[] arr,int n){
         int val = 0;
         for(int i=0;i<n;i++){
-            for(int j=0;j<i;j++){
-                val+=arr[i]|arr[j];
+            int res = 0;
+            for(int j=i;j<n;j++){
+                res|=arr[j];
+                val+=res;
             }
         }
         return val;
