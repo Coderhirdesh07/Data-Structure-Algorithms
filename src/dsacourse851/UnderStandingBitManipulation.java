@@ -406,14 +406,14 @@ public class UnderStandingBitManipulation {
         int m = matrix.length;
         int sum = 0;
 
-        for(int i=0;i<n;i++){
-            int l = matrix[i][0];
-            int r = matrix[i][1];
+        for(int l=0;l<m;l++){
+            int left = matrix[l][0];
+            int right = matrix[l][1];
 
             int val = 0;
-            for(int i=0;i<n;i++){
-                for(int j=i+1;j<n;j++){
-                    for(int k=j+1;k<n;k++) {
+            for(int i=left;i<right;i++){
+                for(int j=i+1;j<right;j++){
+                    for(int k=j+1;k<right;k++) {
                         val += arr[i] ^ arr[j] ^ arr[k];
                     }
                 }
@@ -422,6 +422,23 @@ public class UnderStandingBitManipulation {
         }
         return sum;
 
+    }
+    public static int question_21_brute(int[] arr,int n){
+        int count = 0;
+        for(int i=0;i<n;i++){
+            int res = 0;
+            int odd = 0;
+            for(int j=i;j<n;j++){
+                res^=arr[j];
+                for(int k=0;k<30;k++){
+                    if(((arr[j]>>k) & 1) == 1){
+                        odd++;
+                    }
+                }
+                if((odd&1)==1) count++;
+            }
+        }
+        return count;
     }
 
 }
