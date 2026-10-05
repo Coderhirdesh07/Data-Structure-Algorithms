@@ -1,6 +1,5 @@
 package dsacourse851;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -351,8 +350,9 @@ public class UnderStandingBitManipulation {
     }
 
     public static int question_15_brute(int[] arr,int n){
-
         // 0 1 0 1 0 1 1 1
+
+        // 0 0 0 0 0 1
         int val = 0;
         for(int i=0;i<n;i++){
             int res = arr[i];
@@ -363,7 +363,23 @@ public class UnderStandingBitManipulation {
         }
         return val;
     }
-    public static int question_16_brute(int[] arr,int n){
+    public static int question_16(int[] arr,int x){
+        int n = arr.length;
+       int[] dp0 = new int[n];
+       int[] dp1 = new int[n];
+
+       dp0[0] = 0;
+       dp1[0] = 0;
+
+       for(int i=1;i<n;i++){
+        dp0[i] =  Math.max(arr[i]^arr[i-1] + dp0[i-1],dp1[i-1]+(arr[i-1]+x)^arr[i]);
+        dp1[i] =  Math.max(arr[i-1]^(arr[i]+x)+dp0[i-1],dp1[i-1]+(arr[i-1]+x)^arr[i]+x);
+       }
+
+       return Math.max(dp1[n-1],dp0[n-1]);
+    }
+
+    public static int question_17_brute(int[] arr,int n){
         int val = 0;
         for(int i=0;i<n;i++){
             int res = 0;
@@ -385,6 +401,27 @@ public class UnderStandingBitManipulation {
             }
         }
         return val;
+    }
+    public static int question_20_brute(int[][] matrix,int[] arr,int n){
+        int m = matrix.length;
+        int sum = 0;
+
+        for(int i=0;i<n;i++){
+            int l = matrix[i][0];
+            int r = matrix[i][1];
+
+            int val = 0;
+            for(int i=0;i<n;i++){
+                for(int j=i+1;j<n;j++){
+                    for(int k=j+1;k<n;k++) {
+                        val += arr[i] ^ arr[j] ^ arr[k];
+                    }
+                }
+            }
+            sum+=val;
+        }
+        return sum;
+
     }
 
 }
