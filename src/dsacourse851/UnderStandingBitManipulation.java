@@ -431,7 +431,7 @@ public class UnderStandingBitManipulation {
             for(int j=i;j<n;j++){
                 res^=arr[j];
                 for(int k=0;k<30;k++){
-                    if(((arr[j]>>k) & 1) == 1){
+                    if(((res>>k) & 1) == 1){
                         odd++;
                     }
                 }
