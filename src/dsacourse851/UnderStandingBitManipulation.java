@@ -424,6 +424,54 @@ public class UnderStandingBitManipulation {
         return res;
     }
 
+    public static int question_18_brute(int[] arr,int n){
+        int val = 0;
+
+        for(int i=0;i<n;i++){
+            int res = 0;
+            for(int j=i;j<n;j++){
+                res = res | arr[j];
+                val+=res;
+            }
+        }
+        return val;
+    }
+
+    public static int question_18_optimise(int[] arr,int n){
+
+        int[][] matrix = new int[31][n];
+        for(int i=0;i<31;i++){
+            Arrays.fill(matrix,0);
+        }
+        for(int i=0;i<n;i++){
+            int ind = 0;
+            int val = arr[i];
+            while(val>0){
+                int temp = val%2;
+                matrix[ind][i] = temp;
+                val/=2;
+                ind++;
+            }
+        }
+        int[][] recent = new int[31][n];
+        for(int i=0;i<31;i++) Arrays.fill(recent[i],-1);
+        for(int i=0;i<31;i++){
+            for(int j=0;j<n;j++){
+                if(arr[i]==1){
+                    recent[i][j] = j;
+                }
+                else recent[i][j] = recent[i][j-1];
+            }
+        }
+        int res = 0;
+        for(int i=0;i<31;i++){
+            res = res + recent[i][n-1] * ((int) (Math.pow(2,i)));
+        }
+        return res;
+
+    }
+
+
     public static int question_19_brute(int[] arr,int n){
         int val = 0;
         for(int i=0;i<n;i++){
