@@ -25,7 +25,7 @@ public class UnderStandingBitManipulation {
 //            mat[i][3] = sc.nextInt();
 //        }
 //        question_8_brute(mat,arr);
-        int res  = question_15_brute(arr,n);
+        int res  = question_17_brute(arr,n);
         System.out.println(res);
     }
     public static boolean question_2(int[] num){
@@ -380,6 +380,7 @@ public class UnderStandingBitManipulation {
     }
 
     public static int question_17_brute(int[] arr,int n){
+        // 0 0 0 0 0 1
         int val = 0;
         for(int i=0;i<n;i++){
             int res = 0;
@@ -389,6 +390,38 @@ public class UnderStandingBitManipulation {
             }
         }
         return val;
+    }
+
+    public static int question_17_optimise(int[] arr,int n){
+        int[][] matrix = new int[31][n];
+        for(int i=0;i<31;i++){
+            Arrays.fill(matrix,0);
+        }
+        for(int i=0;i<n;i++){
+            int ind = 0;
+            int val = arr[i];
+            while(val>0){
+                int temp = val%2;
+                matrix[ind][i] = temp;
+                val/=2;
+                ind++;
+            }
+        }
+        int[][] recent = new int[31][n];
+        for(int i=0;i<31;i++) Arrays.fill(recent[i],-1);
+        for(int i=0;i<31;i++){
+            for(int j=0;j<n;j++){
+                if(arr[i]==1){
+                    recent[i][j] = j;
+                }
+                else recent[i][j] = recent[i][j-1];
+            }
+        }
+        int res = 0;
+        for(int i=0;i<31;i++){
+            res = res + recent[i][n-1] * ((int) (Math.pow(2,i)));
+        }
+        return res;
     }
 
     public static int question_19_brute(int[] arr,int n){
