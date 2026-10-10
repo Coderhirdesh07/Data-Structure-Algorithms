@@ -438,7 +438,6 @@ public class UnderStandingBitManipulation {
     }
 
     public static int question_18_optimise(int[] arr,int n){
-
         int[][] matrix = new int[31][n];
         for(int i=0;i<31;i++){
             Arrays.fill(matrix,0);
@@ -453,21 +452,28 @@ public class UnderStandingBitManipulation {
                 ind++;
             }
         }
-        int[][] recent = new int[31][n];
-        for(int i=0;i<31;i++) Arrays.fill(recent[i],-1);
+        int ans = 0;
+        int cur_0 = 0;
+        int cur_1 = 0;
+        int result = 0;
+
         for(int i=0;i<31;i++){
             for(int j=0;j<n;j++){
-                if(arr[i]==1){
-                    recent[i][j] = j;
+                if(matrix[i][j] == 0){
+                    cur_0++;
                 }
-                else recent[i][j] = recent[i][j-1];
+                else{
+                    int temp = cur_0;
+                    cur_0 = cur_1;
+                    cur_1 = temp+1;
+                }
+                ans+=cur_1;
             }
+            result+= ans* (1<<i);
         }
-        int res = 0;
-        for(int i=0;i<31;i++){
-            res = res + recent[i][n-1] * ((int) (Math.pow(2,i)));
-        }
-        return res;
+
+
+        return result;
 
     }
 
