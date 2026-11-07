@@ -537,13 +537,13 @@ public class UnderStandingBitManipulation {
         }
 
         int ans = -1;
+
         for(int prt = 1;prt<=k;prt++) {
             for (int i = 1; i <= n; i++) {
                 int sum = 0;
                 for (int j = i; j >= 0; j--) {
                     sum = sum | arr[j];
                     dp[i][prt] = Math.max(dp[i][prt],sum + dp[j][prt-1]);
-
                 }
                 ans = Math.max(ans,dp[i][prt]);
             }
@@ -551,5 +551,8 @@ public class UnderStandingBitManipulation {
 
         return ans;
     }
+
+
+
 
 }
