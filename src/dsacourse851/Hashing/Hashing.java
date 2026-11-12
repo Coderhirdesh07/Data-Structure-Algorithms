@@ -235,4 +235,39 @@ public class Hashing {
         return count;
     }
 
+    // largest subarray sum with sum k
+    public static int question_7_optimise_1(int[] arr,int n,int k){
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        int sum = 0;
+        int max = -1;
+        m1.put(0,0);
+        for(int i=0;i<n;i++){
+            sum+=arr[i];
+            if(m1.containsKey(sum - k)){
+                int ind = m1.get(sum -k);
+                max = Math.max(max,Math.abs(ind-i+1));
+            }
+            m1.put(sum,i);
+        }
+
+        return max;
+    }
+
+    public static int question_7_optimise_2(int[] arr,int n,int k){
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        int sum = 0;
+        int min = Integer.MAX_VALUE;
+        m1.put(0,1);
+        for(int i=0;i<n;i++){
+            sum+=arr[i];
+            if(m1.containsKey(sum - k)){
+                int ind = m1.get(sum -k);
+                min = Math.max(min,Math.abs(ind-i+1));
+            }
+            m1.put(sum,i);
+        }
+
+        return min;
+    }
+
 }
