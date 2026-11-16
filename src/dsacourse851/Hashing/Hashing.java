@@ -5,19 +5,21 @@ import java.util.Scanner;
 
 public class Hashing {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int q = sc.nextInt();
-        int[] queries = new int[q];
-        int[] arr = new int[n];
+//        Scanner sc = new Scanner(System.in);
+//        int n = sc.nextInt();
+//        int q = sc.nextInt();
+//        int[] queries = new int[q];
+//        int[] arr = new int[n];
+        int[] input = {51,17,71,42};
 
-        for(int i=0;i<q;i++){
-            queries[i] = sc.nextInt();
-        }
-        for(int i=0;i<n;i++){
-            arr[i] = sc.nextInt();
-        }
-        question_1_brute(arr,queries,n,q);
+//        for(int i=0;i<q;i++){
+//            queries[i] = sc.nextInt();
+//        }
+//        for(int i=0;i<n;i++){
+//            arr[i] = sc.nextInt();
+//        }
+       int ans =  question_22_optimise(input);
+        System.out.println(ans);
     }
     public static void question_1_brute(int[] arr,int[] queries,int n,int m){
 
@@ -268,6 +270,59 @@ public class Hashing {
         }
 
         return min;
+    }
+    public static int question_24_optimise(int[] arr){
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+
+        int trips = 0;
+
+        for(int x:arr){
+            m1.put(x,m1.getOrDefault(x,0)+1);
+        }
+
+        for(int it:m1.keySet()){
+           if(m1.get(it)%3 ==0){
+               trips+=m1.get(it)/3;
+           }
+           else if(m1.get(it)%2 ==0){
+               trips+=m1.get(it)/2;
+           }
+           else return -1;
+        }
+
+        return trips;
+    }
+    // 51 71 17 42
+    public static int digitSum(int input){
+        int sum = 0;
+        while(input>0){
+            sum+=input%10;
+            input/=10;
+        }
+        return sum;
+    }
+    public static int question_22_optimise(int[] arr){
+        int n = arr.length;
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        int[] digi = new int[n];
+        int ind = 0;
+        for(int x:arr){
+           digi[ind++] =  digitSum(x);
+
+        }
+        int maxSum = 0;
+
+        for(int i=0;i<n;i++){
+            int dif = digi[i];
+            if(m1.containsKey(dif)){
+               int  sum=m1.get(dif) + arr[i];
+               maxSum=Math.max(sum,maxSum);
+
+            }
+             m1.put(dif,arr[i]);
+        }
+
+        return maxSum;
     }
 
 }
