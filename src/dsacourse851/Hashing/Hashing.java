@@ -128,6 +128,7 @@ public class Hashing {
         }
         return flag;
     }
+
     public static int question_4_brute(int[] arr,int n,int k){
         int count = 0;
         for(int i=0;i<n;i++){
@@ -271,6 +272,42 @@ public class Hashing {
 
         return min;
     }
+
+
+    // here k=5
+    public static int question_8(int[] arr,int val){
+        int n = arr.length;
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        int count = 0;
+        for(int i=0;i<n;i++){
+            int value = arr[i]%val;
+            int find = val - value;
+            find = find%val;
+            if(m1.containsKey(find)){
+                count+=m1.get(find);
+            }
+            m1.put(value,m1.getOrDefault(value,0)+1);
+        }
+        return count;
+    }
+
+    public static int question_9(int[] arr,int k){
+        int n = arr.length;
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        int count = 0;
+        for(int i=0;i<n;i++){
+            int value = arr[i]%k;
+            int find = k - value;
+            find = find%k;
+
+            if(m1.containsKey(find)){
+                count+=m1.get(find);
+            }
+            m1.put(value,m1.getOrDefault(value,0)+1);
+        }
+        return count;
+    }
+
     public static int question_24_optimise(int[] arr){
         HashMap<Integer,Integer> m1 = new HashMap<>();
 
