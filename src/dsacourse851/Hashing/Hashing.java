@@ -275,7 +275,7 @@ public class Hashing {
 
 
     // here k=5
-    public static int question_8(int[] arr,int val){
+    public static int question_8_optimise(int[] arr,int val){
         int n = arr.length;
         HashMap<Integer,Integer> m1 = new HashMap<>();
         int count = 0;
@@ -291,7 +291,8 @@ public class Hashing {
         return count;
     }
 
-    public static int question_9(int[] arr,int k){
+
+    public static int question_9_optimise(int[] arr,int k){
         int n = arr.length;
         HashMap<Integer,Integer> m1 = new HashMap<>();
         int count = 0;
@@ -307,6 +308,59 @@ public class Hashing {
         }
         return count;
     }
+    public static int question_10_brute(int[] arr,int n,int d){
+        int count = 0;
+        for(int i=0;i<n;i++){
+            for(int j=i+1;j<n;j++){
+                for(int k=j+1;k<n;k++){
+                    int sum = arr[i] + arr[j] + arr[k];
+                    if(sum%d == 0){
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+    public static int question_10_optimise(int[] arr,int n,int d){
+        return 0;
+    }
+
+
+    public static int question_11_brute(int[] arr,int n,int k){
+        int count = 0;
+        for(int i=0;i<n;i++){
+            int sum = 0;
+            for(int j=i;j<n;j++){
+                sum+=arr[j];
+                if(sum == k){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    //  1 2 4 6  k=6
+
+
+    // TODO :- DO it once again
+    public static int question_11_optimise(int[] arr,int n,int k){
+        int count = 0;
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        int sum = 0;
+        for(int i=0;i<n;i++){
+            sum+=arr[i];
+            if(m1.containsKey(sum - k)){
+                count+=m1.get(sum);
+            }
+            m1.put(arr[i],m1.getOrDefault(arr[i],0)+1);
+        }
+
+        return count;
+    }
+
+
 
     public static int question_24_optimise(int[] arr){
         HashMap<Integer,Integer> m1 = new HashMap<>();
