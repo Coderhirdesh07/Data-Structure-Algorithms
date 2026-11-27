@@ -208,35 +208,7 @@ public class Hashing {
         }
         return  count;
     }
-    public static int question_7_brute(int[] arr,int n,int k){
-        int count = 0;
-        for(int i=0;i<n;i++){
-            int sum = 0;
-            for(int j=i;j<n;j++){
-                sum+=arr[j];
-                if(sum==k){
-                    count++;
-                }
-            }
-        }
-        return  count;
-    }
 
-    public static int question_7_optimise(int[] arr,int n,int k){
-        HashMap<Integer,Integer> m1 = new HashMap<>();
-        int sum = 0;
-        int count = 0;
-        m1.put(0,1);
-        for(int i=0;i<n;i++){
-            sum+=arr[i];
-            if(m1.containsKey(sum - k)){
-                count+=m1.get(sum - k);
-            }
-            m1.put(sum,m1.getOrDefault(sum,0)+1);
-        }
-
-        return count;
-    }
 
     // largest subarray sum with sum k
     public static int question_7_optimise_1(int[] arr,int n,int k){
@@ -327,7 +299,7 @@ public class Hashing {
     }
 
 
-    public static int question_11_brute(int[] arr,int n,int k){
+    public static int question_12_brute(int[] arr,int n,int k){
         int count = 0;
         for(int i=0;i<n;i++){
             int sum = 0;
@@ -345,21 +317,49 @@ public class Hashing {
 
 
     // TODO :- DO it once again
-    public static int question_11_optimise(int[] arr,int n,int k){
+    public static int question_12_optimise(int[] arr,int n,int k){
         int count = 0;
         HashMap<Integer,Integer> m1 = new HashMap<>();
         int sum = 0;
+        m1.put(0,1);
         for(int i=0;i<n;i++){
             sum+=arr[i];
             if(m1.containsKey(sum - k)){
-                count+=m1.get(sum);
+                count+=m1.get(sum-k);
             }
-            m1.put(arr[i],m1.getOrDefault(arr[i],0)+1);
+            m1.put(sum,m1.getOrDefault(sum,0)+1);
+        }
+        return count;
+    }
+
+    public static int question_14_brute(int[] arr,int n,int k){
+        int count = 0;
+        for(int i=0;i<n;i++){
+            int val = arr[i];
+            for(int j=i;j<n;j++){
+                val^=arr[j];
+                if(val == k){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    public static int question_14_optimise(int[] arr,int n,int k){
+        int count = 0;
+        HashMap<Integer,Integer> m1 = new HashMap<>();
+        int val = 0;
+        for(int i=0;i<n;i++){
+            val^=arr[i];
+            if(m1.containsKey(val^k)){
+                count+=m1.get(val);
+            }
+            m1.put(val,m1.getOrDefault(val,0)+1);
         }
 
         return count;
     }
-
 
 
     public static int question_24_optimise(int[] arr){
